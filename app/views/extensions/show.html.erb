@@ -6,7 +6,10 @@
     <span class="login-brand">Chrome extension · v<%= @version %></span>
     <h1>MCC filler</h1>
     <p class="muted">Copies your order into the MCC choice-filling page, one choice per click. You sign in to MCC yourself, and it never locks your choices.</p>
-    <%= link_to download_extension_path, class: "button primary block" do %><%= icon("download") %>Download<% end %>
+    <div class="extension-actions">
+      <%= link_to download_extension_path, class: "button primary block" do %><%= icon("download") %>Download<% end %>
+      <%= link_to "https://github.com/fazzledev/mcc-choices/tree/main/extension", class: "button block", target: "_blank", rel: "noopener" do %><%= icon("github") %>Source<% end %>
+    </div>
     <ol class="install-steps">
       <li>Unzip the download into a folder. <code>manifest.json</code> sits directly inside it.</li>
       <li>Open <code>chrome://extensions</code> <button type="button" class="button-link copy-btn" data-copy="chrome://extensions" aria-label="Copy chrome://extensions" title="Copy"><%= icon("copy") %><%= icon("check") %></button> in a new tab and turn on <strong>Developer mode</strong>.</li>
