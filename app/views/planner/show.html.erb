@@ -1,0 +1,184 @@
+<% content_for :title, "Choice Planner" %>
+<% content_for :javascript_entry, "application" %>
+<div id="planner" class="busy"
+     data-counselling="<%= @counselling.slug %>"
+     data-catalog-url="<%= catalog_path(@counselling) %>"
+     data-icons-url="<%= asset_path("icons.svg") %>"
+     <% if @list %>
+     data-list-url="<%= list_picks_path(@list) %>"
+     data-snapshots-url="<%= list_snapshots_path(@list) %>"
+     data-owner="<%= @list.user.email %>"
+     data-own-list="<%= @list.user_id == current_user.id %>"
+     <% end %>>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-name">Choice Planner</span>
+      <span class="brand-sub"><span class="sync-dot" aria-hidden="true"></span><span id="save-status" aria-live="polite"><%= @counselling.name %></span></span>
+    </div>
+    <div class="topbar-actions">
+      <% if authenticated? %>
+        <details class="menu">
+          <summary class="avatar" aria-label="Account menu"><%= current_user.email.first(2).upcase %></summary>
+          <div class="menu-pop">
+            <span class="menu-email"><%= current_user.email %></span>
+            <% if current_user.admin? %><%= link_to admin_users_path, class: "menu-item" do %><%= icon("users") %>Students<% end %><% end %>
+            <%= button_to session_path, method: :delete, form: { id: "sign-out" }, class: "menu-item" do %><%= icon("log-out") %>Sign out<% end %>
+          </div>
+        </details>
+      <% else %>
+        <%= link_to new_session_path, class: "button button-ghost" do %><%= icon("log-in") %><span>Sign in to sync</span><% end %>
+      <% end %>
+    </div>
+  </header>
+
+  <% if @list && @list.user_id != current_user.id %>
+    <p class="banner">Viewing <strong><%= @list.user.display_name %></strong>'s order. Changes save to their list.</p>
+  <% elsif !@list %>
+    <p class="banner" id="local-banner">Saved on this device only. <%= link_to "Sign in", new_session_path %> to keep it safe and use it on other devices.</p>
+  <% end %>
+  <div id="adopt" class="banner warn" hidden>
+    <span id="adopt-text"></span>
+    <button type="button" id="adopt-device" class="primary">Use this device's order</button>
+    <button type="button" id="adopt-account">Use my account's order</button>
+  </div>
+
+  <main class="panes">
+    <section class="pane catalog active" data-pane="catalog" aria-label="Catalog">
+      <div class="searchbar">
+        <label class="search" for="q">
+          <%= icon("search") %>
+          <input id="q" type="search" placeholder="Search college, city or speciality" autocomplete="off">
+        </label>
+        <button type="button" id="filters-open" class="filters-btn" aria-haspopup="dialog" aria-controls="filter-sheet">
+          <%= icon("sliders-horizontal") %><span class="filters-label">Filters</span><span id="filters-count" class="count-badge" hidden></span>
+        </button>
+      </div>
+      <div id="active-chips" class="chips" hidden></div>
+      <div class="result-bar">
+        <span id="result-count" class="eyebrow">Loading choices…</span>
+        <button type="button" id="add-all" class="button-link"></button>
+      </div>
+      <ol id="results" class="results" aria-busy="true">
+        <% 6.times do %>
+          <li class="result skeleton" aria-hidden="true"><div class="r-main"><span class="sk sk-title"></span><span class="sk sk-line"></span><span class="sk sk-line sk-short"></span></div><span class="sk sk-round"></span></li>
+        <% end %>
+      </ol>
+      <button type="button" id="more" class="more" hidden>Show more</button>
+    </section>
+
+    <section class="pane order" data-pane="order" aria-label="My order">
+      <div class="order-head">
+        <div class="order-title">
+          <h2>My order</h2>
+          <span class="order-sub"><span id="order-count"></span></span>
+        </div>
+        <% if @list %>
+          <button type="button" id="history-toggle" class="icon-btn" aria-label="History"><%= icon("history") %></button>
+        <% end %>
+        <%= link_to extension_path, id: "get-filler", class: "button icon-btn", "aria-label": "Get the MCC filler extension", title: "Get the MCC filler extension" do %><%= icon("puzzle") %><% end %>
+        <button type="button" id="send-filler" class="icon-btn" aria-label="Send to MCC filler" title="Send to MCC filler" hidden><%= icon("send") %></button>
+        <button type="button" id="export" class="icon-btn" aria-label="Export CSV"><%= icon("download") %></button>
+      </div>
+      <div class="segmented" role="radiogroup" aria-label="View my order" id="order-view">
+        <button type="button" role="radio" data-view="ranked" aria-checked="true">Ranked</button>
+        <button type="button" role="radio" data-view="institute" aria-checked="false">Institute</button>
+        <button type="button" role="radio" data-view="speciality" aria-checked="false">Speciality</button>
+      </div>
+      <label class="search search-small" for="order-q">
+        <%= icon("search") %>
+        <input id="order-q" type="search" placeholder="Find in my order" autocomplete="off">
+      </label>
+      <ol id="picks" class="picks" aria-busy="true">
+        <% 4.times do |i| %>
+          <li class="pick skeleton" aria-hidden="true"><span class="p-rank"><%= i + 1 %></span><div class="p-card"><div class="p-main"><span class="sk sk-title"></span><span class="sk sk-line sk-short"></span></div></div></li>
+        <% end %>
+      </ol>
+      <ol id="picks-review" class="results grouped review" hidden></ol>
+      <p id="empty" class="empty" hidden>No choices yet. Add some from the catalog.</p>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="Sections">
+    <button type="button" data-tab="catalog" class="active"><%= icon("search") %>Catalog</button>
+    <button type="button" data-tab="order"><%= icon("list-ordered") %>My order <span id="tab-count" class="count-badge">0</span></button>
+  </nav>
+
+  <div id="sheet-backdrop" class="backdrop" hidden></div>
+  <section id="filter-sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="filter-title" hidden>
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="filter-title">Filters</h2>
+      <button type="button" id="clear-filters" class="button-link">Clear all</button>
+      <button type="button" id="filters-close" class="icon-btn" aria-label="Close filters"><%= icon("x") %></button>
+    </div>
+    <div class="sheet-body">
+      <div id="facets"></div>
+      <label class="switch">
+        <input id="f-hide" type="checkbox">
+        <span>Hide choices already in my order</span>
+      </label>
+    </div>
+    <div class="sheet-foot">
+      <button type="button" id="filters-apply" class="primary block">Show choices</button>
+    </div>
+  </section>
+
+  <section id="contact-sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="contact-title" hidden>
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="contact-title">DNB contact</h2>
+      <button type="button" id="contact-close" class="icon-btn" aria-label="Close contact"><%= icon("x") %></button>
+    </div>
+    <div class="sheet-body" id="contact-body"></div>
+  </section>
+
+  <aside id="history" class="drawer" hidden>
+    <div class="drawer-head">
+      <h2>History</h2>
+      <button type="button" id="history-close" class="icon-btn" aria-label="Close history"><%= icon("x") %></button>
+    </div>
+    <p class="muted">Every few minutes of editing keeps a snapshot. Restoring one saves it as a new snapshot, so nothing is lost.</p>
+    <ol id="snapshots" class="snapshots"></ol>
+  </aside>
+
+  <template id="result-tpl">
+    <li class="result">
+      <div class="r-main">
+        <div class="r-inst"></div>
+        <div class="r-addr"></div>
+        <div class="r-prog"></div>
+        <div class="r-meta"></div>
+        <button type="button" class="contact-btn" hidden><%= icon("contact") %>DNB contact</button>
+      </div>
+      <button type="button" class="r-add"></button>
+    </li>
+  </template>
+
+  <template id="pick-tpl">
+    <li class="pick">
+      <span class="p-rank"></span>
+      <div class="p-card">
+        <div class="p-head">
+          <button type="button" class="p-main">
+            <span class="p-inst"></span>
+            <span class="p-addr"></span>
+            <span class="p-meta"></span>
+            <span class="p-note-preview"></span>
+          </button>
+          <button type="button" class="contact-btn icon-only" aria-label="DNB contact" hidden><%= icon("contact") %></button>
+          <span class="handle" title="Drag to reorder" aria-label="Drag to reorder"><%= icon("grip-vertical") %></span>
+        </div>
+        <div class="p-also" hidden><span class="p-also-text"></span><button type="button" class="button-link p-gather">Bring here</button></div>
+        <div class="p-tools">
+          <label class="p-note-label">Note<input class="p-note" type="text" placeholder="Why this choice?" maxlength="500"></label>
+          <div class="p-ctl">
+            <button type="button" class="p-up icon-btn" aria-label="Move up"><%= icon("arrow-up") %></button>
+            <button type="button" class="p-down icon-btn" aria-label="Move down"><%= icon("arrow-down") %></button>
+            <label class="p-pos-label"><span>Move to</span><input class="p-pos" type="number" min="1" inputmode="numeric" aria-label="Move to position"></label>
+            <button type="button" class="p-remove icon-btn danger" aria-label="Remove"><%= icon("trash-2") %></button>
+          </div>
+        </div>
+      </div>
+    </li>
+  </template>
+</div>

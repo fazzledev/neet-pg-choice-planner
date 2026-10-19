@@ -1,0 +1,439 @@
+{
+  "institute_types": {
+    "AIC": "All India except Central University",
+    "CUN": "Central University",
+    "DUN": "Deemed University",
+    "DNB": "Diplomate of National Board (DNB) (Govt.) PG",
+    "DNP": "Diplomate of National Board (DNB) (Pvt.) PG"
+  },
+  "programs": {
+    "ORTH": "M.S. Orthopaedics",
+    "NDORT": "(NBEMS) ORTHOPAEDICS",
+    "DORT": "Diploma in Orthopaedics (D.Orth.)",
+    "GMED": "M.D. General Medicine"
+  },
+  "institutes": [
+    {
+      "code": "700272",
+      "name": "Anugrah Narayan Magadh Medical College, Gaya",
+      "address": "ANUGRAH NARAYAN MAGADH MEDICAL COLLEGE",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700282",
+      "name": "Assam Medial College, Dibrugarh",
+      "address": "Assam Medical College",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700301",
+      "name": "B. J. Govt. Medical College, Pune",
+      "address": "B.J.Government Medical College, Pune",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700357",
+      "name": "Atal Bihari Vajpayee Institute of Medical Sciences and Dr. RML Hospital, New Delhi",
+      "address": "ABVIMS & DR. RML Hospital, Baba Kharak Singh Marg, New Delhi.",
+      "type_name": "Central University",
+      "type_code": "CUN"
+    },
+    {
+      "code": "700359",
+      "name": "Agartala Government Medical College,Agartala",
+      "address": "Agartala Government Medical College",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700363",
+      "name": "B J Medical College, Ahmedabad",
+      "address": "B.J. Medical College, New Civil Hospital Asarwa,Ahmedabad-380016,Gujarat,India",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700370",
+      "name": "LLRM Medical College, Meerut",
+      "address": "Lala Lajpat Rai Memorial Medical College, MEERUT",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700391",
+      "name": "Bangalore Medical College and Research Institute, Bangalore",
+      "address": "Bangalore Medical College and Research Institute",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700392",
+      "name": "Govt. Medical College, Kolkata",
+      "address": "MEDICAL COLLEGE, KOLKATA",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700402",
+      "name": "Bankura Sammilani Medical College, Bankura",
+      "address": "Bankura Sammilani Medical College",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700475",
+      "name": "Andhra Medical College, Visakhapatnam",
+      "address": "Andhra Medical College",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700522",
+      "name": "Barpeta Medical College & Hospital, Barpeta, Assam",
+      "address": "Jotigaon, Jania Road, Barpeta Assam- 781301",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700544",
+      "name": "Government Medical College & Hospital Cuddalore, Since- 09-05-2025 (erstwhile Rajah Muthiah Medical College, cuddalore, T.N)",
+      "address": "Govt. Medical College and Hospital, Cuddalore District Erstwhile Rajah Muthiah Medical College",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "700602",
+      "name": "Anup Institute of Orthopaedics and Rehabilitation, G 75-77 , P.C.Colony, Kankarbagh, Patna, Bihar-800020",
+      "address": "G 75-77, P.C. Colony Kankarbagh , Patna, Bihar, 800020",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "700743",
+      "name": "Aadhar Health Institute, (A UNIT OF VLCOM HEALTHCARE P LTD.) south bye pass crossing, Tosham Road, Hisar, Haryana-125005",
+      "address": "Aadhar Health Institute, A UNIT OF VLCOM HEALTHCARE P LTD. Tosham Road, Hisar, Haryana-125001",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "700901",
+      "name": "Almadeena Institute of Medical Science, Changuvetty, kottakkal, Malappuram(district), Kerala-676503",
+      "address": "ALMAS HOSPITAL, CHANGUVETTY, KOTTAKKAL, MALAPPURAM DISTRICT, Kerala, 676503",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "701011",
+      "name": "Amandeep Hospital, G.T.Road, Model Town, Amritsar, Punjab-143001",
+      "address": "Amandeep Hospital GT road Model Town Amritsar, Punjab, 143001",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "701215",
+      "name": "AIG Hospital, Mind Space Road, Gachibowli, Hyderabad, Telangana-500032",
+      "address": "Door No: 1-66/AIG/2 to 5 Mindspace Road, Gachibowli,Hyderabad, Telangana, 500032",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "701240",
+      "name": "Apex Hospital, N7/2A-5D , DLW, Hydil Road, Varanasi, Uttar Pradesh-221004",
+      "address": "N7 2A 5D DLW Hydel Road Varanasi",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "701416",
+      "name": "Aakash Healthcare Super Specialty Hospital, Plot, Road No. 201 Sector 3 Dwarka, Delhi-110075",
+      "address": "HOSPITAL PLOT, ROAD NO-201,SECTOR 3 DWARKA, NEW DELHI, Delhi (NCT), 110075",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "701506",
+      "name": "BRD Medical College, Gorakhpur",
+      "address": "BABA RAGHAV DAS MEDICAL COLLEGE MAHARAJGANJ ROAD GORAKHPUR UP 273013",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "701720",
+      "name": "ACSR Government Medical College",
+      "address": "Opp. AC Subbareddy Stadium Dargamitta Nellore, SPSR Nellore district, Andhra Pradesh.",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    },
+    {
+      "code": "901673",
+      "name": "AMRI Hospitals, Mukundapur, 230, Barakhola Lane, Behind Metro Cash and Carry on E.M.Bypass, Kolkata, West Bengal-700099",
+      "address": "AMRI Hospitals Mukundapur 230 Barakhola Lane Behind Metro Cash and Carry on EM Bypass Kolkata, West Bengal, 700099",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "902673",
+      "name": "AMARA HOSPITAL, A UNIT OF G2 HEALTHCARE PRIVATE LIMITED) 7-3-166, RENIGUNTA - KADAPA HIGWAY, KARAKAMBADI(V), RENIGUNTA (M), TIRUPATI, ANDHRAPRADESH. Andhra Pradesh , Andhra Pradesh-517520",
+      "address": "#1, GIRIDRUSYA, KARAKAMBADI, KADAPA - RENIGUNTA HWY, TIRUPATI, Andhra Pradesh, 517520",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "904188",
+      "name": "Accord Superspeciality Hospital Khasra No. 22, Kila. 19, 20, 21, 22, Sector 86, Village-Tehsil-District: Faridabad Haryana – 121002",
+      "address": "Accord Superspeciality Hospital Khasra No. 22, Kila. 19, 20, 21, 22, Sector 86",
+      "type_name": "Diplomate of National Board (DNB) (Pvt.) PG",
+      "type_code": "DNP"
+    },
+    {
+      "code": "904635",
+      "name": "Autonomous State Medical College Society, Etah, Uttar Pradesh",
+      "address": "112 Nagla Padihar, Sirao Mahrara Link road Sakeet, Etah Uttar Pradesh 207001 Etah, Uttar Pradesh,",
+      "type_name": "All India except Central University",
+      "type_code": "AIC"
+    }
+  ],
+  "choices": [
+    {
+      "sr": 41,
+      "instcd": "701720",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 69,
+      "instcd": "700359",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 172,
+      "instcd": "700475",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 201,
+      "instcd": "700272",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 437,
+      "instcd": "700282",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 504,
+      "instcd": "700357",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 529,
+      "instcd": "904635",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 561,
+      "instcd": "700363",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 585,
+      "instcd": "700301",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 666,
+      "instcd": "700391",
+      "brcd": "ORTH",
+      "program": "M.S. Orthopaedics",
+      "quota": "All India"
+    },
+    {
+      "sr": 10,
+      "instcd": "700743",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 17,
+      "instcd": "701416",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 32,
+      "instcd": "904188",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 97,
+      "instcd": "701215",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 113,
+      "instcd": "700901",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 117,
+      "instcd": "701011",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 131,
+      "instcd": "902673",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 134,
+      "instcd": "901673",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 208,
+      "instcd": "700602",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 217,
+      "instcd": "701240",
+      "brcd": "NDORT",
+      "program": "(NBEMS) ORTHOPAEDICS",
+      "quota": "DNB Quota"
+    },
+    {
+      "sr": 875,
+      "instcd": "701506",
+      "brcd": "DORT",
+      "program": "Diploma in Orthopaedics (D.Orth.)",
+      "quota": "All India"
+    },
+    {
+      "sr": 2269,
+      "instcd": "700544",
+      "brcd": "DORT",
+      "program": "Diploma in Orthopaedics (D.Orth.)",
+      "quota": "All India"
+    },
+    {
+      "sr": 3099,
+      "instcd": "700392",
+      "brcd": "DORT",
+      "program": "Diploma in Orthopaedics (D.Orth.)",
+      "quota": "All India"
+    },
+    {
+      "sr": 4466,
+      "instcd": "700370",
+      "brcd": "DORT",
+      "program": "Diploma in Orthopaedics (D.Orth.)",
+      "quota": "All India"
+    },
+    {
+      "sr": 38,
+      "instcd": "701720",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 65,
+      "instcd": "700359",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 167,
+      "instcd": "700475",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 432,
+      "instcd": "700282",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 499,
+      "instcd": "700357",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 556,
+      "instcd": "700363",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 580,
+      "instcd": "700301",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 651,
+      "instcd": "700391",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 673,
+      "instcd": "700402",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    },
+    {
+      "sr": 697,
+      "instcd": "700522",
+      "brcd": "GMED",
+      "program": "M.D. General Medicine",
+      "quota": "All India"
+    }
+  ]
+}

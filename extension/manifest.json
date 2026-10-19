@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Choice Planner filler",
+  "version": "0.1.0",
+  "description": "Copies your Choice Planner order into the MCC choice-filling page, one choice at a time. Never locks.",
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["https://mcc.fazzle.dev/*", "http://*.mcc-choices.localhost/*"],
+      "js": ["planner-bridge.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://mcc.admissions.nic.in/*"],
+      "js": ["portal-adapter.js", "portal.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

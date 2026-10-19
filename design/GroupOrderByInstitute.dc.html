@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My order viewed by institute</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3d3bf3}a:hover{color:#2a28c9}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #f3f4f8; color: #101423; font-family: Figtree, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <header style="padding: 20px 20px 12px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 32px; letter-spacing: -0.02em; line-height: 1">My order</h1>
+      <span style="font: 500 14px Figtree, sans-serif; color: #5b6275">12 choices · 9 institutes</span>
+    </div>
+    <div role="tablist" aria-label="View" style="display: flex; padding: 4px; gap: 4px; border-radius: 14px; background: #e6e8f0">
+      <button type="button" role="tab" aria-selected="false" style="flex: 1 1 0; height: 40px; border: 0; border-radius: 10px; background: transparent; color: #5b6275; font: 600 14px Figtree, sans-serif">Ranked</button>
+      <button type="button" role="tab" aria-selected="true" style="flex: 1 1 0; height: 40px; border: 0; border-radius: 10px; background: #ffffff; color: #101423; font: 700 14px Figtree, sans-serif; box-shadow: 0 1px 3px rgba(16,20,35,0.12)">By institute</button>
+    </div>
+  </header>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 0 20px; display: flex; flex-direction: column; gap: 10px">
+    <article style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,20,35,0.05), 0 4px 16px rgba(16,20,35,0.04)">
+      <div style="padding: 14px 16px 10px; display: flex; align-items: flex-start; gap: 10px">
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+          <span style="font: 700 16px Figtree, sans-serif">Aster Medcity, Kochi</span>
+          <span style="display: flex; align-items: center; gap: 6px; font: 500 13px Figtree, sans-serif; color: #5b6275"><span style="padding: 0 6px; border-radius: 4px; background: #0f766e; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">KL</span>Kerala · 2 picks</span>
+        </div>
+        <span style="padding: 4px 10px; border-radius: 12px; background: #ecebfe; color: #2a28c9; font: 700 13px Figtree, sans-serif">best #2</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid #eef0f5">
+        <span style="min-width: 36px; padding: 2px 0; border-radius: 10px; background: #3d3bf3; color: #ffffff; text-align: center; font: 700 13px Figtree, sans-serif">#2</span>
+        <span style="flex-grow: 1; font: 600 15px Figtree, sans-serif">Orthopaedics <span style="padding: 0 6px; border-radius: 4px; background: #8a4bd6; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">DNB</span></span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid #eef0f5">
+        <span style="min-width: 36px; padding: 2px 0; border-radius: 10px; background: #3d3bf3; color: #ffffff; text-align: center; font: 700 13px Figtree, sans-serif">#3</span>
+        <span style="flex-grow: 1; font: 600 15px Figtree, sans-serif">Anaesthesiology <span style="padding: 0 6px; border-radius: 4px; background: #8a4bd6; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">DNB</span></span>
+      </div>
+    </article>
+
+    <article style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,20,35,0.05), 0 4px 16px rgba(16,20,35,0.04)">
+      <div style="padding: 14px 16px 10px; display: flex; align-items: flex-start; gap: 10px">
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+          <span style="font: 700 16px Figtree, sans-serif">Lisie Medical Institution, Kochi</span>
+          <span style="display: flex; align-items: center; gap: 6px; font: 500 13px Figtree, sans-serif; color: #5b6275"><span style="padding: 0 6px; border-radius: 4px; background: #0f766e; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">KL</span>Kerala · 2 picks, not next to each other</span>
+        </div>
+        <span style="padding: 4px 10px; border-radius: 12px; background: #ecebfe; color: #2a28c9; font: 700 13px Figtree, sans-serif">best #4</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid #eef0f5">
+        <span style="min-width: 36px; padding: 2px 0; border-radius: 10px; background: #3d3bf3; color: #ffffff; text-align: center; font: 700 13px Figtree, sans-serif">#4</span>
+        <span style="flex-grow: 1; font: 600 15px Figtree, sans-serif">Orthopaedics <span style="padding: 0 6px; border-radius: 4px; background: #8a4bd6; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">DNB</span></span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid #eef0f5">
+        <span style="min-width: 36px; padding: 2px 0; border-radius: 10px; background: #3d3bf3; color: #ffffff; text-align: center; font: 700 13px Figtree, sans-serif">#9</span>
+        <span style="flex-grow: 1; font: 600 15px Figtree, sans-serif">General Medicine <span style="padding: 0 6px; border-radius: 4px; background: #8a4bd6; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">DNB</span></span>
+      </div>
+      <div style="padding: 10px 16px; border-top: 1px solid #eef0f5; display: flex; justify-content: flex-end">
+        <a href="#" style="font: 700 14px Figtree, sans-serif; text-decoration: none">Keep these together in the ranking</a>
+      </div>
+    </article>
+
+    <article style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,20,35,0.05), 0 4px 16px rgba(16,20,35,0.04)">
+      <div style="padding: 14px 16px; display: flex; align-items: center; gap: 10px">
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+          <span style="font: 700 16px Figtree, sans-serif">Madras Medical College, Chennai</span>
+          <span style="display: flex; align-items: center; gap: 6px; font: 500 13px Figtree, sans-serif; color: #5b6275"><span style="padding: 0 6px; border-radius: 4px; background: #0f766e; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">TN</span>Orthopaedics <span style="padding: 0 6px; border-radius: 4px; background: #0f8a5f; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">MS</span></span>
+        </div>
+        <span style="min-width: 36px; padding: 2px 0; border-radius: 10px; background: #3d3bf3; color: #ffffff; text-align: center; font: 700 13px Figtree, sans-serif">#1</span>
+      </div>
+    </article>
+  </div>
+
+  <nav aria-label="Sections" style="position: absolute; left: 16px; right: 16px; bottom: 20px; height: 64px; border-radius: 22px; background: #101423; display: flex; padding: 6px; gap: 6px; box-shadow: 0 12px 32px rgba(16,20,35,0.28)">
+    <a href="GroupCatalog.dc.html" style="flex: 1 1 0; border-radius: 16px; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: center; font: 600 15px Figtree, sans-serif">Catalog</a>
+    <a href="#" aria-current="page" style="flex: 1 1 0; border-radius: 16px; background: #ffffff; color: #101423; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font: 700 15px Figtree, sans-serif">My order <span style="min-width: 24px; height: 22px; padding: 0 6px; border-radius: 11px; background: #3d3bf3; color: #ffffff; font: 700 12px Figtree, sans-serif; display: flex; align-items: center; justify-content: center">12</span></a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

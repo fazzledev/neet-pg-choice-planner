@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Catalog grouped by speciality</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3d3bf3}a:hover{color:#2a28c9}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #f3f4f8; color: #101423; font-family: Figtree, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <header style="padding: 20px 20px 12px; display: flex; flex-direction: column; gap: 2px">
+    <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 24px; letter-spacing: -0.02em">Choice Planner</span>
+    <span style="font-size: 13px; color: #5b6275">Kerala · 4 specialities · 96 choices</span>
+  </header>
+  <div style="padding: 0 20px 12px; display: flex; align-items: center; gap: 10px">
+    <span style="font: 700 12px Figtree, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; color: #5b6275">Group by</span>
+    <div role="radiogroup" aria-label="Group by" style="flex-grow: 1; display: flex; padding: 4px; gap: 4px; border-radius: 14px; background: #e6e8f0">
+      <button type="button" role="radio" aria-checked="false" style="flex: 1 1 0; height: 36px; border: 0; border-radius: 10px; background: transparent; color: #5b6275; font: 600 13px Figtree, sans-serif">None</button>
+      <button type="button" role="radio" aria-checked="false" style="flex: 1 1 0; height: 36px; border: 0; border-radius: 10px; background: transparent; color: #5b6275; font: 600 13px Figtree, sans-serif">Institute</button>
+      <button type="button" role="radio" aria-checked="true" style="flex: 1 1 0; height: 36px; border: 0; border-radius: 10px; background: #ffffff; color: #101423; font: 700 13px Figtree, sans-serif; box-shadow: 0 1px 3px rgba(16,20,35,0.12)">Speciality</button>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 0 20px; display: flex; flex-direction: column; gap: 12px">
+    <article style="background: #ffffff; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,20,35,0.05), 0 4px 16px rgba(16,20,35,0.04)">
+      <div style="padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+        <span style="width: 44px; height: 44px; border-radius: 14px; background: #ecebfe; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d3bf3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 10c.7-.7 1.69 0 2.5 0a2.5 2.5 0 1 0 0-5 .5.5 0 0 1-.5-.5 2.5 2.5 0 1 0-5 0c0 .81.7 1.8 0 2.5l-7 7c-.7.7-1.69 0-2.5 0a2.5 2.5 0 0 0 0 5c.28 0 .5.22.5.5a2.5 2.5 0 1 0 5 0c0-.81-.7-1.8 0-2.5Z"></path></svg>
+        </span>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+          <span style="font: 700 18px Figtree, sans-serif">Orthopaedics</span>
+          <span style="font: 500 13px Figtree, sans-serif; color: #5b6275">24 institutes · 7 in your order</span>
+        </div>
+      </div>
+      <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #e3e6ee">
+        <li style="display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px; background: #f7f7ff">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0">
+            <span style="font: 600 15px Figtree, sans-serif">Government Medical College, Kozhikode</span>
+            <span style="display: flex; align-items: center; gap: 6px; font: 500 12px Figtree, sans-serif; color: #5b6275"><span style="padding: 0 6px; border-radius: 4px; background: #0f8a5f; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">MS</span>All India · Govt</span>
+          </div>
+          <button type="button" aria-label="In your order at number 24" style="height: 36px; min-width: 50px; padding: 0 10px; border: 0; border-radius: 18px; background: #ecebfe; color: #2a28c9; font: 700 14px Figtree, sans-serif">#24</button>
+        </li>
+        <li style="display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px; border-top: 1px solid #eef0f5">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0">
+            <span style="font: 600 15px Figtree, sans-serif">T D Medical College, Alleppey</span>
+            <span style="display: flex; align-items: center; gap: 6px; font: 500 12px Figtree, sans-serif; color: #5b6275"><span style="padding: 0 6px; border-radius: 4px; background: #0f8a5f; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">MS</span>All India · Govt</span>
+          </div>
+          <button type="button" aria-label="Add to order" style="width: 36px; height: 36px; border: 0; border-radius: 18px; background: #3d3bf3; color: #ffffff; font: 500 22px Figtree, sans-serif; line-height: 1">+</button>
+        </li>
+        <li style="display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px; border-top: 1px solid #eef0f5">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0">
+            <span style="font: 600 15px Figtree, sans-serif">Aster Medcity, Kochi</span>
+            <span style="display: flex; align-items: center; gap: 6px; font: 500 12px Figtree, sans-serif; color: #5b6275"><span style="padding: 0 6px; border-radius: 4px; background: #8a4bd6; color: #ffffff; font: 700 11px Figtree, sans-serif; line-height: 18px">DNB</span>DNB Quota · Private</span>
+          </div>
+          <button type="button" aria-label="In your order at number 44" style="height: 36px; min-width: 50px; padding: 0 10px; border: 0; border-radius: 18px; background: #ecebfe; color: #2a28c9; font: 700 14px Figtree, sans-serif">#44</button>
+        </li>
+        <li style="border-top: 1px solid #eef0f5; padding: 10px 16px; display: flex; justify-content: space-between">
+          <a href="#" style="font: 600 14px Figtree, sans-serif; text-decoration: none">Show 21 more institutes</a>
+          <a href="#" style="font: 600 14px Figtree, sans-serif; text-decoration: none">Add all 17</a>
+        </li>
+      </ul>
+    </article>
+
+    <article style="background: #ffffff; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,20,35,0.05), 0 4px 16px rgba(16,20,35,0.04)">
+      <div style="padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+        <span style="width: 44px; height: 44px; border-radius: 14px; background: #ecebfe; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d3bf3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 2 4 4"></path><path d="m17 7 3-3"></path><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"></path><path d="m9 11 4 4"></path><path d="m5 19-3 3"></path><path d="m14 4 6 6"></path></svg>
+        </span>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+          <span style="font: 700 18px Figtree, sans-serif">Anaesthesiology</span>
+          <span style="font: 500 13px Figtree, sans-serif; color: #5b6275">31 institutes</span>
+        </div>
+        <span style="font: 600 14px Figtree, sans-serif; color: #3d3bf3">Show</span>
+      </div>
+    </article>
+
+    <article style="background: #ffffff; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,20,35,0.05), 0 4px 16px rgba(16,20,35,0.04)">
+      <div style="padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+        <span style="width: 44px; height: 44px; border-radius: 14px; background: #ecebfe; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d3bf3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path></svg>
+        </span>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+          <span style="font: 700 18px Figtree, sans-serif">Radiodiagnosis</span>
+          <span style="font: 500 13px Figtree, sans-serif; color: #5b6275">27 institutes</span>
+        </div>
+        <span style="font: 600 14px Figtree, sans-serif; color: #3d3bf3">Show</span>
+      </div>
+    </article>
+  </div>
+
+  <nav aria-label="Sections" style="position: absolute; left: 16px; right: 16px; bottom: 20px; height: 64px; border-radius: 22px; background: #101423; display: flex; padding: 6px; gap: 6px; box-shadow: 0 12px 32px rgba(16,20,35,0.28)">
+    <a href="#" aria-current="page" style="flex: 1 1 0; border-radius: 16px; background: #ffffff; color: #101423; text-decoration: none; display: flex; align-items: center; justify-content: center; font: 700 15px Figtree, sans-serif">Catalog</a>
+    <a href="GroupOrderRuns.dc.html" style="flex: 1 1 0; border-radius: 16px; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font: 600 15px Figtree, sans-serif">My order <span style="min-width: 24px; height: 22px; padding: 0 6px; border-radius: 11px; background: #3d3bf3; font: 700 12px Figtree, sans-serif; display: flex; align-items: center; justify-content: center">59</span></a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

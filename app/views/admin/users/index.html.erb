@@ -1,0 +1,38 @@
+<% content_for :title, "Students · Choice Planner" %>
+<main class="admin">
+  <header class="admin-head">
+    <%= link_to root_path, class: "button button-ghost back" do %><%= icon("arrow-left") %><span>Planner</span><% end %>
+    <h1>Students</h1>
+    <span class="muted"><%= pluralize(@users.size, "person") %></span>
+  </header>
+
+  <ul class="people">
+    <% @users.each do |user| %>
+      <% list = user.choice_lists.find { _1.counselling_id == @counselling.id } %>
+      <li class="person">
+        <div class="person-main">
+          <span class="person-name"><%= user.name.presence || user.email %><% if user.admin? %> <span class="badge badge-md">Admin</span><% end %></span>
+          <% if user.name.present? %><span class="muted person-email"><%= user.email %></span><% end %>
+          <span class="person-meta">
+            <%= list ? link_to("#{pluralize(list.picks.size, "choice")} · open order", list_path(list)) : "No order yet" %>
+            <span class="muted">· <%= user.last_signed_in_at ? "signed in #{time_ago_in_words(user.last_signed_in_at)} ago" : "never signed in" %></span>
+            <% if user.roll_number.present? %><span class="muted">· Roll <%= user.roll_number %></span><% end %>
+          </span>
+        </div>
+        <%= button_to "Send sign-in link", invite_admin_user_path(user), class: "person-action" %>
+      </li>
+    <% end %>
+  </ul>
+
+  <section class="admin-card">
+    <h2>Add a student</h2>
+    <%= form_with model: @user, url: admin_users_path, class: "admin-form" do |f| %>
+      <% if @user.errors.any? %><p class="error"><%= @user.errors.full_messages.to_sentence %></p><% end %>
+      <label>Email<%= f.email_field :email, required: true, autocomplete: "off" %></label>
+      <label>Name<%= f.text_field :name %></label>
+      <label>NEET PG roll number<%= f.text_field :roll_number, inputmode: "numeric" %></label>
+      <label class="switch"><%= check_box_tag :send_invite, "1", true %><span>Email them an invite</span></label>
+      <button type="submit" class="primary">Add student</button>
+    <% end %>
+  </section>
+</main>

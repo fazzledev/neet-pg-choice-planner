@@ -1,0 +1,18 @@
+<% content_for :body_class, "login" %>
+<% content_for :javascript_entry, "copy" %>
+<div class="extension-page">
+  <%= link_to root_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
+  <div class="login-card extension-card">
+    <span class="login-brand">Chrome extension · v<%= @version %></span>
+    <h1>MCC filler</h1>
+    <p class="muted">Copies your order into the MCC choice-filling page, one choice per click. You sign in to MCC yourself, and it never locks your choices.</p>
+    <%= link_to download_extension_path, class: "button primary block" do %><%= icon("download") %>Download<% end %>
+    <ol class="install-steps">
+      <li>Unzip the download into a folder. <code>manifest.json</code> sits directly inside it.</li>
+      <li>Open <code>chrome://extensions</code> <button type="button" class="button-link copy-btn" data-copy="chrome://extensions" aria-label="Copy chrome://extensions" title="Copy"><%= icon("copy") %><%= icon("check") %></button> in a new tab and turn on <strong>Developer mode</strong>.</li>
+      <li>Press <strong>Load unpacked</strong> and pick that folder, the one holding <code>manifest.json</code>.</li>
+      <li>Back in the planner, My order shows a <%= icon("send") %> button. Press it to hand over your order.</li>
+      <li>Sign in to MCC and open choice filling. The filler panel sits in the bottom-right corner.</li>
+    </ol>
+  </div>
+</div>

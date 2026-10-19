@@ -1,0 +1,7 @@
+Hi <%= @user.display_name %>,
+
+You've been invited to Choice Planner, a tool for planning your NEET PG counselling choices.
+
+Sign in with this link. It works once and expires in <%= User::INVITE_TTL.inspect %>. After that, request a new link any time at <%= new_session_url %>.
+
+<%= @url %>

@@ -1,0 +1,394 @@
+{
+  "researched_on": "2026-10-19",
+  "scope": "DNB Orthopaedics hospitals (DNB Quota) shortlisted for one candidate",
+  "method": "Official hospital / NBEMS pages only; no guessed addresses; mobiles only where the hospital publishes them as an official contact. Confidence: high = DNB-specific contact, medium = academic office, low = general hospital contact only.",
+  "contacts": [
+    {
+      "code": "701083",
+      "hospital": "Apollo Hospitals, Greams Road, Chennai",
+      "dnb_contact_name": "Dr. M Muralidharan",
+      "designation": "Academic Advisor / Co-ordinator, Chennai (Apollo group medical education)",
+      "email": "drmuralidharan_m@apollohospitals.com",
+      "phone": "08069049756 (Greams Road hospital line, not an academic office)",
+      "other_contacts": [
+        {
+          "label": "Group Director Medical Education, Dr. T. Srinivas Reddy",
+          "value": "srinivas_tamma@apollohospitals.com; (040) 23554726, (040) 23607777 Extn 5004"
+        },
+        {
+          "label": "Apollo general email",
+          "value": "info@apollohospitals.com"
+        },
+        {
+          "label": "Apollo helpline",
+          "value": "1860-500-1066"
+        }
+      ],
+      "orthopaedics_notes": "Group DNB page lists Chennai as a DNB location but not seats per centre; DNB Ortho at Greams Road not confirmed there.",
+      "sources": [
+        "https://www.apollohospitals.com/academics-research/courses/medical/contact",
+        "https://www.apollohospitals.com/academics-research/courses/medical/dnb-fnb-and-other-courses",
+        "https://www.apollohospitals.com/hospitals/apollo-hospitals-greams-road-chennai"
+      ],
+      "confidence": "high",
+      "notes": "Group-wide coordinator list may be dated; confirm by phone."
+    },
+    {
+      "code": "700888",
+      "hospital": "Aster Medcity, Kochi",
+      "dnb_contact_name": "Ms. Seema S Pillai",
+      "designation": "Academic Coordinator (Dean Academics: Dr. Geetha Philips)",
+      "email": "academics.medcity@asterhospital.in",
+      "phone": "8111998226 (published for academic enquiries)",
+      "other_contacts": [
+        {
+          "label": "Advisor - Academic Affairs",
+          "value": "Dr. V. Narayanan Unni"
+        },
+        {
+          "label": "Hospital helpline",
+          "value": "0484 6699 999"
+        }
+      ],
+      "orthopaedics_notes": "Official DNB page lists Orthopedic Surgery. Ortho HOD: Dr. Vijay Mohan (from an Aster doctor listing).",
+      "sources": [
+        "https://www.asterhospitals.in/aster-medcity-kochi/academics",
+        "https://www.asterhospitals.in/aster-medcity-kochi/academics/dnb"
+      ],
+      "confidence": "high",
+      "notes": "DNB page partly dated (results from Dec 2020)."
+    },
+    {
+      "code": "902709",
+      "hospital": "Baby Memorial Hospital, Kannur",
+      "dnb_contact_name": null,
+      "designation": null,
+      "email": "info@bmhkannur.com (general)",
+      "phone": "0497 350 1555 (main); +91 497 282 5555",
+      "other_contacts": [
+        {
+          "label": "Mobile / emergency (official site)",
+          "value": "+91 9747060006"
+        },
+        {
+          "label": "WhatsApp",
+          "value": "+91 9747560006"
+        },
+        {
+          "label": "Group email",
+          "value": "info@babymhospital.org"
+        }
+      ],
+      "orthopaedics_notes": "No DNB page found for Kannur; DNB Ortho recognition not verified on an official page.",
+      "sources": [
+        "https://www.bmhkannur.com/",
+        "https://www.babymemorialhospitals.com/courses"
+      ],
+      "confidence": "low",
+      "notes": "Ask the switchboard for the DNB / medical education office."
+    },
+    {
+      "code": "700850",
+      "hospital": "Baby Memorial Hospital, Kozhikode",
+      "dnb_contact_name": null,
+      "designation": null,
+      "email": "info@babymhospital.org (general)",
+      "phone": "0495 2777 777 (main)",
+      "other_contacts": [
+        {
+          "label": "Mobile (official site)",
+          "value": "+91 97472 00002"
+        },
+        {
+          "label": "WhatsApp",
+          "value": "+91 7012999929"
+        }
+      ],
+      "orthopaedics_notes": "PG page: DNB since 2006, 11 broad + 6 super specialities, intake 53; specialities not listed. No official ortho HOD named.",
+      "sources": [
+        "https://www.babymemorialhospitals.com/courses/post-graduate",
+        "https://www.babymemorialhospitals.com/hospitals/bmh-kozhikode"
+      ],
+      "confidence": "low",
+      "notes": "Only an enquiry form for PG; no DNB-specific contact."
+    },
+    {
+      "code": "700775",
+      "hospital": "Bangalore Baptist Hospital, Hebbal",
+      "dnb_contact_name": null,
+      "designation": null,
+      "email": null,
+      "phone": "+91 80 2202 4700 (main, not DNB-specific)",
+      "other_contacts": [
+        {
+          "label": "Appointments",
+          "value": "080-22024330/592, 080-46404700"
+        }
+      ],
+      "orthopaedics_notes": "Official DNB page lists Orthopedics among broad specialities; 108 DNB trainees.",
+      "sources": [
+        "https://bbh.org.in/academics/diplomate-of-national-board-dnb/"
+      ],
+      "confidence": "low",
+      "notes": "Contact page failed to load (SSL error) and may list more; use bbh.org.in."
+    },
+    {
+      "code": "700852",
+      "hospital": "Cosmopolitan Hospital, Trivandrum",
+      "dnb_contact_name": "Dr. P Ravindran, MD FCCP",
+      "designation": "DNB Course Coordinator",
+      "email": "cosmopolitan@cosmopolitanhospitals.in (general)",
+      "phone": "+91-471-2521252 (main; also 2521136, 2521105, 2521141, 2521158)",
+      "other_contacts": [
+        {
+          "label": "Mobile (official contact page)",
+          "value": "+91-9188951701"
+        }
+      ],
+      "orthopaedics_notes": "Orthopedic Surgery listed for DNB. Ortho faculty: Dr. Harish Chandran (HOD), Dr. Srinivas R, Dr. Dan Jacob.",
+      "sources": [
+        "https://www.cosmopolitanhospitals.in/post-graduate-courses",
+        "https://www.cosmopolitanhospitals.in/contact"
+      ],
+      "confidence": "high",
+      "notes": "Page undated; confirm the coordinator is current."
+    },
+    {
+      "code": "701099",
+      "hospital": "Ganga Medical Centre and Hospital, Coimbatore",
+      "dnb_contact_name": null,
+      "designation": null,
+      "email": "info@gangahospital.net (general)",
+      "phone": "0422 4250000 / 0422 2485000 (main)",
+      "other_contacts": [
+        {
+          "label": "WhatsApp link on site",
+          "value": "https://wa.me/918220729995"
+        }
+      ],
+      "orthopaedics_notes": "DNB Orthopaedics recognised by NBE since 1997. Chairman, Dept of Orthopaedics: Prof. S Rajasekaran.",
+      "sources": [
+        "https://gangahospital.com/program/1",
+        "https://www.gangahospital.com/academics"
+      ],
+      "confidence": "low",
+      "notes": "No DNB coordinator published; programme page points to NBEMS."
+    },
+    {
+      "code": "700835",
+      "hospital": "Yenepoya Specialty Hospital, Kodialbail, Mangalore",
+      "dnb_contact_name": null,
+      "designation": null,
+      "email": "hospital@yenepoya.org (general)",
+      "phone": "+91 824 423 8855 (main); +91 824 249 5544",
+      "other_contacts": [
+        {
+          "label": "Careers email",
+          "value": "jobs@yenepoyahospital.com"
+        },
+        {
+          "label": "Careers phone",
+          "value": "+91 900 848 3688"
+        }
+      ],
+      "orthopaedics_notes": "Orthopaedics page exists but does not mention DNB.",
+      "sources": [
+        "https://www.yenepoyahospital.com/contact-us/",
+        "https://www.yenepoyahospital.com/orthopaedics/"
+      ],
+      "confidence": "low",
+      "notes": "Not the same as Yenepoya Medical College Hospital, Deralakatte."
+    },
+    {
+      "code": "701145",
+      "hospital": "SRM Institutes for Medical Sciences (SIMS), Vadapalani, Chennai",
+      "dnb_contact_name": "Dr. Vedantha Srinivas J",
+      "designation": "Programme Coordinator (Contact For Admission)",
+      "email": "enquiry@simshospitals.com (general)",
+      "phone": "+91 967 771 5361 (published as the coordinator's direct contact)",
+      "other_contacts": [
+        {
+          "label": "General enquiry",
+          "value": "+91 96 7771 5223"
+        },
+        {
+          "label": "Appointments",
+          "value": "+91 44 2000 2001"
+        }
+      ],
+      "orthopaedics_notes": "DNB Orthopedics listed; NBE accredited since 2018.",
+      "sources": [
+        "https://www.simshospitals.com/academics"
+      ],
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "code": "701113",
+      "hospital": "Rex Hospital (Rex Ortho), Coimbatore",
+      "dnb_contact_name": "Dr C Rex",
+      "designation": "Professor and Head, Department of Orthopaedics",
+      "email": "rexchandrabose@gmail.com (the hospital site's only published email)",
+      "phone": "0422-2542542 (main)",
+      "other_contacts": [],
+      "orthopaedics_notes": "Orthopaedics-only hospital, calls itself a Post Graduate Institute of Orthopaedics.",
+      "sources": [
+        "https://www.rexorthohospital.com/",
+        "https://www.rexorthohospital.com/contact/"
+      ],
+      "confidence": "medium",
+      "notes": "No separate DNB office."
+    },
+    {
+      "code": "901752",
+      "hospital": "Prashanth Hospitals, Velachery, Chennai",
+      "dnb_contact_name": null,
+      "designation": null,
+      "email": "info@prashanthhospitals.org",
+      "phone": "+91 89258 32715 (contact on the Academic Programmes page)",
+      "other_contacts": [
+        {
+          "label": "Velachery",
+          "value": "+91 95 0006 8130; 044 46805544"
+        }
+      ],
+      "orthopaedics_notes": "DNB Orthopedics, 3 post-MBBS seats. Ortho HOD: Dr. N Deen Muhammad Ismail.",
+      "sources": [
+        "https://prashanthhospitals.org/academic-programs/",
+        "https://prashanthhospitals.org/contact-us/"
+      ],
+      "confidence": "medium",
+      "notes": "Page modified 2026-07-13."
+    },
+    {
+      "code": "700797",
+      "hospital": "Narayana Hrudayalaya (Narayana Health City), Bangalore",
+      "dnb_contact_name": null,
+      "designation": "Narayana Health City Academic Programs contact",
+      "email": "mahadevan.s@narayanahealth.org",
+      "phone": "+91-9900 591 136 (published as the academic programs contact)",
+      "other_contacts": [
+        {
+          "label": "Helpline (general)",
+          "value": "+91-1800-309-0309"
+        }
+      ],
+      "orthopaedics_notes": "DNB download link on academics page is empty; no DNB Ortho seat list published.",
+      "sources": [
+        "https://www.narayanahealth.org/academics"
+      ],
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "code": "701110",
+      "hospital": "Meenakshi Mission Hospital and Research Centre, Madurai",
+      "dnb_contact_name": "Dr Ramesh Ardhanari",
+      "designation": "Medical Director & Head of the Institution (DNB page contact)",
+      "email": "dnboffice@mmhrc.in",
+      "phone": "+91-452-426 3000 (ext 3440)",
+      "other_contacts": [
+        {
+          "label": "Second email on DNB page",
+          "value": "drrameshardhanari@gmail.com"
+        }
+      ],
+      "orthopaedics_notes": "DNB Orthopedics: 5 seats (3 primary, 2 secondary).",
+      "sources": [
+        "https://mmhrc.in/academics/diplomate-of-national-board/"
+      ],
+      "confidence": "high",
+      "notes": "Page updated March 2025."
+    },
+    {
+      "code": "700789",
+      "hospital": "Manipal Hospital, Old Airport Road, Bangalore",
+      "dnb_contact_name": null,
+      "designation": "Academics department",
+      "email": "academics@manipalhospitals.com",
+      "phone": null,
+      "other_contacts": [
+        {
+          "label": "General",
+          "value": "info@manipalhospitals.com"
+        }
+      ],
+      "orthopaedics_notes": "Orthopedics (2+2 seats), batch 2026, accreditation granted.",
+      "sources": [
+        "https://www.manipalhospitals.com/oldairportroad/academic-research"
+      ],
+      "confidence": "high",
+      "notes": "Group academics email named as the DNB contact."
+    },
+    {
+      "code": "700866",
+      "hospital": "Aster MIMS (Malabar Institute of Medical Sciences), Calicut",
+      "dnb_contact_name": null,
+      "designation": "MIMS Academy office",
+      "email": "academy@mimsindia.com",
+      "phone": "0495 2744000",
+      "other_contacts": [
+        {
+          "label": "Address",
+          "value": "4th Floor, MIMS, Govindapuram P.O., Calicut 673016"
+        }
+      ],
+      "orthopaedics_notes": "DNB Orthopedics 1+1 seats (table from 2016).",
+      "sources": [
+        "https://asterhospitals.in/hospitals/aster-mims-calicut/mims-academy"
+      ],
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "code": "700864",
+      "hospital": "Lourdes Hospital, Ernakulam, Cochin",
+      "dnb_contact_name": null,
+      "designation": "Director / DNB Co-ordinator",
+      "email": "dnblourdes@gmail.com (published as the DNB Co-ord email)",
+      "phone": "+91 484 4125145, +91 484 4125144",
+      "other_contacts": [
+        {
+          "label": "DNB Co-ordinator mobile (DNB page)",
+          "value": "08050056114"
+        },
+        {
+          "label": "Second email",
+          "value": "mail@lourdeshospital.in"
+        }
+      ],
+      "orthopaedics_notes": "DNB Orthopaedics 2 primary + 2 secondary, January session.",
+      "sources": [
+        "https://www.lourdeshospital.in/dnb-general-medicine",
+        "https://www.lourdeshospital.in/medical-courses"
+      ],
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "code": "700862",
+      "hospital": "Lisie Hospital, Kochi",
+      "dnb_contact_name": null,
+      "designation": null,
+      "email": "lhpro@lisiehospital.org (DNB page contact)",
+      "phone": "9895323172 (DNB page contact)",
+      "other_contacts": [
+        {
+          "label": "Main line",
+          "value": "0484 2402044, 0484 6155555"
+        },
+        {
+          "label": "General email",
+          "value": "contact@lisiehospital.org"
+        }
+      ],
+      "orthopaedics_notes": "DNB Orthopaedics 2 primary + 2 secondary, January session. Ortho HOD: Dr. Suresh Paul.",
+      "sources": [
+        "https://lisiehospital.org/academic-dnb-programmes",
+        "https://lisiehospital.org/department/orthopaedic-surgery"
+      ],
+      "confidence": "high",
+      "notes": "Content from about 2023-24."
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+service: mcc-choices
+image: fazzledev/mcc-choices
+retain_containers: 2
+
+servers:
+  web:
+    - 116.203.147.239
+
+proxy:
+  ssl: true
+  host: mcc.fazzle.dev
+  app_port: 3000
+
+registry:
+  server: ghcr.io
+  username: fazzledev
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+env:
+  secret:
+    - RAILS_MASTER_KEY
+  clear:
+    SOLID_QUEUE_IN_PUMA: true
+    APP_HOST: mcc.fazzle.dev
+    SMTP_ADDRESS: smtp-relay.brevo.com
+    SMTP_USER_NAME: a5471d001@smtp-brevo.com
+    SMTP_FROM: Choice Planner <hey@fazzle.dev>
+    SMTP_DOMAIN: fazzle.dev
+
+aliases:
+  litestream-logs: accessory logs litestream -f
+  litestream-status: accessory exec litestream "litestream databases"
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
+  dbc: app exec --interactive --reuse "bin/rails dbconsole"
+
+volumes:
+  - "mcc_choices_storage:/rails/storage"
+
+asset_path: /rails/public/assets
+
+builder:
+  arch: amd64
+  remote: ssh://root@116.203.147.239
+  local: false
+
+deploy_timeout: 120
+drain_timeout: 60
+
+accessories:
+  litestream:
+    image: litestream/litestream:0.5.6
+    role: web
+    cmd: replicate
+    env:
+      secret:
+        - S3_ACCESS_KEY_ID
+        - S3_SECRET_ACCESS_KEY
+    files:
+      - config/litestreams/production.yml:/etc/litestream.yml
+    volumes:
+      - "mcc_choices_storage:/rails/storage"

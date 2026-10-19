@@ -1,0 +1,7 @@
+<% content_for :body_class, "login" %>
+<%= form_with url: sign_in_link_path(@token), method: :post, class: "login-card" do %>
+  <span class="login-brand">NEET PG 2026</span>
+  <h1>Choice Planner</h1>
+  <p>Continue to sign in on this device.</p>
+  <button type="submit" class="primary">Sign in</button>
+<% end %>

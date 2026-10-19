@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  ./bin/rails db:prepare
+  ./bin/rails planner:import_contacts
+fi
+
+exec "${@}"

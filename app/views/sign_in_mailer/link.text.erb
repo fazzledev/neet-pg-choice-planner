@@ -1,0 +1,7 @@
+Hi <%= @user.display_name %>,
+
+Use this link to sign in to Choice Planner. It works once and expires in <%= User::SIGN_IN_LINK_TTL.inspect %>.
+
+<%= @url %>
+
+If you didn't ask for this, you can ignore this email.
