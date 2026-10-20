@@ -779,7 +779,7 @@ async function loadSynced() {
     state.revision = server.revision
     setPicks(server.picks)
     writeCache()
-    setStatus("")
+    setStatus(`Synced ${timeNow()}`)
   }
 
   if (devicePicks.length && !state.conflict) {
@@ -804,7 +804,7 @@ async function loadSynced() {
 function loadDevice() {
   const device = storage.get(deviceKey())
   setPicks(device?.picks || [])
-  setStatus(device?.savedAt ? `Saved on this device ${new Date(device.savedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}` : "")
+  setStatus(device?.savedAt ? `Saved on this device ${new Date(device.savedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}` : "Saves on this device as you go")
 }
 
 function exportCsv() {
