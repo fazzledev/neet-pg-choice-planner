@@ -17,6 +17,7 @@
   --ok: #12a150;
   --warn-bg: #fff4d6;
   --warn-ink: #5c4400;
+  --pen: #2449c9;
   --radius: 18px;
   --shadow-card: 0 1px 2px rgba(16, 20, 35, .05), 0 4px 16px rgba(16, 20, 35, .04);
   --shadow-pop: 0 16px 40px rgba(16, 20, 35, .22);
@@ -44,6 +45,7 @@
     --danger-soft: #2c1719;
     --warn-bg: #3a2f10;
     --warn-ink: #f3dc9b;
+    --pen: #7fa2ff;
     --shadow-card: 0 1px 2px rgba(0, 0, 0, .3);
     --shadow-pop: 0 16px 40px rgba(0, 0, 0, .5);
     color-scheme: dark;
@@ -906,4 +908,4 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp.doc p, .lp.doc li { line-height: 1.6; }
 .lp.doc ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
 a.lp-brand { color: inherit; text-decoration: none; }
-.lp-greeting { font: 600 clamp(20px, 2.4vw, 26px)/1.2 var(--font-display); color: var(--muted); margin: 0 0 -8px; }
+.lp-greeting { font: 400 clamp(28px, 3.2vw, 38px)/1.2 "Nothing You Could Do", cursive; color: var(--pen); margin: 0 0 -6px; transform: rotate(-3deg); transform-origin: left center; }
