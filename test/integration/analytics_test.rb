@@ -27,9 +27,9 @@ class AnalyticsTest < ActionDispatch::IntegrationTest
     assert_equal "/sign-in/link", goatcounter_settings["path"]
   end
 
-  test "sign-in links are not passed on as a referrer" do
+  test "sign-in links are passed on as a referrer only to this site" do
     get sign_in_link_path(@student.generate_token_for(:sign_in))
-    assert_equal "no-referrer", response.headers["Referrer-Policy"]
+    assert_equal "same-origin", response.headers["Referrer-Policy"]
   end
 
   test "admin pages are not counted" do
