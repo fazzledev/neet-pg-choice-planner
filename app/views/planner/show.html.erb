@@ -4,6 +4,7 @@
 <div id="planner" class="busy"
      data-counselling="<%= @counselling.slug %>"
      data-catalog-url="<%= catalog_path(@counselling) %>"
+     data-cutoffs-url="<%= cutoffs_path %>"
      data-icons-url="<%= asset_path("icons.svg") %>"
      <% if @list %>
      data-list-url="<%= list_picks_path(@list) %>"
@@ -118,6 +119,17 @@
       <button type="button" id="filters-close" class="icon-btn" aria-label="Close filters"><%= icon("x") %></button>
     </div>
     <div class="sheet-body">
+      <section class="my-rank" aria-labelledby="my-rank-title">
+        <h3 id="my-rank-title">Your rank</h3>
+        <input id="my-rank" type="number" min="1" inputmode="numeric" placeholder="NEET PG rank (optional)" aria-label="Your NEET PG rank">
+        <div class="chip-row" id="my-category" role="radiogroup" aria-label="Category">
+          <% %w[Open OBC SC ST EWS].each do |category| %>
+            <button type="button" class="toggle-chip" role="radio" data-category="<%= category %>"><%= category %></button>
+          <% end %>
+        </div>
+        <label class="switch"><input id="my-pwd" type="checkbox"><span>PwD</span></label>
+        <p class="muted my-rank-note">Shows past closing ranks on each choice for Open and your category, from MCC results 2023–2025. Past results only: seats and candidates change every year, about 1 in 5 seats could not be matched (no number does not mean no seats), and labels are rough guides, not predictions. Saved on this device.</p>
+      </section>
       <div id="facets"></div>
       <label class="switch">
         <input id="f-hide" type="checkbox">
@@ -154,6 +166,7 @@
         <div class="r-addr"></div>
         <div class="r-prog"></div>
         <div class="r-meta"></div>
+        <div class="cutoff"></div>
         <button type="button" class="contact-btn" hidden><%= icon("contact") %>DNB contact</button>
       </div>
       <button type="button" class="r-add"></button>
@@ -169,6 +182,7 @@
             <span class="p-inst"></span>
             <span class="p-addr"></span>
             <span class="p-meta"></span>
+            <span class="cutoff"></span>
             <span class="p-note-preview"></span>
           </button>
           <button type="button" class="contact-btn icon-only" aria-label="DNB contact" hidden><%= icon("contact") %></button>
