@@ -96,6 +96,27 @@
     </figure>
   </section>
 
+  <section class="lp-section lp-split lp-split-flip">
+    <div>
+      <span class="lp-kicker">ChatGPT and Claude</span>
+      <h2>Shape your plan by asking</h2>
+      <p>Connect the planner to ChatGPT or Claude and talk your list into shape. Your assistant searches every choice, reads DNB contacts, and adds, ranks or notes choices in your plan. Each change shows up in the planner, and History can undo any of them.</p>
+      <ol class="lp-steps">
+        <li>Add the planner as a connector in ChatGPT or Claude, using the link on the connect page.</li>
+        <li>Sign in with your email and press <strong>Allow</strong>.</li>
+        <li>Ask in your own words: “Move every DNB seat below my MD and MS choices.”</li>
+      </ol>
+      <p>It can't reach the counselling portal. Copying to MCC still goes through the extension, and locking stays with you.</p>
+      <%= link_to connect_path, class: "button lp-big" do %><%= icon("sparkles") %>Connect your assistant<% end %>
+    </div>
+    <figure class="lp-chat" aria-label="Example conversation with an AI assistant using the planner">
+      <p class="lp-chat-you">Add MD Radiodiagnosis seats in Karnataka government colleges after my top five.</p>
+      <p class="lp-chat-tool"><%= icon("search") %>Searched choices · 11 found</p>
+      <p class="lp-chat-tool"><%= icon("list-ordered") %>Added 11 choices at #6–#16</p>
+      <p class="lp-chat-ai">Done. Your plan now has 71 choices, with Bangalore Medical College at #6 and Mysore Medical College at #7. Want them ordered by city instead?</p>
+    </figure>
+  </section>
+
   <section class="lp-section lp-trust">
     <h2>You stay in control</h2>
     <div class="lp-grid three">
