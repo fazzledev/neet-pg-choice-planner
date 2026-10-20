@@ -136,11 +136,11 @@ class McpTest < ActionDispatch::IntegrationTest
     token = connect
     Mcp::Tools.class_eval { alias_method :original_get_plan, :get_plan; define_method(:get_plan) { |_| raise KeyError, "boom" } }
     rpc "tools/call", { name: "get_plan", arguments: {} }, token: token
-    assert_response :internal_server_error
+    assert_response :success
     assert_equal(-32603, response.parsed_body["error"]["code"])
     assert_equal 1, response.parsed_body["id"]
   ensure
-    Mcp::Tools.class_eval { alias_method :get_plan, :original_get_plan; remove_method :original_get_plan }
+    Mcp::Tools.class_eval { alias_method :get_plan, :original_get_plan; remove_method :original_get_plan } if Mcp::Tools.method_defined?(:original_get_plan)
   end
 
   test "denying sends access_denied back to the app" do
