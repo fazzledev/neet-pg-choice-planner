@@ -901,3 +901,8 @@ body.landing { display: block; height: auto; min-height: 100%; }
   .lp-hero { padding-top: 40px; }
   .lp-nav nav > a:first-child { display: none; }
 }
+.lp.doc { max-width: 720px; gap: 18px; padding-top: 48px; }
+.lp.doc h2 { font-size: 22px; margin-top: 18px; }
+.lp.doc p, .lp.doc li { line-height: 1.6; }
+.lp.doc ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+a.lp-brand { color: inherit; text-decoration: none; }

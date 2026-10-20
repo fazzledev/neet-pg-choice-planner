@@ -10,6 +10,7 @@
     <%= f.label :email, "Email" %>
     <%= f.email_field :email, autocomplete: "email", autofocus: true, required: true %>
     <button type="submit" class="primary">Email me a sign-in link</button>
+    <p class="muted">We keep your email and plan only to sync it. <%= link_to "Privacy", privacy_path %></p>
     <p><%= link_to "Continue without signing in", planner_path %></p>
   <% end %>
 <% end %>

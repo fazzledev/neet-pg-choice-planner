@@ -9,6 +9,14 @@ class LandingTest < ActionDispatch::IntegrationTest
   end
 
 
+  test "shows the privacy page and links it from the landing page" do
+    get privacy_path
+    assert_response :success
+    assert_match "hey@fazzle.dev", response.body
+    get root_path
+    assert_select "a[href='#{privacy_path}']"
+  end
+
   test "redirects the old domain to the new one, keeping the path" do
     host! "mcc.fazzle.dev"
     get "/plan?view=institute"

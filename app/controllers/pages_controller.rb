@@ -1,6 +1,9 @@
 class PagesController < ApplicationController
   allow_unauthenticated_access
 
+  def privacy
+  end
+
   def home
     @counselling = Counselling.current
     @choice_count = @counselling&.choices&.count.to_i
