@@ -51,8 +51,8 @@ function missing() {
 function refresh() {
   const mapped = PortalAdapter.ready && PortalAdapter.isChoicePage()
   $("[data-summary]").textContent = !order
-    ? "No order yet. Open Choice Planner and press Send to MCC filler."
-    : `${order.choices.length} choices from Choice Planner, sent ${new Date(order.sentAt).toLocaleString()}.${mapped ? "" : " This page isn't mapped for filling yet."}`
+    ? "No order yet. Open Choice Planner in this browser and it syncs here."
+    : `${order.choices.length} choices from Choice Planner${order.owner ? ` (${order.owner})` : ""}, synced ${new Date(order.sentAt).toLocaleString()}.${mapped ? "" : " Open Choice Filling to compare and add."}`
   $('[data-action="compare"]').disabled = !order || !mapped
   $('[data-action="fill-next"]').disabled = !order || !mapped
 }

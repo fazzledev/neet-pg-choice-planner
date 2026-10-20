@@ -258,6 +258,7 @@ function reindex() {
   state.pickIndex = new Map(state.picks.map((p, i) => [p.choice_id, i]))
   $("#tab-count").textContent = state.picks.length
   $("#order-count").textContent = `${state.picks.length} ${state.picks.length === 1 ? "choice" : "choices"}`
+  syncFiller()
 }
 
 function filters() {
@@ -815,6 +816,7 @@ function exportCsv() {
 function fillerPayload() {
   return JSON.stringify({
     counselling: config.counselling,
+    owner: config.owner || null,
     sentAt: new Date().toISOString(),
     choices: state.picks.map((p, i) => {
       const c = state.byId.get(p.choice_id)
@@ -823,13 +825,16 @@ function fillerPayload() {
   })
 }
 
-function sendToFiller() {
-  document.dispatchEvent(new CustomEvent("choice-planner:order", { detail: fillerPayload() }))
+
+function syncFiller() {
+  if (!document.documentElement.dataset.choiceFiller || !state.byId.size) return
+  clearTimeout(state.fillerTimer)
+  state.fillerTimer = setTimeout(() => document.dispatchEvent(new CustomEvent("choice-planner:order", { detail: fillerPayload() })), 300)
 }
 
-function showFillerButton() {
-  $("#send-filler").hidden = false
+function fillerReady() {
   $("#get-filler").hidden = true
+  syncFiller()
 }
 
 async function openHistory() {
@@ -1318,10 +1323,8 @@ $("#picks-review").addEventListener("change", (e) => {
 
   for (const btn of document.querySelectorAll(".tabs button")) btn.addEventListener("click", () => showTab(btn.dataset.tab))
   $("#export").addEventListener("click", exportCsv)
-  $("#send-filler").addEventListener("click", sendToFiller)
-  if (document.documentElement.dataset.choiceFiller) showFillerButton()
-  document.addEventListener("choice-filler:ready", showFillerButton)
-  document.addEventListener("choice-filler:saved", (event) => setStatus(`Sent ${event.detail} choices to the MCC filler`))
+  if (document.documentElement.dataset.choiceFiller) fillerReady()
+  document.addEventListener("choice-filler:ready", fillerReady)
   $("#history-toggle")?.addEventListener("click", openHistory)
   $("#history-close").addEventListener("click", () => ($("#history").hidden = true))
 
