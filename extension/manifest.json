@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NEET PG Choice Planner filler",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Copies your Choice Planner order into the MCC choice-filling page, one choice at a time. Never locks.",
   "permissions": ["storage"],
   "content_scripts": [
