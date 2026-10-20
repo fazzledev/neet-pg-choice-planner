@@ -44,7 +44,7 @@ Rails 8.1 with SQLite, Solid Queue and importmap, deployed with Kamal. The datab
 
 ## Data
 
-`data/available_choices.json` is the NEET PG 2026 choice list published by the Medical Counselling Committee (mcc.nic.in). `data/dnb_contacts.json` lists DNB coordinator contacts taken from official hospital and NBEMS pages. Always confirm on the official portal before locking.
+`data/available_choices.json` is the NEET PG 2026 choice list published by the Medical Counselling Committee (mcc.nic.in). `data/dnb_contacts.json` lists DNB coordinator contacts taken from official hospital and NBEMS pages. Past closing ranks are calculated from MCC's published allotment results; the files are listed in `docs/mcc-allotment-sources.md`. Always confirm on the official portal before locking.
 
 `docs/` has the research behind the project: what students struggle with on the MCC portal, and a review of the MCC and NBEMS terms.
 

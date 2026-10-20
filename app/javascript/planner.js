@@ -1480,7 +1480,7 @@ $("#picks-review").addEventListener("change", (e) => {
 const ROUND_LABELS = { R1: "R1", R2: "R2", R3: "R3", STRAY: "Stray", SPSTRAY: "Sp. stray" }
 const ROUND_ORDER = ["R1", "R2", "R3", "STRAY", "SPSTRAY"]
 const MAIN_ROUNDS = ["R1", "R2", "R3"]
-const CUTOFF_CAVEAT = "Past MCC results only. Seats and candidates change every year, some seats could not be matched, and labels are rough guides, not predictions."
+const CUTOFF_CAVEAT = "Calculated by this tool from MCC's published allotment results, not an official MCC figure. Seats and candidates change every year, some seats could not be matched, and labels are rough guides, not predictions."
 const profileKey = () => `planner:${config.counselling}:profile`
 const rankFormat = new Intl.NumberFormat("en-IN")
 
