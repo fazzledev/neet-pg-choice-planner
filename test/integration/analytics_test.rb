@@ -39,6 +39,13 @@ class AnalyticsTest < ActionDispatch::IntegrationTest
     assert_select "script[data-goatcounter]", count: 0
   end
 
+  test "OAuth pages are not counted" do
+    sign_in_as @student
+    get oauth_authorization_path(client_id: "unknown", redirect_uri: "https://example.com/cb")
+    assert_select "html"
+    assert_select "script[data-goatcounter]", count: 0
+  end
+
   test "nothing is counted without a GoatCounter url" do
     Rails.configuration.x.goatcounter_url = nil
     get planner_path
