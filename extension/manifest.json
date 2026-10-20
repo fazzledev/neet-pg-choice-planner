@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Choice Planner filler",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Copies your Choice Planner order into the MCC choice-filling page, one choice at a time. Never locks.",
   "permissions": ["storage"],
   "content_scripts": [

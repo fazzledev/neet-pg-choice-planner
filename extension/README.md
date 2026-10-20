@@ -11,5 +11,4 @@ A Chrome extension that copies a Choice Planner order into the MCC choice-fillin
 
 1. Open Choice Planner in the same browser. The order syncs to the extension on load and after every change.
 2. Sign in to MCC and open choice filling. A panel in the corner shows the order.
-3. Compare shows what the portal is missing; Add next adds the next missing choice.
-4. Inspect page copies the page's controls and tables (no typed values) so the filler can be mapped to the portal's layout.
+3. On Choice Filling the panel lists what differs from your order: missing, extra, or in a different position. Add next missing adds one choice per click.
