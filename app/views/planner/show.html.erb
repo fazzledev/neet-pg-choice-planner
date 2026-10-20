@@ -12,6 +12,7 @@
      data-owner="<%= @list.user.email %>"
      data-own-list="<%= @list.user_id == current_user.id %>"
      <% end %>>
+  <%= turbo_stream_from @list if @list %>
   <header class="topbar">
     <div class="brand">
       <span class="brand-name">NEET PG Choice Planner</span>

@@ -29,3 +29,6 @@ group :test do
 end
 gem "csv"
 gem "rubyzip", "~> 3.7"
+
+gem "turbo-rails", "~> 2.0"
+gem "solid_cable", "~> 4.1"

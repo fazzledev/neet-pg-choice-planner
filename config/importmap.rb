@@ -1,4 +1,5 @@
 pin "application"
 pin "planner"
 pin "sortablejs"
+pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "copy"
