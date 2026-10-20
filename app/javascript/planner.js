@@ -78,6 +78,7 @@ const root = document.getElementById("planner")
 const config = root && {
   counselling: root.dataset.counselling,
   catalogUrl: root.dataset.catalogUrl,
+  cutoffsUrl: root.dataset.cutoffsUrl,
   spriteUrl: root.dataset.iconsUrl,
   listUrl: root.dataset.listUrl,
   snapshotsUrl: root.dataset.snapshotsUrl,
@@ -306,6 +307,7 @@ function resultItem(c) {
   prog.replaceChildren(...programNodes(c))
   prog.title = c.program
   li.querySelector(".contact-btn").hidden = !state.contacts[c.inst.code]
+  paintCutoff(li.querySelector(".cutoff"), c)
   paintResult(li, c.id)
   return li
 }
@@ -446,6 +448,7 @@ function renderPicks() {
     const meta = li.querySelector(".p-meta")
     meta.replaceChildren(...programNodes(c), ...stateNodes(c.inst), document.createTextNode(` · ${c.quota}`))
     if (c.inst.doubtful) meta.title = DOUBTFUL_HINT
+    paintCutoff(li.querySelector(".cutoff"), c)
     li.querySelector(".p-note").value = p.note
     li.querySelector(".contact-btn").hidden = !state.contacts[c.inst.code]
     const prev = state.picks[i - 1] && state.byId.get(state.picks[i - 1].choice_id)
@@ -1212,6 +1215,20 @@ function bind() {
     clearTimeout(debounce)
     debounce = setTimeout(() => applyFilters(), 120)
   })
+$("#my-rank").addEventListener("input", (e) => {
+  state.profile.rank = Number(e.target.value) || null
+  profileChanged()
+})
+$("#my-pwd").addEventListener("change", (e) => {
+  state.profile.pwd = e.target.checked
+  profileChanged()
+})
+$("#my-category").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-category]")
+  if (!chip) return
+  state.profile.category = chip.dataset.category
+  profileChanged()
+})
   $("#f-hide").addEventListener("change", () => {
     saveFilters()
     applyFilters()
@@ -1431,11 +1448,92 @@ $("#picks-review").addEventListener("change", (e) => {
   })
 }
 
+const ROUND_LABELS = { R1: "R1", R2: "R2", R3: "R3", STRAY: "Stray", SPSTRAY: "Sp. stray" }
+const MAIN_ROUNDS = ["R1", "R2", "R3"]
+const profileKey = () => `planner:${config.counselling}:profile`
+const rankFormat = new Intl.NumberFormat("en-IN")
+
+function profileCategory() {
+  return `${state.profile.category}${state.profile.pwd ? " PwD" : ""}`
+}
+
+function cutoffRows(c) {
+  const rows = state.cutoffs?.[`${c.inst.code}|${c.brcd}|${c.quota}`]
+  return rows ? rows.filter((row) => row[2] === profileCategory()) : []
+}
+
+function chanceOf(rank, closing) {
+  const ratio = rank / closing
+  if (ratio <= 0.9) return ["Likely", "likely"]
+  if (ratio <= 1.05) return ["Possible", "possible"]
+  if (ratio <= 1.25) return ["Borderline", "borderline"]
+  return ["Reach", "reach"]
+}
+
+function paintCutoff(el, c) {
+  if (!el) return
+  const rows = cutoffRows(c)
+  if (!rows.length) {
+    el.replaceChildren()
+    el.title = ""
+    return
+  }
+  const latest = Math.max(...rows.map((row) => row[0]))
+  const recent = rows.filter((row) => row[0] === latest)
+  const parts = recent.map(([, round, , rank]) => `${ROUND_LABELS[round]} ${rankFormat.format(rank)}`).join(" · ")
+  const nodes = [document.createTextNode(`${latest} closed · ${profileCategory()}: ${parts}`)]
+  const main = recent.filter((row) => MAIN_ROUNDS.includes(row[1])).map((row) => row[3])
+  const closing = main.length ? Math.max(...main) : Math.max(...recent.map((row) => row[3]))
+  if (state.profile.rank) {
+    const [label, kind] = chanceOf(state.profile.rank, closing)
+    nodes.push(make("span", { className: `chance chance-${kind}`, textContent: label }))
+  }
+  el.replaceChildren(...nodes)
+  const years = [...new Set(rows.map((row) => row[0]))].sort((a, b) => b - a)
+  el.title = years.map((year) => `${year}: ${rows.filter((row) => row[0] === year).map(([, round, , rank]) => `${ROUND_LABELS[round]} ${rankFormat.format(rank)}`).join(", ")}`).join("\n")
+}
+
+function repaintCutoffs() {
+  for (const el of document.querySelectorAll("#results [data-id], #picks [data-id]")) {
+    const c = state.byId.get(Number(el.dataset.id))
+    if (c) paintCutoff(el.querySelector(".cutoff"), c)
+  }
+}
+
+function restoreProfile() {
+  const saved = storage.get(profileKey()) || {}
+  state.profile = { rank: Number(saved.rank) || null, category: ["Open", "OBC", "SC", "ST", "EWS"].includes(saved.category) ? saved.category : "Open", pwd: Boolean(saved.pwd) }
+  $("#my-rank").value = state.profile.rank || ""
+  $("#my-pwd").checked = state.profile.pwd
+  paintProfile()
+}
+
+function paintProfile() {
+  for (const chip of document.querySelectorAll("#my-category [data-category]")) {
+    chip.setAttribute("aria-checked", String(chip.dataset.category === state.profile.category))
+    chip.setAttribute("aria-pressed", String(chip.dataset.category === state.profile.category))
+  }
+}
+
+function profileChanged() {
+  storage.set(profileKey(), state.profile)
+  paintProfile()
+  repaintCutoffs()
+}
+
+async function loadCutoffs() {
+  try {
+    state.cutoffs = await api(config.cutoffsUrl)
+    repaintCutoffs()
+  } catch {}
+}
+
 async function boot() {
   showTab("catalog")
   setStatus("Loading…")
   const catalog = await api(config.catalogUrl)
   buildCatalog(catalog)
+  restoreProfile()
   bind()
   if (synced()) await loadSynced()
   else loadDevice()
@@ -1446,6 +1544,7 @@ async function boot() {
     savedView = localStorage.getItem(`planner:${config.counselling}:order-view`) || "ranked"
   } catch {}
   setOrderView(["ranked", "institute", "speciality"].includes(savedView) ? savedView : "ranked")
+  loadCutoffs()
 }
 
 if ("serviceWorker" in navigator) {
