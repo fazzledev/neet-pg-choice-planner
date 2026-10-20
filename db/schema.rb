@@ -74,6 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_090000) do
     t.string "client_id", null: false
     t.string "client_name", null: false
     t.json "redirect_uris", default: [], null: false
+    t.datetime "claimed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_oauth_clients_on_client_id", unique: true
@@ -93,6 +94,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_090000) do
     t.string "access_token_digest"
     t.datetime "access_expires_at"
     t.string "refresh_token_digest"
+    t.string "previous_refresh_token_digest"
+    t.datetime "refreshed_at"
     t.datetime "refresh_expires_at"
     t.datetime "last_used_at"
     t.datetime "created_at", null: false
@@ -100,6 +103,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_090000) do
     t.index ["access_token_digest"], name: "index_oauth_grants_on_access_token_digest", unique: true
     t.index ["code_digest"], name: "index_oauth_grants_on_code_digest", unique: true
     t.index ["oauth_client_id"], name: "index_oauth_grants_on_oauth_client_id"
+    t.index ["previous_refresh_token_digest"], name: "index_oauth_grants_on_previous_refresh_token_digest", unique: true
     t.index ["refresh_token_digest"], name: "index_oauth_grants_on_refresh_token_digest", unique: true
     t.index ["session_id"], name: "index_oauth_grants_on_session_id", unique: true
     t.index ["user_id"], name: "index_oauth_grants_on_user_id"

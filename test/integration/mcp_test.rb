@@ -86,9 +86,6 @@ class McpTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_equal tokens["access_token"], refreshed["access_token"]
 
-    post "/oauth/token", params: { grant_type: "refresh_token", refresh_token: tokens["refresh_token"], client_id: client_id }
-    assert_equal "invalid_grant", response.parsed_body["error"]
-
     rpc "tools/list", token: tokens["access_token"]
     assert_response :unauthorized
     rpc "tools/list", token: refreshed["access_token"]
@@ -101,6 +98,49 @@ class McpTest < ActionDispatch::IntegrationTest
     rpc "tools/list", token: refreshed["access_token"]
     assert_response :unauthorized
     assert_equal 0, @student.sessions.where(user_agent: "ChatGPT (connector)").count
+  end
+
+  test "a refresh retried within seconds still works, but an old refresh token later revokes the grant" do
+    client_id = register
+    tokens = exchange(client_id, allow(client_id))
+    refresh = ->(token) { post "/oauth/token", params: { grant_type: "refresh_token", refresh_token: token, client_id: client_id }; response.parsed_body }
+
+    first = refresh.(tokens["refresh_token"])
+    retried = refresh.(tokens["refresh_token"])
+    assert retried["access_token"]
+    assert_equal "invalid_grant", refresh.(first["refresh_token"])["error"]
+
+    travel 1.minute do
+      assert_equal "invalid_grant", refresh.(tokens["refresh_token"])["error"]
+      assert_equal 0, OauthGrant.count
+      assert_equal "invalid_grant", refresh.(retried["refresh_token"])["error"]
+    end
+  end
+
+  test "the cleanup keeps clients that ever connected, so a student can reconnect after disconnecting" do
+    client_id = register
+    unused_id = register
+    exchange(client_id, allow(client_id))
+    delete connection_path(OauthGrant.sole)
+
+    travel 2.days do
+      OauthGrant.stale.includes(:session).find_each(&:disconnect!)
+      OauthClient.unclaimed.destroy_all
+      assert_not OauthClient.exists?(client_id: unused_id)
+      get "/oauth/authorize", params: authorize_query(client_id)
+      assert_response :success
+    end
+  end
+
+  test "an unexpected error comes back as a JSON-RPC internal error" do
+    token = connect
+    Mcp::Tools.class_eval { alias_method :original_get_plan, :get_plan; define_method(:get_plan) { |_| raise KeyError, "boom" } }
+    rpc "tools/call", { name: "get_plan", arguments: {} }, token: token
+    assert_response :internal_server_error
+    assert_equal(-32603, response.parsed_body["error"]["code"])
+    assert_equal 1, response.parsed_body["id"]
+  ensure
+    Mcp::Tools.class_eval { alias_method :get_plan, :original_get_plan; remove_method :original_get_plan }
   end
 
   test "denying sends access_denied back to the app" do
@@ -138,6 +178,8 @@ class McpTest < ActionDispatch::IntegrationTest
     post "/oauth/register", params: { redirect_uris: ["http://evil.example/cb"] }.to_json, headers: { "Content-Type" => "application/json" }
     assert_response :bad_request
     post "/oauth/register", params: { redirect_uris: ["javascript:alert(1)"] }.to_json, headers: { "Content-Type" => "application/json" }
+    assert_response :bad_request
+    post "/oauth/register", params: { redirect_uris: ["myapp:callback"] }.to_json, headers: { "Content-Type" => "application/json" }
     assert_response :bad_request
 
     client_id = register(uris: ["http://localhost:33418/callback"])

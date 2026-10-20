@@ -8,6 +8,9 @@ class McpController < ActionController::API
     body ? render(json: body, status: status) : head(status)
   rescue JSON::ParserError
     render json: { jsonrpc: "2.0", id: nil, error: { code: -32700, message: "Parse error" } }, status: :bad_request
+  rescue StandardError => error
+    Rails.error.report(error)
+    render json: { jsonrpc: "2.0", id: message.is_a?(Hash) ? message["id"] : nil, error: { code: -32603, message: "Internal error" } }, status: :internal_server_error
   end
 
   def not_allowed

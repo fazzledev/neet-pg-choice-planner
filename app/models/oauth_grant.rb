@@ -3,6 +3,7 @@ class OauthGrant < ApplicationRecord
   CODE_TTL = 5.minutes
   ACCESS_TTL = 1.hour
   REFRESH_TTL = 90.days
+  REFRESH_RETRY_WINDOW = 30.seconds
 
   belongs_to :oauth_client
   belongs_to :user
@@ -18,6 +19,7 @@ class OauthGrant < ApplicationRecord
   def self.start(client:, user:, redirect_uri:, code_challenge:, resource:, request:)
     code = SecureRandom.urlsafe_base64(32)
     transaction do
+      client.update!(claimed_at: Time.current) unless client.claimed_at
       session = user.sessions.create!(user_agent: "#{client.client_name} (connector)", ip_address: request.remote_ip)
       create!(oauth_client: client, user: user, session: session, redirect_uri: redirect_uri, scope: SCOPE, resource: resource,
         code_digest: digest(code), code_challenge: code_challenge, code_expires_at: CODE_TTL.from_now)
@@ -40,8 +42,19 @@ class OauthGrant < ApplicationRecord
   end
 
   def self.refresh(token, client:)
-    grant = active.find_by(refresh_token_digest: digest(token), oauth_client: client) or return
-    grant.with_lock { grant.refresh_token_digest == digest(token) ? grant.issue_tokens! : nil }
+    token_digest = digest(token)
+    grant = active.where(oauth_client: client).find_by(refresh_token_digest: token_digest) ||
+      active.where(oauth_client: client).find_by(previous_refresh_token_digest: token_digest) or return
+    grant.with_lock do
+      if grant.refresh_token_digest == token_digest
+        grant.issue_tokens!(previous_refresh_token_digest: token_digest, refreshed_at: Time.current)
+      elsif grant.retrying_refresh?(token_digest)
+        grant.issue_tokens!(previous_refresh_token_digest: token_digest, refreshed_at: grant.refreshed_at)
+      elsif grant.previous_refresh_token_digest == token_digest
+        grant.disconnect!
+        nil
+      end
+    end
   end
 
   def self.authenticate(token)
@@ -61,11 +74,16 @@ class OauthGrant < ApplicationRecord
     ActiveSupport::SecurityUtils.secure_compare(expected, code_challenge)
   end
 
-  def issue_tokens!
+  def retrying_refresh?(token_digest)
+    previous_refresh_token_digest == token_digest && refreshed_at&.after?(REFRESH_RETRY_WINDOW.ago)
+  end
+
+  def issue_tokens!(previous_refresh_token_digest: nil, refreshed_at: nil)
     access = SecureRandom.urlsafe_base64(32)
     refresh = SecureRandom.urlsafe_base64(32)
     update!(access_token_digest: self.class.digest(access), access_expires_at: ACCESS_TTL.from_now,
-      refresh_token_digest: self.class.digest(refresh), refresh_expires_at: REFRESH_TTL.from_now)
+      refresh_token_digest: self.class.digest(refresh), refresh_expires_at: REFRESH_TTL.from_now,
+      previous_refresh_token_digest: previous_refresh_token_digest, refreshed_at: refreshed_at)
     { access_token: access, token_type: "Bearer", expires_in: ACCESS_TTL.to_i, refresh_token: refresh, scope: scope }
   end
 

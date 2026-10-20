@@ -4,6 +4,7 @@ class CreateOauthClientsAndGrants < ActiveRecord::Migration[8.1]
       t.string :client_id, null: false, index: { unique: true }
       t.string :client_name, null: false
       t.json :redirect_uris, null: false, default: []
+      t.datetime :claimed_at
       t.timestamps
     end
 
@@ -21,6 +22,8 @@ class CreateOauthClientsAndGrants < ActiveRecord::Migration[8.1]
       t.string :access_token_digest, index: { unique: true }
       t.datetime :access_expires_at
       t.string :refresh_token_digest, index: { unique: true }
+      t.string :previous_refresh_token_digest, index: { unique: true }
+      t.datetime :refreshed_at
       t.datetime :refresh_expires_at
       t.datetime :last_used_at
       t.timestamps

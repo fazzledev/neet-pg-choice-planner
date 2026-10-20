@@ -10,7 +10,7 @@ class OauthClient < ApplicationRecord
 
   has_many :oauth_grants, dependent: :destroy
 
-  scope :unclaimed, -> { where.missing(:oauth_grants).where(created_at: ...UNCLAIMED_TTL.ago) }
+  scope :unclaimed, -> { where(claimed_at: nil, created_at: ...UNCLAIMED_TTL.ago) }
 
   def self.register(metadata)
     metadata = metadata.to_h.stringify_keys
@@ -26,7 +26,7 @@ class OauthClient < ApplicationRecord
     return false unless value.is_a?(String) && value.length <= MAX_URI_LENGTH
 
     uri = URI.parse(value)
-    return false if uri.fragment || uri.scheme.nil? || FORBIDDEN_SCHEMES.include?(uri.scheme.downcase)
+    return false if uri.fragment || uri.opaque || uri.scheme.nil? || FORBIDDEN_SCHEMES.include?(uri.scheme.downcase)
 
     case uri.scheme.downcase
     when "https" then uri.host.present?
