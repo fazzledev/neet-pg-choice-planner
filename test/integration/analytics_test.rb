@@ -32,6 +32,16 @@ class AnalyticsTest < ActionDispatch::IntegrationTest
     assert_equal "same-origin", response.headers["Referrer-Policy"]
   end
 
+  test "the page after a sign-in link is not given the link as its referrer" do
+    token = @student.generate_token_for(:sign_in)
+    post sign_in_link_path(token)
+    assert_redirected_to planner_url
+    assert_equal "no-referrer", response.headers["Referrer-Policy"]
+    post sign_in_link_path(token)
+    assert_redirected_to new_session_path
+    assert_equal "no-referrer", response.headers["Referrer-Policy"]
+  end
+
   test "admin pages are not counted" do
     sign_in_as @admin
     get admin_stats_path
