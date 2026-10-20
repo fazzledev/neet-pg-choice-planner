@@ -906,3 +906,4 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp.doc p, .lp.doc li { line-height: 1.6; }
 .lp.doc ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
 a.lp-brand { color: inherit; text-decoration: none; }
+.lp-greeting { font: 600 clamp(20px, 2.4vw, 26px)/1.2 var(--font-display); color: var(--muted); margin: 0 0 -8px; }
