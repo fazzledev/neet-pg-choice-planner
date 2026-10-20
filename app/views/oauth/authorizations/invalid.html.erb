@@ -1,0 +1,7 @@
+<% content_for :body_class, "login" %>
+<div class="login-card">
+  <span class="login-brand">Connect an AI assistant</span>
+  <h1>Can't connect</h1>
+  <p><%= @message %></p>
+  <p><%= link_to "How to connect", connect_path %></p>
+</div>

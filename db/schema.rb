@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_19_191630) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_21_090000) do
   create_table "choice_lists", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "counselling_id", null: false
@@ -68,6 +68,45 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_191630) do
     t.datetime "updated_at", null: false
     t.index ["counselling_id", "code"], name: "index_institutes_on_counselling_id_and_code", unique: true
     t.index ["counselling_id"], name: "index_institutes_on_counselling_id"
+  end
+
+  create_table "oauth_clients", force: :cascade do |t|
+    t.string "client_id", null: false
+    t.string "client_name", null: false
+    t.json "redirect_uris", default: [], null: false
+    t.datetime "claimed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_oauth_clients_on_client_id", unique: true
+  end
+
+  create_table "oauth_grants", force: :cascade do |t|
+    t.integer "oauth_client_id", null: false
+    t.integer "user_id", null: false
+    t.integer "session_id", null: false
+    t.string "redirect_uri", null: false
+    t.string "scope", null: false
+    t.string "resource"
+    t.string "code_digest", null: false
+    t.string "code_challenge", null: false
+    t.datetime "code_expires_at", null: false
+    t.datetime "code_used_at"
+    t.string "access_token_digest"
+    t.datetime "access_expires_at"
+    t.string "refresh_token_digest"
+    t.string "previous_refresh_token_digest"
+    t.datetime "refreshed_at"
+    t.datetime "refresh_expires_at"
+    t.datetime "last_used_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["access_token_digest"], name: "index_oauth_grants_on_access_token_digest", unique: true
+    t.index ["code_digest"], name: "index_oauth_grants_on_code_digest", unique: true
+    t.index ["oauth_client_id"], name: "index_oauth_grants_on_oauth_client_id"
+    t.index ["previous_refresh_token_digest"], name: "index_oauth_grants_on_previous_refresh_token_digest", unique: true
+    t.index ["refresh_token_digest"], name: "index_oauth_grants_on_refresh_token_digest", unique: true
+    t.index ["session_id"], name: "index_oauth_grants_on_session_id", unique: true
+    t.index ["user_id"], name: "index_oauth_grants_on_user_id"
   end
 
   create_table "picks", force: :cascade do |t|
@@ -134,6 +173,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_191630) do
   add_foreign_key "choices", "institutes"
   add_foreign_key "choices", "programs"
   add_foreign_key "institutes", "counsellings"
+  add_foreign_key "oauth_grants", "oauth_clients"
+  add_foreign_key "oauth_grants", "sessions"
+  add_foreign_key "oauth_grants", "users"
   add_foreign_key "picks", "choice_lists"
   add_foreign_key "picks", "choices"
   add_foreign_key "programs", "counsellings"

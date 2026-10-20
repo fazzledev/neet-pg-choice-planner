@@ -3,6 +3,7 @@ class User < ApplicationRecord
   INVITE_TTL = 7.days
   RESEND_COOLDOWN = 2.minutes
 
+  has_many :oauth_grants, dependent: :delete_all
   has_many :sessions, dependent: :destroy
   has_many :choice_lists, dependent: :destroy
 
