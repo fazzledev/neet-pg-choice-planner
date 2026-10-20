@@ -937,12 +937,22 @@ a.lp-brand { color: inherit; text-decoration: none; }
 .consent-list li { display: flex; gap: 10px; align-items: flex-start; }
 .consent-list .icon { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--accent); }
 
-.lp-chat { margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: 20px; background: #101423; border: 1px solid #2a2f4a; color: #fff; box-shadow: 0 30px 60px rgba(16, 20, 35, .35); font-size: 15px; line-height: 1.5; }
-.lp-chat p { margin: 0; }
-.lp-chat-you { align-self: flex-end; max-width: 85%; padding: 12px 16px; border-radius: 18px 18px 4px 18px; background: #3d3bf3; }
-.lp-chat-tool { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: #1b2036; color: #b7bdd6; font-size: 13px; }
-.lp-chat-tool .icon { width: 15px; height: 15px; }
-.lp-chat-ai { max-width: 92%; color: #e6e8f2; }
+.lp-shot-chat { height: 330px; transform: perspective(1400px) rotateY(9deg) rotateX(3deg) rotate(-.5deg); transform-origin: right center; }
+.lp-chat { display: grid; grid-template-columns: 96px 1fr; height: calc(100% - 34px); }
+.lp-chat-side { display: flex; flex-direction: column; gap: 8px; padding: 14px 10px; background: #eceef4; }
+.lp-chat-side i { height: 12px; border-radius: 4px; background: #dcdfe8; }
+.lp-chat-side i:first-child { height: 22px; margin-bottom: 6px; background: #d3d7e3; }
+.lp-chat-main { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; color: #1d2233; font-size: 12px; line-height: 1.5; }
+.lp-chat-main p { margin: 0; }
+.lp-chat-you { align-self: flex-end; max-width: 80%; padding: 8px 12px; border-radius: 14px; background: #e3e6ee; }
+.lp-chat-tool { display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; border: 1px solid #dcdfe8; color: #5b6275; font-size: 11px; }
+.lp-chat-tool .icon { width: 13px; height: 13px; }
+.lp-chat-ai { max-width: 90%; }
+@media (max-width: 900px) {
+  .lp-shot-chat { transform: none; height: auto; }
+  .lp-chat { grid-template-columns: 1fr; }
+  .lp-chat-side { display: none; }
+}
 @media (min-width: 901px) {
   .lp-split-flip { grid-template-columns: 1fr 1.1fr; }
   .lp-split-flip > figure { order: -1; }
