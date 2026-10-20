@@ -12,6 +12,10 @@ class LandingTest < ActionDispatch::IntegrationTest
   test "redirects the old domain to the new one, keeping the path" do
     host! "mcc.fazzle.dev"
     get "/plan?view=institute"
-    assert_redirected_to "https://neet-pg-choices.fazzle.dev/plan?view=institute"
+    assert_redirected_to "https://neet-pg-choice-planner.fazzle.dev/plan?view=institute"
+
+    host! "neet-pg-choices.fazzle.dev"
+    get "/"
+    assert_redirected_to "https://neet-pg-choice-planner.fazzle.dev/"
   end
 end

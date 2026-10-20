@@ -1,4 +1,4 @@
-# Choice Planner
+# NEET PG Choice Planner
 
 Plan and rank NEET PG counselling choices. Works without an account (saved in the browser, usable offline); signing in with an emailed link syncs the order across devices with history.
 

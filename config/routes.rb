@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  constraints(host: "mcc.fazzle.dev") do
-    match "(*path)", to: redirect { |_, request| "https://neet-pg-choices.fazzle.dev#{request.fullpath}" }, via: %i[get head]
+  constraints(host: /\A(mcc|neet-pg-choices)\.fazzle\.dev\z/) do
+    match "(*path)", to: redirect { |_, request| "https://neet-pg-choice-planner.fazzle.dev#{request.fullpath}" }, via: %i[get head]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

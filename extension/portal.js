@@ -32,7 +32,7 @@ shadow.innerHTML = `
     .log li.error { color: #ff9a9a; }
   </style>
   <section class="panel">
-    <header><strong>Choice Planner filler</strong><button type="button" data-action="collapse" aria-label="Collapse">–</button></header>
+    <header><strong>NEET PG Choice Planner filler</strong><button type="button" data-action="collapse" aria-label="Collapse">–</button></header>
     <div class="body">
       <p class="muted" data-summary>Loading your order…</p>
       <div class="diff" data-diff></div>

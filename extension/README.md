@@ -1,4 +1,4 @@
-# Choice Planner filler
+# NEET PG Choice Planner filler
 
 A Chrome extension that copies a Choice Planner order into the MCC choice-filling page, one choice per click. The student signs in to MCC themselves; the extension never solves the security pin, never handles the password or OTP, and refuses to press anything that locks choices.
 

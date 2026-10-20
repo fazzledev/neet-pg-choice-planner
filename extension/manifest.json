@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Choice Planner filler",
-  "version": "0.5.0",
+  "name": "NEET PG Choice Planner filler",
+  "version": "0.6.0",
   "description": "Copies your Choice Planner order into the MCC choice-filling page, one choice at a time. Never locks.",
   "permissions": ["storage"],
   "content_scripts": [
     {
-      "matches": ["https://neet-pg-choices.fazzle.dev/*", "https://mcc.fazzle.dev/*"],
+      "matches": ["https://neet-pg-choice-planner.fazzle.dev/*", "https://neet-pg-choices.fazzle.dev/*", "https://mcc.fazzle.dev/*"],
       "js": ["planner-bridge.js"],
       "run_at": "document_start"
     },
