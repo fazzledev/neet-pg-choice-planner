@@ -11,10 +11,11 @@ class LandingTest < ActionDispatch::IntegrationTest
   test "every landing link is counted as its own click event" do
     get root_path
     links = css_select("a")
+    assert links.any?
     names = links.map { _1["data-goatcounter-click"] }
     assert_equal links.size, names.compact.size, "untagged: #{links.reject { _1["data-goatcounter-click"] }.map(&:text).map(&:strip)}"
     assert_equal names.uniq, names
-    assert names.all? { _1.start_with?("landing/") }
+    assert names.all? { _1.start_with?("landing/") }, "not landing/: #{names.reject { _1.start_with?("landing/") }}"
   end
 
   test "shows the privacy page and links it from the landing page" do
