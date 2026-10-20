@@ -614,7 +614,7 @@ a { color: var(--accent); }
 .drawer-head h2 { margin: 0; font: 700 24px/1 var(--font-display); }
 .snapshots li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--border); }
 
-.login { align-items: center; justify-content: center; padding: 16px; min-height: 100%; }
+.login { align-items: center; justify-content: safe center; padding: 16px; min-height: 100%; }
 
 .login-card {
   display: flex;
