@@ -878,7 +878,7 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp-split > div { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
 .lp-split > div > p { color: var(--muted); font-size: 17px; line-height: 1.5; }
 .lp-steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; line-height: 1.5; }
-.lp-panel { margin: 0; border: 1px solid #2a2f4a; background: #101423; color: #fff; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-pop); font-size: 14px; }
+.lp-panel { position: absolute; right: 18px; bottom: 18px; width: 300px; margin: 0; border: 1px solid #2a2f4a; background: #101423; color: #fff; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-pop); font-size: 14px; }
 .lp-panel-sub { color: #aab0c6; }
 .lp-panel-group h4 { margin: 0 0 6px; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
 .lp-panel-group p { display: flex; gap: 10px; line-height: 1.45; }
@@ -909,3 +909,17 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp.doc ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
 a.lp-brand { color: inherit; text-decoration: none; }
 .lp-greeting { font: 400 clamp(28px, 3.2vw, 38px)/1.2 "Nothing You Could Do", cursive; color: var(--pen); margin: 0 0 -6px; transform: rotate(-3deg); transform-origin: left center; }
+.lp-shot { position: relative; margin: 0; height: 440px; border-radius: 14px; overflow: hidden; background: #f4f5f9; border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(16, 20, 35, .35); transform: perspective(1400px) rotateY(-9deg) rotateX(3deg) rotate(.5deg); transform-origin: left center; }
+.lp-shot-bar { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; background: #e3e6ee; }
+.lp-shot-bar span { width: 10px; height: 10px; border-radius: 50%; background: #c4c8d4; }
+.lp-shot-bar em { margin-left: 10px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 11px/22px var(--font-body); font-style: normal; color: #5b6275; background: #fff; border-radius: 6px; padding: 0 10px; }
+.lp-shot-page { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.lp-shot-head { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font: 600 11px/1 var(--font-body); color: #1e3a8a; }
+.lp-shot-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lp-shot-row i { height: 22px; border-radius: 4px; background: #e6e8ef; }
+.lp-shot-row i:last-child { background: #dfe7fb; }
+.lp-shot .lp-panel { font-size: 12px; gap: 10px; padding: 14px; }
+@media (max-width: 900px) {
+  .lp-shot { transform: none; height: 470px; }
+  .lp-shot .lp-panel { left: 12px; right: 12px; width: auto; }
+}

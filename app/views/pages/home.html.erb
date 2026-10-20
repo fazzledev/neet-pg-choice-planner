@@ -71,7 +71,13 @@
       <p>Changed your list on the portal directly? <strong>MCC → Plan</strong> makes your plan a copy of MCC instead, and you can undo it.</p>
       <%= link_to extension_path, class: "button lp-big" do %><%= icon("download") %>Install the extension<% end %>
     </div>
-    <figure class="lp-panel" aria-label="Example of the extension panel">
+<figure class="lp-shot" aria-label="Screenshot of the extension panel on the MCC choice-filling page">
+  <div class="lp-shot-bar"><span></span><span></span><span></span><em>mcc.admissions.nic.in/Applicant/Choice/ChoiceFilling.aspx</em></div>
+  <div class="lp-shot-page" aria-hidden="true">
+    <div class="lp-shot-head"><b>Available Choice(s)</b><b>Filled Choice(s)</b></div>
+    <% 7.times do %><div class="lp-shot-row"><i></i><i></i></div><% end %>
+  </div>
+  <div class="lp-panel">
       <strong>NEET PG Choice Planner</strong>
       <p class="lp-panel-sub">Your plan: 60 choices, synced just now.</p>
       <p class="lp-panel-state">3 differences</p>
@@ -85,6 +91,7 @@
         <p><span>MCC #9</span>Govt. Medical College, Kozhikode · M.S. Orthopaedics</p>
       </div>
       <div class="lp-panel-actions"><span class="lp-panel-btn">Plan → MCC</span><span class="lp-panel-btn ghost">MCC → Plan</span></div>
+      </div>
     </figure>
   </section>
 
