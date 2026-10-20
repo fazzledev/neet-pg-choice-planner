@@ -244,7 +244,9 @@ class McpTest < ActionDispatch::IntegrationTest
     assert_equal [@ids[0]], result["structuredContent"]["already_in_plan"]
     assert_equal [@ids[2], @ids[0], @ids[1]], plan_ids
 
-    call "move_in_plan", { choice_ids: [@ids[2]], position: 3 }, token: token
+    assert_turbo_stream_broadcasts @student.choice_list_for(@counselling), count: 1 do
+      call "move_in_plan", { choice_ids: [@ids[2]], position: 3 }, token: token
+    end
     assert_equal [@ids[0], @ids[1], @ids[2]], plan_ids
 
     call "set_note", { choice_id: @ids[1], note: "Ask about stipend" }, token: token

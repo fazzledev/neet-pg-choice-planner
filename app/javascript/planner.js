@@ -1,4 +1,10 @@
 import "sortablejs"
+import { Turbo } from "@hotwired/turbo-rails"
+
+Turbo.session.drive = false
+Turbo.StreamActions.plan_changed = function () {
+  adoptRemoteChange(Number(this.getAttribute("revision")))
+}
 
 const PAGE_SIZE = 150
 const SAVE_DELAY = 600
@@ -744,6 +750,18 @@ function offerChoice(server, message, { deviceLabel = "Keep this device's plan",
     rerender()
     setStatus(`Synced ${timeNow()}`)
   }
+}
+
+async function adoptRemoteChange(revision) {
+  const busy = () => !synced() || state.revision === null || state.saving || state.dirty || state.conflict
+  if (busy() || !(revision > state.revision)) return
+  const server = await api(config.listUrl).catch(() => null)
+  if (!server || busy() || server.revision <= state.revision) return
+  state.revision = server.revision
+  setPicks(server.picks)
+  writeCache()
+  rerender()
+  setStatus(`Synced ${timeNow()}`)
 }
 
 async function loadSynced() {

@@ -28,6 +28,7 @@ class ChoiceList < ApplicationRecord
       record_snapshot(label, session_id)
     end
     picks.reset
+    Turbo::StreamsChannel.broadcast_action_to self, action: :plan_changed, target: "planner", attributes: { revision: revision }
     as_payload
   end
 

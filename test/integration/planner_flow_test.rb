@@ -81,6 +81,29 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     assert_response :conflict
   end
 
+  test "a save tells the student's other open tabs the new revision" do
+    sign_in_as @student
+    get planner_path
+    list = @student.choice_lists.sole
+    assert_select "turbo-cable-stream-source[signed-stream-name=?]", Turbo::StreamsChannel.signed_stream_name(list)
+
+    streams = capture_turbo_stream_broadcasts(list) do
+      put list_picks_path(list), params: { base: 0, picks: @ids.map { { choice_id: _1, note: "" } } }, as: :json
+    end
+    assert_equal [["plan_changed", "1"]], streams.map { [_1["action"], _1["revision"]] }
+
+    conflicting = capture_turbo_stream_broadcasts(list) do
+      put list_picks_path(list), params: { base: 0, picks: [] }, as: :json
+    end
+    assert_response :conflict
+    assert_empty conflicting
+  end
+
+  test "the planner subscribes to nothing without an account" do
+    get planner_path
+    assert_select "turbo-cable-stream-source", 0
+  end
+
   test "students cannot see each other's lists but admins can" do
     other = User.create!(email: "other@example.com").choice_list_for(@counselling)
     sign_in_as @student
