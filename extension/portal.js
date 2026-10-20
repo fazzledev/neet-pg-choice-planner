@@ -29,6 +29,8 @@ shadow.innerHTML = `
     .rank { flex: none; min-width: 40px; color: #aab0c6; font-variant-numeric: tabular-nums; }
     .message { padding: 8px 10px; border-radius: 10px; background: #1b2038; }
     .message.error { color: #ff9a9a; }
+    .confirm { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 10px; background: #1b2038; }
+    [hidden] { display: none !important; }
   </style>
   <section class="panel">
     <header><strong>NEET PG Choice Planner</strong><button type="button" data-action="collapse" aria-label="Collapse">–</button></header>
@@ -37,9 +39,16 @@ shadow.innerHTML = `
       <p class="state" data-state></p>
       <details data-details hidden><summary>Show differences</summary><div data-diff></div></details>
       <div class="actions" data-actions hidden>
-        <button type="button" data-action="copy">Copy to MCC</button>
-        <button type="button" data-action="import">Import from MCC</button>
+        <button type="button" data-action="to-mcc">Plan → MCC</button>
+        <button type="button" data-action="to-plan">MCC → Plan</button>
         <button type="button" data-action="stop" hidden>Stop</button>
+      </div>
+      <div class="confirm" data-confirm hidden>
+        <p data-confirm-text></p>
+        <div class="actions">
+          <button type="button" data-action="confirm">Yes, change MCC</button>
+          <button type="button" data-action="cancel">Cancel</button>
+        </div>
       </div>
       <p class="message" data-message hidden></p>
     </div>
@@ -72,7 +81,7 @@ function compare() {
   const planned = order.choices.filter((choice) => filledKeys.has(choiceKey(choice)))
   const moved = numbered.filter((choice) => plannedKeys.has(choiceKey(choice)))
     .filter((choice, index) => choiceKey(choice) !== choiceKey(planned[index]))
-  return { addable, gone, extra, moved, target: [...planned.map(choiceKey), ...extra.map(choiceKey)] }
+  return { addable, gone, extra, moved }
 }
 
 function group(title, items, rank) {
@@ -94,7 +103,7 @@ function group(title, items, rank) {
 }
 
 function render() {
-  if (busy) return
+  if (busy || !$("[data-confirm]").hidden) return
   const state = $("[data-state]")
   const details = $("[data-details]")
   details.hidden = true
@@ -114,17 +123,18 @@ function render() {
     return
   }
 
-  $("[data-actions]").hidden = false
-  $('[data-action="import"]').disabled = PortalAdapter.readFilled().length === 0
   if (!order) {
     state.textContent = "MCC list found."
-    $('[data-action="copy"]').disabled = true
+    $("[data-actions]").hidden = PortalAdapter.readFilled().length === 0
+    $('[data-action="to-mcc"]').disabled = true
     return
   }
 
   const { addable, gone, extra, moved } = compare()
   const differences = addable.length + gone.length + extra.length + moved.length
-  $('[data-action="copy"]').disabled = addable.length + moved.length === 0
+  $("[data-actions]").hidden = differences === 0
+  $('[data-action="to-mcc"]').disabled = addable.length + extra.length + moved.length === 0
+  $('[data-action="to-plan"]').disabled = false
   if (!differences) {
     state.textContent = "In sync ✓"
     state.classList.add("ok")
@@ -145,21 +155,44 @@ function stopIfAsked() {
   if (stopRequested) throw new Error("you pressed Stop")
 }
 
+function askToCopy() {
+  const { addable, gone, extra, moved } = compare()
+  const steps = [addable.length && `add ${addable.length}`, extra.length && `remove ${extra.length}`, moved.length && `move ${moved.length}`].filter(Boolean).join(", ")
+  const unavailable = gone.length ? ` ${gone.length} from your plan can't be added because MCC no longer offers ${gone.length === 1 ? "it" : "them"}.` : ""
+  $("[data-confirm-text]").textContent = `MCC will become a copy of your plan: ${steps}.${unavailable} Nothing is saved until you press Save and Continue and enter the OTP.`
+  $("[data-confirm]").hidden = false
+  $("[data-actions]").hidden = true
+}
+
+function closeConfirm() {
+  $("[data-confirm]").hidden = true
+  render()
+}
+
 async function copyToMcc(resumes = 0) {
   busy = true
   stopRequested = false
   sessionStorage.setItem(COPYING, String(resumes))
-  $('[data-action="copy"]').disabled = true
-  $('[data-action="import"]').disabled = true
+  $("[data-confirm]").hidden = true
+  $("[data-actions]").hidden = false
+  $('[data-action="to-mcc"]').disabled = true
+  $('[data-action="to-plan"]').disabled = true
   $('[data-action="stop"]').hidden = false
   try {
+    const { extra } = compare()
+    for (const [index, choice] of extra.entries()) {
+      stopIfAsked()
+      message(`Removing ${index + 1} of ${extra.length}…`)
+      await PortalAdapter.remove(choice)
+    }
     const { addable, gone } = compare()
     for (const [index, choice] of addable.entries()) {
       stopIfAsked()
       message(`Adding ${index + 1} of ${addable.length}…`)
       await PortalAdapter.add(choice)
     }
-    const { target } = compare()
+    const present = new Set(PortalAdapter.readFilled().map(choiceKey))
+    const target = order.choices.map(choiceKey).filter((key) => present.has(key))
     for (let index = 0; index < target.length; index++) {
       message(`Arranging ${index + 1} of ${target.length}…`)
       let at = PortalAdapter.readFilled().map(choiceKey).indexOf(target[index])
@@ -168,10 +201,10 @@ async function copyToMcc(resumes = 0) {
         await PortalAdapter.moveUp(at--)
       }
     }
-    const skipped = gone.length ? ` ${gone.length} ${gone.length === 1 ? "choice is" : "choices are"} no longer on MCC and were skipped.` : ""
-    message(`Done. Check the list, then press Save and Continue and enter the OTP. Nothing is saved until you do.${skipped}`)
+    const skipped = gone.length ? ` ${gone.length} ${gone.length === 1 ? "choice" : "choices"} from your plan MCC no longer offers ${gone.length === 1 ? "was" : "were"} skipped.` : ""
+    message(`MCC now matches your plan.${skipped} Check it, then press Save and Continue and enter the OTP. Nothing is saved until you do.`)
   } catch (error) {
-    message(`Stopped: ${error.message}. Nothing has been saved; reload the page to start over.`, true)
+    message(`Stopped: ${error.message}. Nothing has been saved; reload the page to undo the changes.`, true)
   } finally {
     sessionStorage.removeItem(COPYING)
     $('[data-action="stop"]').hidden = true
@@ -183,16 +216,18 @@ async function copyToMcc(resumes = 0) {
 async function importFromMcc() {
   const choices = PortalAdapter.readFilled().map((choice, index) => ({ ...choice, rank: index + 1 }))
   await chrome.storage.local.set({ portalImport: { choices, readAt: new Date().toISOString() } })
-  message(`Read ${choices.length} choices from MCC. Confirm the import in the planner tab that just opened.`)
+  message(`Read ${choices.length} choices from MCC. Confirm in the planner tab that just opened; your plan changes only when you press Replace there.`)
   window.open(PLANNER_URL, "_blank", "noopener")
 }
 
 shadow.addEventListener("click", (event) => {
   const action = event.target.closest("button")?.dataset.action
   if (action === "collapse") $(".panel").classList.toggle("collapsed")
-  if (action === "copy") copyToMcc()
+  if (action === "to-mcc") askToCopy()
+  if (action === "confirm") copyToMcc()
+  if (action === "cancel") closeConfirm()
   if (action === "stop") stopRequested = true
-  if (action === "import") importFromMcc().catch((error) => message(error.message, true))
+  if (action === "to-plan") importFromMcc().catch((error) => message(error.message, true))
 })
 
 let renderTimer
@@ -208,7 +243,7 @@ chrome.storage.local.get("order").then((stored) => {
   if (resumes === null || !order || !PortalAdapter.isChoicePage()) return
   if (Number(resumes) >= MAX_RESUMES) {
     sessionStorage.removeItem(COPYING)
-    message("Copy to MCC stopped: the page kept reloading. Nothing has been saved.", true)
+    message("Plan → MCC stopped: the page kept reloading. Nothing has been saved.", true)
     return
   }
   copyToMcc(Number(resumes) + 1)

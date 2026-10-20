@@ -11,5 +11,5 @@ A Chrome extension that makes the MCC choice-filling list match a plan from NEET
 
 1. Open Choice Planner in the same browser. Your plan syncs to the extension on load and after every change.
 2. Sign in to MCC and open Choice Filling. The panel shows In sync, or how many choices differ.
-3. Copy to MCC adds missing choices and puts the list in the planner's order. Check it, then press Save and Continue and enter the OTP.
-4. Import from MCC reads the saved MCC list and offers to replace the plan, which can be undone.
+3. Plan → MCC makes the MCC list an exact copy of the plan: it removes choices not in the plan, adds missing ones and arranges them. Check it, then press Save and Continue and enter the OTP.
+4. MCC → Plan reads the saved MCC list and offers to replace the plan with it, which can be undone.

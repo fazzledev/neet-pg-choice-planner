@@ -46,6 +46,16 @@ const PortalAdapter = {
     if (!(await waitFor(() => this.readFilled().length > before))) throw new Error(`MCC did not add #${choice.rank} ${choice.institute}`)
   },
 
+  async remove(choice) {
+    const wanted = choiceKey(choice)
+    const row = this.rows("filledChoiceContainer").find((candidate) => choiceKey(this.rowChoice(candidate)) === wanted)
+    const button = row?.querySelector("input.fChoice, button.fChoice")
+    if (!button) throw new Error(`No Remove button for MCC #${choice.rank} ${choice.institute}`)
+    const before = this.readFilled().length
+    this.safeClick(button)
+    if (!(await waitFor(() => this.readFilled().length < before))) throw new Error(`MCC did not remove ${choice.institute}`)
+  },
+
   async moveUp(index) {
     const row = this.rows("filledChoiceContainer")[index]
     const button = row?.querySelector("input.Up, button.Up")
