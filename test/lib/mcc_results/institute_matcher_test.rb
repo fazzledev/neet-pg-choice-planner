@@ -30,4 +30,23 @@ class MccResults::InstituteMatcherTest < ActiveSupport::TestCase
   test "leaves a name shared by several colleges unmatched instead of guessing" do
     assert_nil @matcher.match("AUTONOMOUS STATE MEDICAL COLLEGE, ,RAJARSHI DASHRATH AUTONOMOUS STATE MEDICAL COLLEGE AYODHYA, Uttar Pradesh, 224133", %w[5 6])
   end
+
+  test "does not match a hospital through a street it shares with another" do
+    institutes = [
+      { "code" => "701393", "name" => "Apollomedics Superspeciality Hospital, Sector B, Bargawan, LDA Colony , Lucknow Uttar Pradesh , Uttar Pradesh-226012", "address" => "KBC 31, Sector B, LDA Colony, Kanpur Road, Lucknow, Uttar Pradesh, 226012" },
+      { "code" => "902761", "name" => "Lok Bandhu Raj Narayan Combined Hospital, LDA Colony Kanpur Road Lucknow Uttar Pradesh , Uttar Pradesh-226012", "address" => "LDA COLONY KANPUR ROAD LUCKNOW, Uttar Pradesh, 226012" },
+    ]
+    match = MccResults::InstituteMatcher.new(institutes).match("Apollomedics Superspeciality Hospital,KBC 31, Sector B, LDA Colony, Kanpur Road, Lucknow, Uttar Pradesh, 226012", %w[902761])
+    assert_nil match
+  end
+
+  test "accepts an abbreviated catalog name that matches the initials, but not another brand" do
+    institutes = [
+      { "code" => "1", "name" => "BRD Medical College, Gorakhpur", "address" => "BABA RAGHAV DAS MEDICAL COLLEGE MAHARAJGANJ ROAD GORAKHPUR UP 273013" },
+      { "code" => "2", "name" => "Max Super Speciality Hospital, Shalimar Bagh", "address" => "FC 50, C and D Block, Shalimar Bagh, Delhi, 110088" },
+    ]
+    matcher = MccResults::InstituteMatcher.new(institutes)
+    assert_equal "1", matcher.match("Baba Raghav Das Medical College,Baba Raghav Das Medical College, Gorakhpur, Uttar Pradesh, 273013", %w[1]).code
+    assert_nil matcher.match("Fortis Hospital, Shalimar Bagh,A Block, Shalimar Bagh, Delhi, 110088", %w[2])
+  end
 end

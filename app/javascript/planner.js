@@ -1215,20 +1215,20 @@ function bind() {
     clearTimeout(debounce)
     debounce = setTimeout(() => applyFilters(), 120)
   })
-$("#my-rank").addEventListener("input", (e) => {
-  state.profile.rank = Number(e.target.value) || null
-  profileChanged()
-})
-$("#my-pwd").addEventListener("change", (e) => {
-  state.profile.pwd = e.target.checked
-  profileChanged()
-})
-$("#my-category").addEventListener("click", (e) => {
-  const chip = e.target.closest("[data-category]")
-  if (!chip) return
-  state.profile.category = chip.dataset.category
-  profileChanged()
-})
+  $("#my-rank").addEventListener("input", (e) => {
+    state.profile.rank = Number(e.target.value) || null
+    profileChanged()
+  })
+  $("#my-pwd").addEventListener("change", (e) => {
+    state.profile.pwd = e.target.checked
+    profileChanged()
+  })
+  $("#my-category").addEventListener("click", (e) => {
+    const chip = e.target.closest("[data-category]")
+    if (!chip) return
+    state.profile.category = chip.dataset.category
+    profileChanged()
+  })
   $("#f-hide").addEventListener("change", () => {
     saveFilters()
     applyFilters()
@@ -1449,17 +1449,42 @@ $("#picks-review").addEventListener("change", (e) => {
 }
 
 const ROUND_LABELS = { R1: "R1", R2: "R2", R3: "R3", STRAY: "Stray", SPSTRAY: "Sp. stray" }
+const ROUND_ORDER = ["R1", "R2", "R3", "STRAY", "SPSTRAY"]
 const MAIN_ROUNDS = ["R1", "R2", "R3"]
+const CUTOFF_CAVEAT = "Past MCC results only. Seats and candidates change every year, some seats could not be matched, and labels are rough guides, not predictions."
 const profileKey = () => `planner:${config.counselling}:profile`
 const rankFormat = new Intl.NumberFormat("en-IN")
 
-function profileCategory() {
-  return `${state.profile.category}${state.profile.pwd ? " PwD" : ""}`
+function eligibleCategories() {
+  const base = state.profile.category === "Open" ? ["Open"] : ["Open", state.profile.category]
+  return state.profile.pwd ? [...base, ...base.map((category) => `${category} PwD`)] : base
 }
 
-function cutoffRows(c) {
+function eligibleLabel() {
+  const base = state.profile.category === "Open" ? "Open" : `Open/${state.profile.category}`
+  return state.profile.pwd ? `${base} incl. PwD` : base
+}
+
+function cutoffYears(c) {
   const rows = state.cutoffs?.[`${c.inst.code}|${c.brcd}|${c.quota}`]
-  return rows ? rows.filter((row) => row[2] === profileCategory()) : []
+  if (!rows) return []
+  const eligible = new Set(eligibleCategories())
+  const byYear = new Map()
+  for (const [year, round, category, rank] of rows) {
+    if (!eligible.has(category)) continue
+    const rounds = byYear.get(year) || new Map()
+    rounds.set(round, Math.max(rounds.get(round) || 0, rank))
+    byYear.set(year, rounds)
+  }
+  return [...byYear.entries()].sort((a, b) => b[0] - a[0]).map(([year, rounds]) => {
+    let deepest = 0
+    const steps = ROUND_ORDER.filter((round) => rounds.has(round)).map((round) => {
+      deepest = Math.max(deepest, rounds.get(round))
+      return [round, deepest]
+    })
+    const main = MAIN_ROUNDS.filter((round) => rounds.has(round)).map((round) => rounds.get(round))
+    return { year, steps, main: main.length ? Math.max(...main) : null }
+  })
 }
 
 function chanceOf(rank, closing) {
@@ -1470,27 +1495,28 @@ function chanceOf(rank, closing) {
   return ["Reach", "reach"]
 }
 
+function stepsText(steps) {
+  return steps.map(([round, rank]) => `${ROUND_LABELS[round]} ${rankFormat.format(rank)}`).join(" · ")
+}
+
 function paintCutoff(el, c) {
   if (!el) return
-  const rows = cutoffRows(c)
-  if (!rows.length) {
+  const years = cutoffYears(c)
+  if (!years.length) {
     el.replaceChildren()
     el.title = ""
     return
   }
-  const latest = Math.max(...rows.map((row) => row[0]))
-  const recent = rows.filter((row) => row[0] === latest)
-  const parts = recent.map(([, round, , rank]) => `${ROUND_LABELS[round]} ${rankFormat.format(rank)}`).join(" · ")
-  const nodes = [document.createTextNode(`${latest} closed · ${profileCategory()}: ${parts}`)]
-  const main = recent.filter((row) => MAIN_ROUNDS.includes(row[1])).map((row) => row[3])
-  const closing = main.length ? Math.max(...main) : Math.max(...recent.map((row) => row[3]))
-  if (state.profile.rank) {
-    const [label, kind] = chanceOf(state.profile.rank, closing)
-    nodes.push(make("span", { className: `chance chance-${kind}`, textContent: label }))
+  const [latest] = years
+  const nodes = [document.createTextNode(`${latest.year} closing · ${eligibleLabel()}: ${stepsText(latest.steps)}`)]
+  const mains = years.map((year) => year.main).filter(Boolean)
+  if (state.profile.rank && mains.length) {
+    const [label, kind] = chanceOf(state.profile.rank, Math.min(...mains))
+    const evidence = mains.length === 1 ? "Based on 1 year." : `Based on the tightest of ${mains.length} years.`
+    nodes.push(make("span", { className: `chance chance-${kind}`, textContent: label, title: `${evidence} ${CUTOFF_CAVEAT}` }))
   }
   el.replaceChildren(...nodes)
-  const years = [...new Set(rows.map((row) => row[0]))].sort((a, b) => b - a)
-  el.title = years.map((year) => `${year}: ${rows.filter((row) => row[0] === year).map(([, round, , rank]) => `${ROUND_LABELS[round]} ${rankFormat.format(rank)}`).join(", ")}`).join("\n")
+  el.title = [...years.map((year) => `${year.year}: ${stepsText(year.steps)}`), "", "Each round shows the deepest rank allotted so far.", CUTOFF_CAVEAT].join("\n")
 }
 
 function repaintCutoffs() {

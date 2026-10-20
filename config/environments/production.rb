@@ -3,6 +3,7 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   config.enable_reloading = false
   config.assume_ssl = true
+  config.middleware.use Rack::Deflater
   config.force_ssl = true
   config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
   config.eager_load = true

@@ -4,6 +4,7 @@ module MccResults
 
     PIN = /(?<!\d)\d{6}(?!\d)/
     GENERIC = %w[GOVT GOVERNMENT MEDICAL COLLEGE COLLEGES HOSPITAL HOSPITALS INSTITUTE OF AND THE SCIENCES SCIENCE RESEARCH CENTRE CENTER HEALTH CARE DISTRICT CIVIL GENERAL SUPER SPECIALITY SPECIALTY MULTI MULTISPECIALITY MULTISPECIALTY PVT LTD PRIVATE LIMITED MEMORIAL].freeze
+    STATE_WORDS = Places::STATES.flat_map { _1.upcase.scan(/[A-Z]+/) }.uniq.freeze
     MIN_SCORE = 0.9
     MIN_MARGIN = 0.15
     PIN_BONUS = 0.35
@@ -14,6 +15,9 @@ module MccResults
       @pins = {}
       @states = {}
       @names = {}
+      @address_names = {}
+      @address_words = {}
+      @lead_words = {}
       institutes.each do |institute|
         text = "#{institute["name"]} #{institute["address"]}"
         code = institute["code"]
@@ -21,11 +25,15 @@ module MccResults
         @pins[code] = pins(text)
         state, doubtful = Places.locate(text)
         @states[code] = state unless doubtful
-        @names[code] = [institute["name"], institute["address"]].flat_map { |field| parts = field.to_s.split(","); [parts.first, parts.first(2).join(",")] }.filter_map { distinctive(_1) }.uniq
+        @names[code] = segments(institute["name"])
+        @address_names[code] = segments(institute["address"]) - @names[code]
+        @address_words[code] = own_words(institute["address"].to_s.split(",").first, min: 3)
+        @lead_words[code] = own_words(institute["name"].to_s.split(",").first, min: 3)
       end
       owners = Hash.new(0)
-      @names.each_value { |names| names.each { owners[_1] += 1 } }
+      (@names.values + @address_names.values).each { |names| names.each { owners[_1] += 1 } }
       @names.transform_values! { |names| names.select { owners[_1] == 1 } }
+      @address_names.transform_values! { |names| names.select { owners[_1] == 1 } }
       counts = Hash.new(0)
       @tokens.each_value { |words| words.each { counts[_1] += 1 } }
       @weight = counts.transform_values { |count| Math.log((@tokens.size + 1).fdiv(count)) }
@@ -47,9 +55,12 @@ module MccResults
     end
 
     def by_name(text, candidates)
-      starts = text.split(",").each_index.map { |index| squash(text.split(",")[index..].join) }
+      parts = text.split(",")
+      starts = parts.each_index.map { |index| squash(parts[index..].join) }
       hits = candidates.filter_map do |code|
-        length = @names[code].select { |name| starts.any? { _1.start_with?(name) } }.map(&:length).max
+        later = same_institution?(parts.first, @address_words[code]) && @address_words[code].any?
+        found = @names[code].select { |name| starts.any? { _1.start_with?(name) } } + @address_names[code].select { |name| later ? starts.any? { _1.start_with?(name) } : starts.first.to_s.start_with?(name) }
+        length = found.map(&:length).max
         [length, code] if length
       end.sort.reverse
       top, runner_up = hits
@@ -70,6 +81,7 @@ module MccResults
 
       margin = top.first - (runner_up&.first || 0)
       return unless top.first >= MIN_SCORE && margin >= MIN_MARGIN && (row_pins & @pins.fetch(top.last)).any?
+      return unless same_institution?(text.split(",").first, @lead_words[top.last])
 
       Match.new(code: top.last, score: top.first.round(3), margin: margin.round(3), rule: :tokens)
     end
@@ -89,6 +101,23 @@ module MccResults
 
       squashed = squash(segment)
       squashed if squashed.length >= 10
+    end
+
+    def same_institution?(lead, words)
+      return true if words.empty?
+
+      squashed = squash(lead)
+      initials = lead.to_s.upcase.scan(/[A-Z]+/).map { _1[0] }.join
+      words.any? { squashed.include?(_1) || initials.include?(_1) }
+    end
+
+    def segments(field)
+      parts = field.to_s.split(",")
+      [parts.first, parts.first(2).join(",")].filter_map { distinctive(_1) }.uniq
+    end
+
+    def own_words(text, min:)
+      text.to_s.upcase.scan(/[A-Z]+/).uniq.select { _1.length >= min } - GENERIC - STATE_WORDS
     end
 
     def squash(text) = text.to_s.upcase.gsub(/[^A-Z0-9]/, "")

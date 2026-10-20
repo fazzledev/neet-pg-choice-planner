@@ -48,3 +48,6 @@
 /Dockerfile*
 /backups
 /test
+
+/data/allotments/
+/data/raw/
