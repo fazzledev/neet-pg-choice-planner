@@ -1,0 +1,18 @@
+<% content_for :title, "Connect #{@client.client_name} · NEET PG Choice Planner" %>
+<% content_for :body_class, "login" %>
+<%= form_with url: oauth_authorization_path, class: "login-card consent-card" do |f| %>
+  <span class="login-brand">Connect an AI assistant</span>
+  <h1>Allow <%= @client.client_name %>?</h1>
+  <p class="muted">It returns to <strong><%= @client.redirect_label(@redirect_uri) %></strong>. Only allow it if you just added this planner as a connector there.</p>
+  <ul class="consent-list">
+    <li><%= icon("search") %>Search the <%= Counselling.current&.name || "counselling" %> choices and DNB contacts</li>
+    <li><%= icon("list-ordered") %>See your plan and add, remove, reorder or note choices in it</li>
+    <li><%= icon("shield-check") %>It can't reach MCC. Filling, saving and locking stay with you</li>
+  </ul>
+  <p class="muted">Signed in as <%= current_user.email %>. Every change it makes lands in your plan's history, where you can restore an earlier version. Disconnect it any time from <%= link_to "Connect", connect_path %>.</p>
+  <% %w[client_id redirect_uri response_type code_challenge code_challenge_method state resource scope].each do |name| %>
+    <%= hidden_field_tag name, params[name] %>
+  <% end %>
+  <button type="submit" name="decision" value="allow" class="primary">Allow</button>
+  <button type="submit" name="decision" value="deny">Cancel</button>
+<% end %>

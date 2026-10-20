@@ -25,6 +25,19 @@ Rails.application.routes.draw do
 
   resources :catalogs, only: :show
 
+  get ".well-known/oauth-protected-resource(/mcp)" => "oauth/metadata#protected_resource", as: :oauth_protected_resource
+  get ".well-known/oauth-authorization-server" => "oauth/metadata#authorization_server", as: :oauth_authorization_server
+  namespace :oauth do
+    post "register" => "registrations#create", as: :registration
+    get "authorize" => "authorizations#new", as: :authorization
+    post "authorize" => "authorizations#create"
+    post "token" => "tokens#create", as: :token
+  end
+  post "mcp" => "mcp#create", as: :mcp
+  match "mcp" => "mcp#not_allowed", via: %i[get delete]
+  get "connect" => "connections#index", as: :connect
+  resources :connections, only: :destroy
+
   resource :extension, only: :show do
     get :download
   end

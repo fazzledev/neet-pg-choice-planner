@@ -1,0 +1,55 @@
+<% content_for :title, "Connect ChatGPT or Claude · NEET PG Choice Planner" %>
+<% content_for :body_class, "login" %>
+<% content_for :javascript_entry, "copy" %>
+<div class="extension-page">
+  <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
+  <div class="login-card extension-card connect-card">
+    <span class="login-brand">AI assistants</span>
+    <h1>Plan with ChatGPT or Claude</h1>
+    <p class="muted">Add the planner as a connector, and your assistant can search every choice, read DNB contacts, and add, reorder or note choices in your plan. It can't reach MCC. Filling, saving and locking stay with you.</p>
+    <div class="connect-url">
+      <code><%= @server_url %></code>
+      <button type="button" class="button-link copy-btn" data-copy="<%= @server_url %>" aria-label="Copy the connector URL" title="Copy"><%= icon("copy") %><%= icon("check") %></button>
+    </div>
+
+    <h2>ChatGPT</h2>
+    <ol class="install-steps">
+      <li>Open <strong>Settings → Apps</strong>. Under <strong>Advanced settings</strong>, turn on <strong>Developer mode</strong> if ChatGPT asks for it.</li>
+      <li>Press <strong>Create app</strong>, paste the URL above, pick <strong>OAuth</strong> for authentication and create it.</li>
+      <li>Sign in with your email when ChatGPT opens the planner, then press <strong>Allow</strong>.</li>
+    </ol>
+
+    <h2>Claude</h2>
+    <ol class="install-steps">
+      <li>Open <strong>Settings → Connectors</strong> and press <strong>Add custom connector</strong>.</li>
+      <li>Paste the URL above, add it, then press <strong>Connect</strong>.</li>
+      <li>Sign in with your email, then press <strong>Allow</strong>.</li>
+    </ol>
+    <p class="muted">In Claude Code, run <code>claude mcp add --transport http neet-pg-planner <%= @server_url %></code>, then <code>/mcp</code> to sign in.</p>
+
+    <p class="muted">Open the emailed sign-in link in the same browser that is connecting, so it comes back to the Allow page.</p>
+
+    <h2>Try asking</h2>
+    <ul class="connect-examples">
+      <li>“Find MD Radiodiagnosis seats in government colleges in Karnataka and add them after my top five.”</li>
+      <li>“Move every DNB choice below my MD and MS choices.”</li>
+      <li>“Who is the DNB coordinator for the hospitals in my plan in Kerala?”</li>
+    </ul>
+
+    <h2>Connected</h2>
+    <% if !authenticated? %>
+      <p class="muted"><%= link_to "Sign in", new_session_path %> to see which assistants can reach your plan.</p>
+    <% elsif @grants.empty? %>
+      <p class="muted">Nothing is connected to your plan.</p>
+    <% else %>
+      <ul class="connections">
+        <% @grants.each do |grant| %>
+          <li>
+            <span><strong><%= grant.oauth_client.client_name %></strong> <span class="muted">· <%= grant.oauth_client.redirect_label(grant.redirect_uri) %> · connected <%= time_ago_in_words(grant.created_at) %> ago<% if grant.last_used_at %>, used <%= time_ago_in_words(grant.last_used_at) %> ago<% end %></span></span>
+            <%= button_to "Disconnect", connection_path(grant), method: :delete, class: "button" %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
