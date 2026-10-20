@@ -589,6 +589,8 @@ function rerender() {
 }
 
 function changed() {
+  if (state.importJustApplied) state.importJustApplied = false
+  else if (state.importUndo) closeMccImport()
   reindex()
   renderPicks()
   if ($("#f-hide").checked) applyFilters(false)
@@ -669,8 +671,12 @@ async function save() {
   state.dirty = false
   setStatus("Saving…")
   try {
-    const saved = await api(config.listUrl, { method: "PUT", body: JSON.stringify({ base: state.revision, picks: state.picks, label: state.saveLabel }) })
+    const label = state.saveLabel
     state.saveLabel = null
+    const saved = await api(config.listUrl, { method: "PUT", body: JSON.stringify({ base: state.revision, picks: state.picks, label }) }).catch((error) => {
+      state.saveLabel ||= label
+      throw error
+    })
     state.revision = saved.revision
     writeCache()
     setStatus(state.dirty ? "Unsaved…" : `Synced ${timeNow()}`)
@@ -857,14 +863,15 @@ function offerMccImport(event) {
   $("#mcc-import-apply").hidden = same || state.conflict
   $("#mcc-import-close").textContent = same ? "Close" : "Not now"
   $("#mcc-import").hidden = false
-  document.dispatchEvent(new CustomEvent("choice-planner:import-done"))
 }
 
 function applyMccImport() {
+  document.dispatchEvent(new CustomEvent("choice-planner:import-done"))
   const notes = new Map(state.picks.map((p) => [p.choice_id, p.note]))
   state.importUndo = state.picks.map((p) => ({ ...p }))
   state.picks = state.mccImport.map((id) => ({ choice_id: id, note: notes.get(id) || "" }))
   state.saveLabel = "Imported from MCC"
+  state.importJustApplied = true
   changed()
   $("#mcc-import-text").textContent = `Imported ${state.picks.length} choices from MCC.`
   $("#mcc-import-apply").hidden = true
@@ -880,6 +887,8 @@ function undoMccImport() {
 }
 
 function closeMccImport() {
+  document.dispatchEvent(new CustomEvent("choice-planner:import-done"))
+  state.importUndo = null
   $("#mcc-import").hidden = true
   $("#mcc-import-close").onclick = closeMccImport
 }

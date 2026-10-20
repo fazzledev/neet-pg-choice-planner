@@ -1,4 +1,6 @@
 class PicksController < ApplicationController
+  SNAPSHOT_LABELS = ["Imported from MCC", "Before MCC import"].freeze
+
   rescue_from ChoiceList::Conflict, with: -> { render json: { error: _1.message }, status: :conflict }
   rescue_from ChoiceList::Invalid, with: -> { render json: { error: _1.message }, status: :unprocessable_entity }
 
@@ -10,6 +12,6 @@ class PicksController < ApplicationController
   def update
     list = find_choice_list or return
     base = Integer(params[:base], exception: false) or raise ChoiceList::Conflict, "missing base revision"
-    render json: list.replace_picks!(params.to_unsafe_h["picks"], base: base, label: params[:label].presence&.to_s&.first(40), session_id: Current.session.id)
+    render json: list.replace_picks!(params.to_unsafe_h["picks"], base: base, label: params[:label].presence_in(SNAPSHOT_LABELS), session_id: Current.session.id)
   end
 end

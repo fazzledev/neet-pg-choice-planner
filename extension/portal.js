@@ -39,6 +39,7 @@ shadow.innerHTML = `
       <div class="actions" data-actions hidden>
         <button type="button" data-action="copy">Copy to MCC</button>
         <button type="button" data-action="import">Import from MCC</button>
+        <button type="button" data-action="stop" hidden>Stop</button>
       </div>
       <p class="message" data-message hidden></p>
     </div>
@@ -48,6 +49,9 @@ document.documentElement.append(host)
 const $ = (selector) => shadow.querySelector(selector)
 let order = null
 let busy = false
+let stopRequested = false
+const COPYING = "choice-filler:copying"
+const MAX_RESUMES = 3
 
 function message(text, error = false) {
   const box = $("[data-message]")
@@ -137,13 +141,21 @@ function render() {
   details.hidden = false
 }
 
-async function copyToMcc() {
+function stopIfAsked() {
+  if (stopRequested) throw new Error("you pressed Stop")
+}
+
+async function copyToMcc(resumes = 0) {
   busy = true
+  stopRequested = false
+  sessionStorage.setItem(COPYING, String(resumes))
   $('[data-action="copy"]').disabled = true
   $('[data-action="import"]').disabled = true
+  $('[data-action="stop"]').hidden = false
   try {
     const { addable, gone } = compare()
     for (const [index, choice] of addable.entries()) {
+      stopIfAsked()
       message(`Adding ${index + 1} of ${addable.length}…`)
       await PortalAdapter.add(choice)
     }
@@ -151,13 +163,18 @@ async function copyToMcc() {
     for (let index = 0; index < target.length; index++) {
       message(`Putting in order ${index + 1} of ${target.length}…`)
       let at = PortalAdapter.readFilled().map(choiceKey).indexOf(target[index])
-      while (at > index) await PortalAdapter.moveUp(at--)
+      while (at > index) {
+        stopIfAsked()
+        await PortalAdapter.moveUp(at--)
+      }
     }
     const skipped = gone.length ? ` ${gone.length} ${gone.length === 1 ? "choice is" : "choices are"} no longer on MCC and were skipped.` : ""
     message(`Done. Check the list, then press Save and Continue and enter the OTP. Nothing is saved until you do.${skipped}`)
   } catch (error) {
     message(`Stopped: ${error.message}. Nothing has been saved; reload the page to start over.`, true)
   } finally {
+    sessionStorage.removeItem(COPYING)
+    $('[data-action="stop"]').hidden = true
     busy = false
     render()
   }
@@ -174,6 +191,7 @@ shadow.addEventListener("click", (event) => {
   const action = event.target.closest("button")?.dataset.action
   if (action === "collapse") $(".panel").classList.toggle("collapsed")
   if (action === "copy") copyToMcc()
+  if (action === "stop") stopRequested = true
   if (action === "import") importFromMcc().catch((error) => message(error.message, true))
 })
 
@@ -186,6 +204,14 @@ new MutationObserver(() => {
 chrome.storage.local.get("order").then((stored) => {
   order = stored.order || null
   render()
+  const resumes = sessionStorage.getItem(COPYING)
+  if (resumes === null || !order || !PortalAdapter.isChoicePage()) return
+  if (Number(resumes) >= MAX_RESUMES) {
+    sessionStorage.removeItem(COPYING)
+    message("Copy to MCC stopped: the page kept reloading. Nothing has been saved.", true)
+    return
+  }
+  copyToMcc(Number(resumes) + 1)
 })
 
 chrome.storage.onChanged.addListener((changes) => {

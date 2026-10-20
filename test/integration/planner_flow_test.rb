@@ -100,4 +100,17 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     get list_picks_path(list), as: :json
     assert_response :unauthorized
   end
+
+  test "only known labels name a history snapshot" do
+    sign_in_as @student
+    list = @student.choice_list_for(@counselling)
+
+    put list_picks_path(list), params: { base: 0, picks: [{ choice_id: @ids[0], note: "" }], label: "anything goes" }, as: :json
+    assert_response :success
+    assert_empty list.snapshots.where.not(label: nil)
+
+    put list_picks_path(list), params: { base: 1, picks: [{ choice_id: @ids[1], note: "" }], label: "Imported from MCC" }, as: :json
+    assert_response :success
+    assert_equal ["Imported from MCC"], list.snapshots.where.not(label: nil).pluck(:label)
+  end
 end

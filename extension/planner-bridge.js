@@ -25,10 +25,5 @@ document.addEventListener("choice-planner:import-done", () => {
   if (extensionAlive()) chrome.storage.local.remove("portalImport").catch(() => {})
 })
 
-if (extensionAlive()) {
-  chrome.storage.onChanged.addListener((changes) => {
-    if (changes.portalImport?.newValue) offerImport().catch(() => {})
-  })
-}
 
 document.dispatchEvent(new CustomEvent("choice-filler:ready"))
