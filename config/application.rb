@@ -18,5 +18,6 @@ module MccChoices
 
     config.autoload_lib(ignore: %w[assets tasks])
 
+    config.x.goatcounter_url = ENV["GOATCOUNTER_URL"].presence
   end
 end

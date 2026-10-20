@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   end
 
   resources :catalogs, only: :show
+  get "cutoffs" => "cutoffs#show", as: :cutoffs
 
   get ".well-known/oauth-protected-resource(/mcp)" => "oauth/metadata#protected_resource", as: :oauth_protected_resource
   get ".well-known/oauth-authorization-server" => "oauth/metadata#authorization_server", as: :oauth_authorization_server
@@ -46,5 +47,6 @@ Rails.application.routes.draw do
     resources :users, only: %i[index create] do
       member { post :invite }
     end
+    resource :stats, only: :show
   end
 end

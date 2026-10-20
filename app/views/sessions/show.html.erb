@@ -1,3 +1,4 @@
+<% content_for :analytics_path, "/sign-in/link" %>
 <% content_for :body_class, "login" %>
 <%= form_with url: sign_in_link_path(@token), method: :post, class: "login-card" do %>
   <span class="login-brand">NEET PG 2026</span>

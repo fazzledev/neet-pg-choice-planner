@@ -1,0 +1,31 @@
+<% content_for :title, "Stats · NEET PG Choice Planner" %>
+<main class="admin">
+  <header class="admin-head">
+    <%= link_to planner_path, class: "button button-ghost back" do %><%= icon("arrow-left") %><span>Planner</span><% end %>
+    <h1>Stats</h1>
+    <span class="muted"><%= pluralize(@signed_in.count, "person") %> signed in at least once · <%= pluralize(@with_choices, "plan") %> with choices</span>
+  </header>
+
+  <section class="admin-card">
+    <h2>Signed in</h2>
+    <table class="stats">
+      <thead><tr><th></th><% @windows.each_key do |label| %><th>Last <%= label %></th><% end %></tr></thead>
+      <tbody>
+        <tr><th>New accounts</th><% @windows.each_value do |w| %><td><%= w[:joined] %></td><% end %></tr>
+        <tr><th>Used a sign-in link</th><% @windows.each_value do |w| %><td><%= w[:signed_in] %></td><% end %></tr>
+        <tr><th>Changed their plan</th><% @windows.each_value do |w| %><td><%= w[:edited] %></td><% end %></tr>
+        <tr><th>Used an assistant</th><% @windows.each_value do |w| %><td><%= w[:assistants] %></td><% end %></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="admin-card">
+    <h2>Without signing in</h2>
+    <p class="muted">Guest plans never reach the server, so they are counted in GoatCounter: visitors on <code>/plan/guest</code>, and the events <code>guest/edited-plan</code>, <code>guest/opened-saved-plan</code> and <code>guest/exported-csv</code>.</p>
+    <% if @goatcounter_url %>
+      <%= link_to @goatcounter_url, @goatcounter_url, class: "button", target: "_blank", rel: "noopener" %>
+    <% else %>
+      <p class="muted">GOATCOUNTER_URL is not set here.</p>
+    <% end %>
+  </section>
+</main>

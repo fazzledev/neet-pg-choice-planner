@@ -646,6 +646,12 @@ a { color: var(--accent); }
 .person form { margin: 0; flex: none; }
 .admin-card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 .admin-card h2 { margin: 0; font: 700 22px/1.1 var(--font-display); }
+.stats { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.stats th, .stats td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: right; }
+.stats th:first-child { text-align: left; }
+.stats thead th { font-size: 13px; color: var(--muted); font-weight: 600; }
+.stats tbody td { font-size: 18px; font-weight: 700; }
+.admin-card .button { align-self: flex-start; }
 .admin-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: end; }
 .admin-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
 .admin-form label input:not([type=checkbox]) { width: 100%; }
@@ -956,4 +962,21 @@ a.lp-brand { color: inherit; text-decoration: none; }
 @media (min-width: 901px) {
   .lp-split-flip { grid-template-columns: 1fr 1.1fr; }
   .lp-split-flip > figure { order: -1; }
+}
+
+.cutoff { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cutoff:empty { display: none; }
+.chance { padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px solid currentColor; }
+.chance-likely { color: var(--ok); }
+.chance-possible { color: #2459d6; }
+.chance-borderline { color: #b45309; }
+.chance-reach { color: var(--danger); }
+.my-rank { display: flex; flex-direction: column; gap: 10px; padding-bottom: 16px; margin-bottom: 8px; border-bottom: 1px solid var(--border); }
+.my-rank h3 { margin: 0; font: 700 15px/1.2 var(--font-display); }
+.my-rank input[type=number] { width: 100%; }
+.my-rank .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.my-rank-note { margin: 0; font-size: 12px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .chance-possible { color: #7fa2ff; }
+  :root:not([data-theme="light"]) .chance-borderline { color: #f0b45c; }
 }

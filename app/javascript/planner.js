@@ -86,6 +86,7 @@ const root = document.getElementById("planner")
 const config = root && {
   counselling: root.dataset.counselling,
   catalogUrl: root.dataset.catalogUrl,
+  cutoffsUrl: root.dataset.cutoffsUrl,
   spriteUrl: root.dataset.iconsUrl,
   listUrl: root.dataset.listUrl,
   snapshotsUrl: root.dataset.snapshotsUrl,
@@ -140,6 +141,17 @@ const storage = {
 const deviceKey = () => `planner:${config.counselling}:device`
 const accountKey = () => `planner:${config.counselling}:account:${config.owner}`
 const synced = () => Boolean(config.listUrl)
+
+const tracked = new Set()
+
+function track(event) {
+  const name = `${synced() ? "account" : "guest"}/${event}`
+  if (tracked.has(name)) return
+  tracked.add(name)
+  const send = () => window.goatcounter?.count?.({ path: name, title: name, event: true })
+  if (document.readyState === "complete") send()
+  else window.addEventListener("load", send, { once: true })
+}
 
 function csrfToken() {
   return document.querySelector("meta[name=csrf-token]")?.content
@@ -303,6 +315,7 @@ function resultItem(c) {
   prog.replaceChildren(...programNodes(c))
   prog.title = c.program
   li.querySelector(".contact-btn").hidden = !state.contacts[c.inst.code]
+  paintCutoff(li.querySelector(".cutoff"), c)
   paintResult(li, c.id)
   return li
 }
@@ -443,6 +456,7 @@ function renderPicks() {
     const meta = li.querySelector(".p-meta")
     meta.replaceChildren(...programNodes(c), ...stateNodes(c.inst), document.createTextNode(` · ${c.quota}`))
     if (c.inst.doubtful) meta.title = DOUBTFUL_HINT
+    paintCutoff(li.querySelector(".cutoff"), c)
     li.querySelector(".p-note").value = p.note
     li.querySelector(".contact-btn").hidden = !state.contacts[c.inst.code]
     const prev = state.picks[i - 1] && state.byId.get(state.picks[i - 1].choice_id)
@@ -604,6 +618,7 @@ function changed() {
   if ($("#f-hide").checked) applyFilters(false)
   else repaintVisibleResults()
   scheduleSave()
+  track("edited-plan")
 }
 
 function addChoices(ids) {
@@ -826,6 +841,7 @@ async function loadSynced() {
 function loadDevice() {
   const device = storage.get(deviceKey())
   setPicks(device?.picks || [])
+  if (state.picks.length) track("opened-saved-plan")
   setStatus(device?.savedAt ? `Saved on this device ${new Date(device.savedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}` : "Saves on this device as you go")
 }
 
@@ -841,6 +857,7 @@ function exportCsv() {
   link.download = `choices-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}.csv`
   link.click()
   setTimeout(() => URL.revokeObjectURL(link.href), 1000)
+  track("exported-csv")
 }
 
 function fillerPayload() {
@@ -1220,6 +1237,20 @@ function bind() {
     clearTimeout(debounce)
     debounce = setTimeout(() => applyFilters(), 120)
   })
+  $("#my-rank").addEventListener("input", (e) => {
+    state.profile.rank = Number(e.target.value) || null
+    profileChanged()
+  })
+  $("#my-pwd").addEventListener("change", (e) => {
+    state.profile.pwd = e.target.checked
+    profileChanged()
+  })
+  $("#my-category").addEventListener("click", (e) => {
+    const chip = e.target.closest("[data-category]")
+    if (!chip) return
+    state.profile.category = chip.dataset.category
+    profileChanged()
+  })
   $("#f-hide").addEventListener("change", () => {
     saveFilters()
     applyFilters()
@@ -1446,11 +1477,118 @@ $("#picks-review").addEventListener("change", (e) => {
   })
 }
 
+const ROUND_LABELS = { R1: "R1", R2: "R2", R3: "R3", STRAY: "Stray", SPSTRAY: "Sp. stray" }
+const ROUND_ORDER = ["R1", "R2", "R3", "STRAY", "SPSTRAY"]
+const MAIN_ROUNDS = ["R1", "R2", "R3"]
+const CUTOFF_CAVEAT = "Past MCC results only. Seats and candidates change every year, some seats could not be matched, and labels are rough guides, not predictions."
+const profileKey = () => `planner:${config.counselling}:profile`
+const rankFormat = new Intl.NumberFormat("en-IN")
+
+function eligibleCategories() {
+  const base = state.profile.category === "Open" ? ["Open"] : ["Open", state.profile.category]
+  return state.profile.pwd ? [...base, ...base.map((category) => `${category} PwD`)] : base
+}
+
+function eligibleLabel() {
+  const base = state.profile.category === "Open" ? "Open" : `Open/${state.profile.category}`
+  return state.profile.pwd ? `${base} incl. PwD` : base
+}
+
+function cutoffYears(c) {
+  const rows = state.cutoffs?.[`${c.inst.code}|${c.brcd}|${c.quota}`]
+  if (!rows) return []
+  const eligible = new Set(eligibleCategories())
+  const byYear = new Map()
+  for (const [year, round, category, rank] of rows) {
+    if (!eligible.has(category)) continue
+    const rounds = byYear.get(year) || new Map()
+    rounds.set(round, Math.max(rounds.get(round) || 0, rank))
+    byYear.set(year, rounds)
+  }
+  return [...byYear.entries()].sort((a, b) => b[0] - a[0]).map(([year, rounds]) => {
+    let deepest = 0
+    const steps = ROUND_ORDER.filter((round) => rounds.has(round)).map((round) => {
+      deepest = Math.max(deepest, rounds.get(round))
+      return [round, deepest]
+    })
+    const main = MAIN_ROUNDS.filter((round) => rounds.has(round)).map((round) => rounds.get(round))
+    return { year, steps, main: main.length ? Math.max(...main) : null }
+  })
+}
+
+function chanceOf(rank, closing) {
+  const ratio = rank / closing
+  if (ratio <= 0.9) return ["Likely", "likely"]
+  if (ratio <= 1.05) return ["Possible", "possible"]
+  if (ratio <= 1.25) return ["Borderline", "borderline"]
+  return ["Reach", "reach"]
+}
+
+function stepsText(steps) {
+  return steps.map(([round, rank]) => `${ROUND_LABELS[round]} ${rankFormat.format(rank)}`).join(" · ")
+}
+
+function paintCutoff(el, c) {
+  if (!el) return
+  const years = cutoffYears(c)
+  if (!years.length) {
+    el.replaceChildren()
+    el.title = ""
+    return
+  }
+  const [latest] = years
+  const nodes = [document.createTextNode(`${latest.year} closing · ${eligibleLabel()}: ${stepsText(latest.steps)}`)]
+  const mains = years.map((year) => year.main).filter(Boolean)
+  if (state.profile.rank && mains.length) {
+    const [label, kind] = chanceOf(state.profile.rank, Math.min(...mains))
+    const evidence = mains.length === 1 ? "Based on 1 year." : `Based on the tightest of ${mains.length} years.`
+    nodes.push(make("span", { className: `chance chance-${kind}`, textContent: label, title: `${evidence} ${CUTOFF_CAVEAT}` }))
+  }
+  el.replaceChildren(...nodes)
+  el.title = [...years.map((year) => `${year.year}: ${stepsText(year.steps)}`), "", "Each round shows the deepest rank allotted so far.", CUTOFF_CAVEAT].join("\n")
+}
+
+function repaintCutoffs() {
+  for (const el of document.querySelectorAll("#results [data-id], #picks [data-id]")) {
+    const c = state.byId.get(Number(el.dataset.id))
+    if (c) paintCutoff(el.querySelector(".cutoff"), c)
+  }
+}
+
+function restoreProfile() {
+  const saved = storage.get(profileKey()) || {}
+  state.profile = { rank: Number(saved.rank) || null, category: ["Open", "OBC", "SC", "ST", "EWS"].includes(saved.category) ? saved.category : "Open", pwd: Boolean(saved.pwd) }
+  $("#my-rank").value = state.profile.rank || ""
+  $("#my-pwd").checked = state.profile.pwd
+  paintProfile()
+}
+
+function paintProfile() {
+  for (const chip of document.querySelectorAll("#my-category [data-category]")) {
+    chip.setAttribute("aria-checked", String(chip.dataset.category === state.profile.category))
+    chip.setAttribute("aria-pressed", String(chip.dataset.category === state.profile.category))
+  }
+}
+
+function profileChanged() {
+  storage.set(profileKey(), state.profile)
+  paintProfile()
+  repaintCutoffs()
+}
+
+async function loadCutoffs() {
+  try {
+    state.cutoffs = await api(config.cutoffsUrl)
+    repaintCutoffs()
+  } catch {}
+}
+
 async function boot() {
   showTab("catalog")
   setStatus("Loading…")
   const catalog = await api(config.catalogUrl)
   buildCatalog(catalog)
+  restoreProfile()
   bind()
   if (synced()) await loadSynced()
   else loadDevice()
@@ -1462,6 +1600,7 @@ async function boot() {
     savedView = localStorage.getItem(`planner:${config.counselling}:order-view`) || "ranked"
   } catch {}
   setOrderView(["ranked", "institute", "speciality"].includes(savedView) ? savedView : "ranked")
+  loadCutoffs()
 }
 
 if ("serviceWorker" in navigator) {

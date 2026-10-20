@@ -30,6 +30,7 @@ env:
     SMTP_USER_NAME: a5471d001@smtp-brevo.com
     SMTP_FROM: NEET PG Choice Planner <hey@fazzle.dev>
     SMTP_DOMAIN: fazzle.dev
+    GOATCOUNTER_URL: https://stats.fazzle.dev
 
 aliases:
   litestream-logs: accessory logs litestream -f
@@ -38,6 +39,8 @@ aliases:
   shell: app exec --interactive --reuse "bash"
   logs: app logs -f
   dbc: app exec --interactive --reuse "bin/rails dbconsole"
+  stats-logs: accessory logs goatcounter -f
+  stats-create-site: accessory exec goatcounter --interactive --reuse "goatcounter db create site -vhost=stats.fazzle.dev -user.email=hey@fazzle.dev"
 
 volumes:
   - "mcc_choices_storage:/rails/storage"
@@ -65,3 +68,15 @@ accessories:
       - config/litestreams/production.yml:/etc/litestream.yml
     volumes:
       - "mcc_choices_storage:/rails/storage"
+      - "goatcounter_data:/goatcounter-data"
+  goatcounter:
+    image: arp242/goatcounter:2.7.0
+    role: web
+    volumes:
+      - "goatcounter_data:/home/goatcounter/goatcounter-data"
+    proxy:
+      host: stats.fazzle.dev
+      ssl: true
+      app_port: 8080
+      healthcheck:
+        path: /status
