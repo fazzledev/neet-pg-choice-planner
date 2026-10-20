@@ -10,6 +10,6 @@ class PicksController < ApplicationController
   def update
     list = find_choice_list or return
     base = Integer(params[:base], exception: false) or raise ChoiceList::Conflict, "missing base revision"
-    render json: list.replace_picks!(params.to_unsafe_h["picks"], base: base, session_id: Current.session.id)
+    render json: list.replace_picks!(params.to_unsafe_h["picks"], base: base, label: params[:label].presence&.to_s&.first(40), session_id: Current.session.id)
   end
 end

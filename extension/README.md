@@ -1,6 +1,6 @@
 # NEET PG Choice Planner filler
 
-A Chrome extension that copies a Choice Planner order into the MCC choice-filling page, one choice per click. The student signs in to MCC themselves; the extension never solves the security pin, never handles the password or OTP, and refuses to press anything that locks choices.
+A Chrome extension that makes the MCC choice-filling list match a NEET PG Choice Planner order, or brings the MCC list into the planner. The student signs in to MCC, saves with the OTP and locks by themselves; the extension never handles the password or OTP and refuses to press anything that locks.
 
 ## Install
 
@@ -10,5 +10,6 @@ A Chrome extension that copies a Choice Planner order into the MCC choice-fillin
 ## Use
 
 1. Open Choice Planner in the same browser. The order syncs to the extension on load and after every change.
-2. Sign in to MCC and open choice filling. A panel in the corner shows the order.
-3. On Choice Filling the panel lists what differs from your order: missing, extra, or in a different position. Add next missing adds one choice per click.
+2. Sign in to MCC and open Choice Filling. The panel shows In sync, or how many choices differ.
+3. Copy to MCC adds missing choices and puts the list in the planner's order. Check it, then press Save and Continue and enter the OTP.
+4. Import from MCC reads the saved MCC list and offers to replace the planner order, which can be undone.

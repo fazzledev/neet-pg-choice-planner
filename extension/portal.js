@@ -1,4 +1,4 @@
-const key = (choice) => `${choice.instcd}|${choice.brcd}|${choice.quota}`.toLowerCase()
+const PLANNER_URL = "https://neet-pg-choice-planner.fazzle.dev/plan"
 const label = (choice) => `${choice.institute} · ${choice.program} · ${choice.quota}`
 
 const host = document.createElement("div")
@@ -7,74 +7,72 @@ const shadow = host.attachShadow({ mode: "open" })
 shadow.innerHTML = `
   <style>
     :host { all: initial; }
-    .panel { position: fixed; right: 16px; bottom: 16px; z-index: 2147483647; width: 340px; max-height: 75vh; display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 16px; background: #101423; color: #fff; font: 500 13px/1.4 system-ui, sans-serif; box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+    .panel { position: fixed; right: 16px; bottom: 16px; z-index: 2147483647; width: 340px; max-height: 75vh; display: flex; flex-direction: column; gap: 12px; padding: 14px; border-radius: 16px; background: #101423; color: #fff; font: 500 13px/1.45 system-ui, sans-serif; box-shadow: 0 12px 32px rgba(0,0,0,.35); }
     .panel.collapsed .body { display: none; }
     header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
     strong { font-size: 14px; }
-    button { font: inherit; border: 1px solid #3a3d78; background: transparent; color: #fff; border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+    p { margin: 0; }
+    button { font: inherit; border: 1px solid #3a3d78; background: transparent; color: #fff; border-radius: 10px; padding: 7px 12px; cursor: pointer; }
     button:hover:not(:disabled) { background: #3d3bf3; border-color: #3d3bf3; }
     button:disabled { opacity: .45; cursor: default; }
-    .body { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+    .body { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+    .muted { color: #aab0c6; }
+    .state { font-size: 15px; font-weight: 700; }
+    .state.ok { color: #7ee2a8; }
+    .state.warn { color: #ffd27a; }
     .actions { display: flex; flex-wrap: wrap; gap: 6px; }
-    .muted { color: #aab0c6; margin: 0; }
-    .diff { overflow: auto; max-height: 40vh; display: flex; flex-direction: column; gap: 10px; }
-    .diff:empty { display: none; }
-    .diff h3 { margin: 0 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-    .diff ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
-    .diff li { display: flex; gap: 8px; }
-    .diff .rank { flex: none; min-width: 34px; color: #aab0c6; font-variant-numeric: tabular-nums; }
-    .missing h3 { color: #ffd27a; }
-    .extra h3 { color: #ff9a9a; }
-    .moved h3 { color: #9ec5ff; }
-    .synced { color: #7ee2a8; font-weight: 600; margin: 0; }
-    .log { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
-    .log:empty { display: none; }
-    .log li.error { color: #ff9a9a; }
+    details { overflow: auto; max-height: 34vh; }
+    summary { cursor: pointer; color: #aab0c6; }
+    h3 { margin: 8px 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #aab0c6; }
+    ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; }
+    li { display: flex; gap: 8px; }
+    .rank { flex: none; min-width: 40px; color: #aab0c6; font-variant-numeric: tabular-nums; }
+    .message { padding: 8px 10px; border-radius: 10px; background: #1b2038; }
+    .message.error { color: #ff9a9a; }
   </style>
   <section class="panel">
-    <header><strong>NEET PG Choice Planner filler</strong><button type="button" data-action="collapse" aria-label="Collapse">–</button></header>
+    <header><strong>NEET PG Choice Planner</strong><button type="button" data-action="collapse" aria-label="Collapse">–</button></header>
     <div class="body">
-      <p class="muted" data-summary>Loading your order…</p>
-      <div class="diff" data-diff></div>
-      <div class="actions">
-        <button type="button" data-action="fill-next">Add next missing</button>
+      <p class="muted" data-summary></p>
+      <p class="state" data-state></p>
+      <details data-details hidden><summary>Show differences</summary><div data-diff></div></details>
+      <div class="actions" data-actions hidden>
+        <button type="button" data-action="copy">Copy to MCC</button>
+        <button type="button" data-action="import">Import from MCC</button>
       </div>
-      <ul class="log" data-log></ul>
+      <p class="message" data-message hidden></p>
     </div>
   </section>`
 document.documentElement.append(host)
 
 const $ = (selector) => shadow.querySelector(selector)
 let order = null
+let busy = false
 
-function log(text, error = false) {
-  const item = document.createElement("li")
-  item.textContent = text
-  item.classList.toggle("error", error)
-  $("[data-log]").prepend(item)
-  while ($("[data-log]").children.length > 3) $("[data-log]").lastElementChild.remove()
+function message(text, error = false) {
+  const box = $("[data-message]")
+  box.hidden = !text
+  box.textContent = text || ""
+  box.classList.toggle("error", error)
 }
 
-function mapped() {
-  return PortalAdapter.ready && PortalAdapter.isChoicePage()
-}
-
-function diff() {
+function compare() {
   const filled = PortalAdapter.readFilled()
-  const filledKeys = new Set(filled.map(key))
-  const wantedKeys = new Set(order.choices.map(key))
-  const missing = order.choices.filter((choice) => !filledKeys.has(key(choice)))
-  const extra = filled.map((choice, index) => ({ ...choice, rank: index + 1 })).filter((choice) => !wantedKeys.has(key(choice)))
-  const planned = order.choices.filter((choice) => filledKeys.has(key(choice)))
-  const actual = filled.map((choice, index) => ({ ...choice, rank: index + 1 })).filter((choice) => wantedKeys.has(key(choice)))
-  const moved = actual.filter((choice, index) => key(choice) !== key(planned[index]))
-    .map((choice) => ({ ...choice, wantedRank: order.choices.find((wanted) => key(wanted) === key(choice)).rank }))
-  return { missing, extra, moved }
+  const filledKeys = new Set(filled.map(choiceKey))
+  const plannedKeys = new Set(order.choices.map(choiceKey))
+  const missing = order.choices.filter((choice) => !filledKeys.has(choiceKey(choice)))
+  const gone = missing.filter((choice) => !PortalAdapter.availableRow(choice))
+  const addable = missing.filter((choice) => !gone.includes(choice))
+  const numbered = filled.map((choice, index) => ({ ...choice, rank: index + 1 }))
+  const extra = numbered.filter((choice) => !plannedKeys.has(choiceKey(choice)))
+  const planned = order.choices.filter((choice) => filledKeys.has(choiceKey(choice)))
+  const moved = numbered.filter((choice) => plannedKeys.has(choiceKey(choice)))
+    .filter((choice, index) => choiceKey(choice) !== choiceKey(planned[index]))
+  return { addable, gone, extra, moved, target: [...planned.map(choiceKey), ...extra.map(choiceKey)] }
 }
 
-function section(className, title, items, rank) {
-  const wrap = document.createElement("div")
-  wrap.className = className
+function group(title, items, rank) {
+  if (!items.length) return []
   const heading = document.createElement("h3")
   heading.textContent = `${title} (${items.length})`
   const list = document.createElement("ul")
@@ -88,69 +86,110 @@ function section(className, title, items, rank) {
     row.append(number, text)
     list.append(row)
   }
-  wrap.append(heading, list)
-  return wrap
+  return [heading, list]
 }
 
-function renderDiff() {
-  const box = $("[data-diff]")
-  const fillNextButton = $('[data-action="fill-next"]')
-  box.replaceChildren()
-  fillNextButton.disabled = true
-  if (!order || !mapped()) return
+function render() {
+  if (busy) return
+  const state = $("[data-state]")
+  const details = $("[data-details]")
+  details.hidden = true
+  $("[data-actions]").hidden = true
+  state.className = "state"
 
-  const { missing, extra, moved } = diff()
-  if (missing.length) box.append(section("missing", "Missing on the portal", missing, (c) => `#${c.rank}`))
-  if (extra.length) box.append(section("extra", "On the portal, not in your order", extra, (c) => `P${c.rank}`))
-  if (moved.length) box.append(section("moved", "Different position", moved, (c) => `P${c.rank}→#${c.wantedRank}`))
-  if (!box.children.length) {
-    const synced = document.createElement("p")
-    synced.className = "synced"
-    synced.textContent = "In sync: the portal matches your order."
-    box.append(synced)
+  $("[data-summary]").textContent = order
+    ? `Planner order: ${order.choices.length} choices${order.owner ? ` (${order.owner})` : ""}, synced ${new Date(order.sentAt).toLocaleString()}.`
+    : "No planner order in this browser yet. Open the planner once and it syncs here."
+
+  if (!PortalAdapter.isChoicePage()) {
+    state.textContent = "Open Choice Filling to compare."
+    return
   }
-  fillNextButton.disabled = missing.length === 0
+  if (PortalAdapter.isLocked()) {
+    state.textContent = "Your choices are locked. Nothing to copy."
+    return
+  }
+
+  $("[data-actions]").hidden = false
+  $('[data-action="import"]').disabled = PortalAdapter.readFilled().length === 0
+  if (!order) {
+    state.textContent = "MCC list found."
+    $('[data-action="copy"]').disabled = true
+    return
+  }
+
+  const { addable, gone, extra, moved } = compare()
+  const differences = addable.length + gone.length + extra.length + moved.length
+  $('[data-action="copy"]').disabled = addable.length + moved.length === 0
+  if (!differences) {
+    state.textContent = "In sync ✓"
+    state.classList.add("ok")
+    return
+  }
+  state.textContent = `${differences} ${differences === 1 ? "difference" : "differences"}`
+  state.classList.add("warn")
+  $("[data-diff]").replaceChildren(
+    ...group("Missing on MCC", addable, (c) => `#${c.rank}`),
+    ...group("In your order, no longer on MCC", gone, (c) => `#${c.rank}`),
+    ...group("Different position on MCC", moved, (c) => `MCC ${c.rank}`),
+    ...group("On MCC, not in your order", extra, (c) => `MCC ${c.rank}`),
+  )
+  details.hidden = false
 }
 
-function refresh() {
-  $("[data-summary]").textContent = !order
-    ? "No order yet. Open Choice Planner in this browser and it syncs here."
-    : `${order.choices.length} choices from Choice Planner${order.owner ? ` (${order.owner})` : ""}, synced ${new Date(order.sentAt).toLocaleString()}.${mapped() ? "" : " Open Choice Filling to see the differences."}`
-  renderDiff()
-}
-
-async function fillNext() {
-  const next = diff().missing[0]
-  if (!next) return
+async function copyToMcc() {
+  busy = true
+  $('[data-action="copy"]').disabled = true
+  $('[data-action="import"]').disabled = true
   try {
-    await PortalAdapter.add(next)
-    log(`Added #${next.rank} ${next.institute}. It is not saved until you press Save and Continue.`)
+    const { addable, gone } = compare()
+    for (const [index, choice] of addable.entries()) {
+      message(`Adding ${index + 1} of ${addable.length}…`)
+      await PortalAdapter.add(choice)
+    }
+    const { target } = compare()
+    for (let index = 0; index < target.length; index++) {
+      message(`Putting in order ${index + 1} of ${target.length}…`)
+      let at = PortalAdapter.readFilled().map(choiceKey).indexOf(target[index])
+      while (at > index) await PortalAdapter.moveUp(at--)
+    }
+    const skipped = gone.length ? ` ${gone.length} ${gone.length === 1 ? "choice is" : "choices are"} no longer on MCC and were skipped.` : ""
+    message(`Done. Check the list, then press Save and Continue and enter the OTP. Nothing is saved until you do.${skipped}`)
   } catch (error) {
-    log(error.message, true)
+    message(`Stopped: ${error.message}. Nothing has been saved; reload the page to start over.`, true)
+  } finally {
+    busy = false
+    render()
   }
-  renderDiff()
 }
 
+async function importFromMcc() {
+  const choices = PortalAdapter.readFilled().map((choice, index) => ({ ...choice, rank: index + 1 }))
+  await chrome.storage.local.set({ portalImport: { choices, readAt: new Date().toISOString() } })
+  message(`Read ${choices.length} choices from MCC. Confirm the import in the planner tab that just opened.`)
+  window.open(PLANNER_URL, "_blank", "noopener")
+}
 
 shadow.addEventListener("click", (event) => {
   const action = event.target.closest("button")?.dataset.action
   if (action === "collapse") $(".panel").classList.toggle("collapsed")
-  if (action === "fill-next") fillNext()
+  if (action === "copy") copyToMcc()
+  if (action === "import") importFromMcc().catch((error) => message(error.message, true))
 })
 
 let renderTimer
 new MutationObserver(() => {
   clearTimeout(renderTimer)
-  renderTimer = setTimeout(renderDiff, 150)
+  renderTimer = setTimeout(render, 200)
 }).observe(document.body, { childList: true, subtree: true })
 
 chrome.storage.local.get("order").then((stored) => {
   order = stored.order || null
-  refresh()
+  render()
 })
 
 chrome.storage.onChanged.addListener((changes) => {
   if (!changes.order) return
   order = changes.order.newValue
-  refresh()
+  render()
 })

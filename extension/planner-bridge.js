@@ -13,4 +13,22 @@ document.addEventListener("choice-planner:order", async (event) => {
   document.dispatchEvent(new CustomEvent("choice-filler:saved", { detail: String(order.choices.length) }))
 })
 
+async function offerImport() {
+  if (!extensionAlive()) return
+  const { portalImport } = await chrome.storage.local.get("portalImport")
+  if (portalImport) document.dispatchEvent(new CustomEvent("choice-filler:import", { detail: JSON.stringify(portalImport) }))
+}
+
+document.addEventListener("choice-planner:listening", () => offerImport().catch(() => {}))
+
+document.addEventListener("choice-planner:import-done", () => {
+  if (extensionAlive()) chrome.storage.local.remove("portalImport").catch(() => {})
+})
+
+if (extensionAlive()) {
+  chrome.storage.onChanged.addListener((changes) => {
+    if (changes.portalImport?.newValue) offerImport().catch(() => {})
+  })
+}
+
 document.dispatchEvent(new CustomEvent("choice-filler:ready"))

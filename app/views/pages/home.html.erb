@@ -13,7 +13,7 @@
   <section class="lp-hero">
     <span class="lp-kicker">NEET PG 2026 counselling</span>
     <h1>Rank your choices calmly.<br>Then fill them in minutes.</h1>
-    <p class="lp-lede">Search all <%= number_with_delimiter(@choice_count) %> choices across <%= number_with_delimiter(@institute_count) %> institutes, shape your order the way you think, and copy it to the counselling portal one click at a time.</p>
+    <p class="lp-lede">Search all <%= number_with_delimiter(@choice_count) %> choices across <%= number_with_delimiter(@institute_count) %> institutes, shape your order the way you think, and copy it to the counselling portal in one click.</p>
     <div class="lp-cta">
       <%= link_to planner_path, class: "button primary lp-big" do %>Start planning<%= icon("arrow-right") %><% end %>
       <%= link_to extension_path, class: "button lp-big" do %><%= icon("puzzle") %>Get the filler extension<% end %>
@@ -52,7 +52,7 @@
       <article class="lp-card">
         <span class="lp-icon"><%= icon("phone") %></span>
         <h3>Ask before you choose</h3>
-        <p>DNB coordinator contacts sit next to the seats, so you can check stipend, bond and duty hours first.</p>
+        <p>For shortlisted DNB hospitals, the coordinator's contact sits next to the seat, so you can ask about stipend, bond and duty hours first.</p>
       </article>
     </div>
   </section>
@@ -61,27 +61,29 @@
     <div>
       <span class="lp-kicker">Chrome extension</span>
       <h2>Copy your order to the portal</h2>
-      <p>On the choice-filling page, a small panel shows only what differs from your plan: choices still missing, ones that should not be there, and ones in a different position.</p>
+<p>Plan in Choice Planner, then let the extension make the counselling portal match. It works in Chrome on a computer.</p>
       <ol class="lp-steps">
         <li>Open the planner in Chrome. Your order syncs to the extension by itself.</li>
-        <li>Sign in to the counselling portal yourself, with your password, pin and OTP.</li>
-        <li>Press <strong>Add next missing</strong> until the panel says <em>In sync</em>, then save with the OTP.</li>
+        <li>Sign in to the counselling portal yourself and open Choice Filling. The panel says <em>In sync</em> or how many choices differ.</li>
+        <li>Press <strong>Copy to MCC</strong>. It adds what is missing and puts everything in your order. Check it, then press Save and Continue and enter the OTP.</li>
       </ol>
+      <p>Changed your list on the portal directly? <strong>Import from MCC</strong> brings it back into the planner, and you can undo it.</p>
       <%= link_to extension_path, class: "button lp-big" do %><%= icon("download") %>Install the extension<% end %>
     </div>
-    <figure class="lp-panel" aria-label="Example of the filler panel">
-      <strong>Choice Planner filler</strong>
-      <p class="lp-panel-sub">60 choices from Choice Planner, synced just now.</p>
+    <figure class="lp-panel" aria-label="Example of the extension panel">
+      <strong>NEET PG Choice Planner</strong>
+      <p class="lp-panel-sub">Planner order: 60 choices, synced just now.</p>
+      <p class="lp-panel-state">3 differences</p>
       <div class="lp-panel-group missing">
-        <h4>Missing on the portal (2)</h4>
+        <h4>Missing on MCC (2)</h4>
         <p><span>#14</span>Aster Medcity, Kochi · Orthopaedics · DNB Quota</p>
         <p><span>#15</span>Lisie Hospital, Kochi · Orthopaedics · DNB Quota</p>
       </div>
       <div class="lp-panel-group moved">
-        <h4>Different position (1)</h4>
-        <p><span>P9→#7</span>Govt. Medical College, Kozhikode · M.S. Orthopaedics</p>
+        <h4>Different position on MCC (1)</h4>
+        <p><span>MCC 9</span>Govt. Medical College, Kozhikode · M.S. Orthopaedics</p>
       </div>
-      <span class="lp-panel-btn">Add next missing</span>
+      <div class="lp-panel-actions"><span class="lp-panel-btn">Copy to MCC</span><span class="lp-panel-btn ghost">Import from MCC</span></div>
     </figure>
   </section>
 

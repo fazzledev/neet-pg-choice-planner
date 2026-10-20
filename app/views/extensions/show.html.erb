@@ -5,7 +5,7 @@
   <div class="login-card extension-card">
     <span class="login-brand">Chrome extension · v<%= @version %></span>
     <h1>MCC filler</h1>
-    <p class="muted">Copies your order into the MCC choice-filling page, one choice per click. You sign in to MCC yourself, and it never locks your choices.</p>
+    <p class="muted">Makes the MCC choice-filling list match your planner in one click, or brings MCC's list into the planner. You sign in to MCC yourself, save with the OTP yourself, and it never locks.</p>
     <div class="extension-actions">
       <%= link_to download_extension_path, class: "button primary block" do %><%= icon("download") %>Download<% end %>
       <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button block", target: "_blank", rel: "noopener" do %><%= icon("github") %>Source<% end %>
@@ -15,7 +15,7 @@
       <li>Open <code>chrome://extensions</code> <button type="button" class="button-link copy-btn" data-copy="chrome://extensions" aria-label="Copy chrome://extensions" title="Copy"><%= icon("copy") %><%= icon("check") %></button> in a new tab and turn on <strong>Developer mode</strong>.</li>
       <li>Press <strong>Load unpacked</strong> and pick that folder, the one holding <code>manifest.json</code>.</li>
       <li>Reload the planner. Your order now syncs to the extension by itself.</li>
-      <li>Sign in to MCC and open choice filling. The filler panel sits in the bottom-right corner.</li>
+      <li>Sign in to MCC and open Choice Filling. The panel in the bottom-right corner shows <em>In sync</em> or the differences, with <strong>Copy to MCC</strong> and <strong>Import from MCC</strong>.</li>
     </ol>
   </div>
 </div>

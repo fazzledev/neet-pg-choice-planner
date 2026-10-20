@@ -645,6 +645,7 @@ function scheduleSave() {
   state.dirty = true
   writeCache()
   if (!synced()) {
+    state.saveLabel = null
     setStatus(`Saved on this device ${timeNow()}`)
     return
   }
@@ -668,7 +669,8 @@ async function save() {
   state.dirty = false
   setStatus("Saving…")
   try {
-    const saved = await api(config.listUrl, { method: "PUT", body: JSON.stringify({ base: state.revision, picks: state.picks }) })
+    const saved = await api(config.listUrl, { method: "PUT", body: JSON.stringify({ base: state.revision, picks: state.picks, label: state.saveLabel }) })
+    state.saveLabel = null
     state.revision = saved.revision
     writeCache()
     setStatus(state.dirty ? "Unsaved…" : `Synced ${timeNow()}`)
@@ -835,6 +837,51 @@ function syncFiller() {
 function fillerReady() {
   $("#get-filler").hidden = true
   syncFiller()
+  document.dispatchEvent(new CustomEvent("choice-planner:listening"))
+}
+
+function choiceIdsByKey() {
+  return new Map(state.choices.map((c) => [`${c.inst.code}|${c.brcd}|${c.quota}`.toLowerCase(), c.id]))
+}
+
+function offerMccImport(event) {
+  const portal = JSON.parse(event.detail)
+  const ids = choiceIdsByKey()
+  const matched = portal.choices.map((c) => ids.get(`${c.instcd}|${c.brcd}|${c.quota}`.toLowerCase())).filter(Boolean)
+  const unknown = portal.choices.length - matched.length
+  const same = matched.length === state.picks.length && matched.every((id, i) => state.picks[i].choice_id === id)
+  state.mccImport = matched
+  $("#mcc-import-text").textContent = same
+    ? `MCC's saved list matches your order (${matched.length} choices).`
+    : `MCC has ${portal.choices.length} saved choices${unknown ? `, ${unknown} not in this catalog and left out` : ""}. Replace your order (${state.picks.length} choices) with MCC's?`
+  $("#mcc-import-apply").hidden = same || state.conflict
+  $("#mcc-import-close").textContent = same ? "Close" : "Not now"
+  $("#mcc-import").hidden = false
+  document.dispatchEvent(new CustomEvent("choice-planner:import-done"))
+}
+
+function applyMccImport() {
+  const notes = new Map(state.picks.map((p) => [p.choice_id, p.note]))
+  state.importUndo = state.picks.map((p) => ({ ...p }))
+  state.picks = state.mccImport.map((id) => ({ choice_id: id, note: notes.get(id) || "" }))
+  state.saveLabel = "Imported from MCC"
+  changed()
+  $("#mcc-import-text").textContent = `Imported ${state.picks.length} choices from MCC.`
+  $("#mcc-import-apply").hidden = true
+  $("#mcc-import-close").textContent = "Undo"
+  $("#mcc-import-close").onclick = undoMccImport
+}
+
+function undoMccImport() {
+  state.picks = state.importUndo
+  state.saveLabel = "Before MCC import"
+  changed()
+  closeMccImport()
+}
+
+function closeMccImport() {
+  $("#mcc-import").hidden = true
+  $("#mcc-import-close").onclick = closeMccImport
 }
 
 async function openHistory() {
@@ -1325,6 +1372,9 @@ $("#picks-review").addEventListener("change", (e) => {
   $("#export").addEventListener("click", exportCsv)
   if (document.documentElement.dataset.choiceFiller) fillerReady()
   document.addEventListener("choice-filler:ready", fillerReady)
+  document.addEventListener("choice-filler:import", offerMccImport)
+  $("#mcc-import-apply").addEventListener("click", applyMccImport)
+  $("#mcc-import-close").onclick = closeMccImport
   $("#history-toggle")?.addEventListener("click", openHistory)
   $("#history-close").addEventListener("click", () => ($("#history").hidden = true))
 
