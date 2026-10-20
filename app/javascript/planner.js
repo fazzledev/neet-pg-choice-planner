@@ -3,7 +3,9 @@ import { Turbo } from "@hotwired/turbo-rails"
 
 Turbo.session.drive = false
 Turbo.StreamActions.plan_changed = function () {
-  adoptRemoteChange(Number(this.getAttribute("revision")))
+  const revision = Number(this.getAttribute("revision"))
+  if (revision > (state.remoteRevision ?? 0)) state.remoteRevision = revision
+  catchUp()
 }
 
 const PAGE_SIZE = 150
@@ -693,6 +695,7 @@ async function save() {
   } finally {
     state.saving = false
   }
+  if (!state.dirty) catchUp()
 }
 
 async function handleSaveError(err) {
@@ -733,6 +736,7 @@ function offerChoice(server, message, { deviceLabel = "Keep this device's plan",
     box.hidden = true
     state.conflict = false
     onDone?.()
+    catchUp()
   }
   $("#adopt-device").onclick = () => {
     state.picks = cleanPicks(devicePicks)
@@ -752,9 +756,9 @@ function offerChoice(server, message, { deviceLabel = "Keep this device's plan",
   }
 }
 
-async function adoptRemoteChange(revision) {
+async function catchUp({ force = false } = {}) {
   const busy = () => !synced() || state.revision === null || state.saving || state.dirty || state.conflict
-  if (busy() || !(revision > state.revision)) return
+  if (busy() || !(force || state.remoteRevision > state.revision)) return
   const server = await api(config.listUrl).catch(() => null)
   if (!server || busy() || server.revision <= state.revision) return
   state.revision = server.revision
@@ -1428,7 +1432,14 @@ $("#picks-review").addEventListener("change", (e) => {
 
   window.addEventListener("online", () => {
     if (synced() && state.dirty && !state.conflict) save()
+    else catchUp({ force: true })
   })
+  const streamSource = document.querySelector("turbo-cable-stream-source")
+  if (streamSource) {
+    new MutationObserver(() => {
+      if (streamSource.hasAttribute("connected")) catchUp({ force: true })
+    }).observe(streamSource, { attributes: true, attributeFilter: ["connected"] })
+  }
   window.addEventListener("offline", () => setStatus("Offline — changes are saved on this device"))
   window.addEventListener("beforeunload", (e) => {
     if (synced() && (state.saving || (state.dirty && navigator.onLine))) e.preventDefault()
@@ -1443,6 +1454,7 @@ async function boot() {
   bind()
   if (synced()) await loadSynced()
   else loadDevice()
+  catchUp()
   renderPicks()
   applyFilters()
   let savedView = "ranked"

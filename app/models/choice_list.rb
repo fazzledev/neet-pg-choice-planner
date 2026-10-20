@@ -17,7 +17,7 @@ class ChoiceList < ApplicationRecord
 
   def replace_picks!(items, base: nil, label: nil, session_id: nil)
     rows = normalize(items)
-    transaction do
+    transaction do |tx|
       lock!
       raise Conflict, "changed elsewhere" if base && Integer(base, exception: false) != revision
 
@@ -26,9 +26,9 @@ class ChoiceList < ApplicationRecord
       Pick.insert_all(rows.each_with_index.map { |(id, note), i| { choice_list_id: self.id, choice_id: id, position: i + 1, note: note, created_at: now, updated_at: now } }) if rows.any?
       increment!(:revision)
       record_snapshot(label, session_id)
+      tx.after_commit { broadcast_revision }
     end
     picks.reset
-    Turbo::StreamsChannel.broadcast_action_to self, action: :plan_changed, target: "planner", attributes: { revision: revision }
     as_payload
   end
 
@@ -38,6 +38,10 @@ class ChoiceList < ApplicationRecord
   end
 
   private
+
+  def broadcast_revision
+    Rails.error.handle { Turbo::StreamsChannel.broadcast_action_to self, action: :plan_changed, target: "planner", attributes: { revision: revision } }
+  end
 
   def normalize(items)
     raise Invalid, "picks must be a list of objects" unless items.is_a?(Array) && items.all? { _1.respond_to?(:to_h) && !_1.is_a?(Array) }

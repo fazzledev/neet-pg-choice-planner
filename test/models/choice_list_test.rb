@@ -16,6 +16,14 @@ class ChoiceListTest < ActiveSupport::TestCase
     assert_equal 1, @list.snapshots.count
   end
 
+  test "the new revision is broadcast only once the outermost transaction commits" do
+    ChoiceList.transaction do
+      @list.replace_picks!(items(@ids))
+      assert_no_turbo_stream_broadcasts @list
+    end
+    assert_turbo_stream_broadcasts @list, count: 1
+  end
+
   test "a stale base is a conflict and changes nothing" do
     @list.replace_picks!(items(@ids), base: 0)
     assert_raises(ChoiceList::Conflict) { @list.replace_picks!(items(@ids.reverse), base: 0) }
