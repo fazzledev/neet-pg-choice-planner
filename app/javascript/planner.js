@@ -133,6 +133,17 @@ const deviceKey = () => `planner:${config.counselling}:device`
 const accountKey = () => `planner:${config.counselling}:account:${config.owner}`
 const synced = () => Boolean(config.listUrl)
 
+const tracked = new Set()
+
+function track(event) {
+  const name = `${synced() ? "account" : "guest"}/${event}`
+  if (tracked.has(name)) return
+  tracked.add(name)
+  const send = () => window.goatcounter?.count?.({ path: name, title: name, event: true })
+  if (document.readyState === "complete") send()
+  else window.addEventListener("load", send, { once: true })
+}
+
 function csrfToken() {
   return document.querySelector("meta[name=csrf-token]")?.content
 }
@@ -596,6 +607,7 @@ function changed() {
   if ($("#f-hide").checked) applyFilters(false)
   else repaintVisibleResults()
   scheduleSave()
+  track("edited-plan")
 }
 
 function addChoices(ids) {
@@ -804,6 +816,7 @@ async function loadSynced() {
 function loadDevice() {
   const device = storage.get(deviceKey())
   setPicks(device?.picks || [])
+  if (state.picks.length) track("opened-saved-plan")
   setStatus(device?.savedAt ? `Saved on this device ${new Date(device.savedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}` : "Saves on this device as you go")
 }
 
@@ -819,6 +832,7 @@ function exportCsv() {
   link.download = `choices-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}.csv`
   link.click()
   setTimeout(() => URL.revokeObjectURL(link.href), 1000)
+  track("exported-csv")
 }
 
 function fillerPayload() {

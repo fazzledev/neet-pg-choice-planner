@@ -46,5 +46,6 @@ Rails.application.routes.draw do
     resources :users, only: %i[index create] do
       member { post :invite }
     end
+    resource :stats, only: :show
   end
 end

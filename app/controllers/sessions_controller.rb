@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
   end
 
   def show
+    response.headers["Referrer-Policy"] = "no-referrer"
     @token = params[:token]
   end
 
