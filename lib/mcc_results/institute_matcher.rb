@@ -107,8 +107,9 @@ module MccResults
       return true if words.empty?
 
       squashed = squash(lead)
-      initials = lead.to_s.upcase.scan(/[A-Z]+/).map { _1[0] }.join
-      words.any? { squashed.include?(_1) || initials.include?(_1) }
+      lead_words = lead.to_s.upcase.scan(/[A-Z]+/)
+      initials = lead_words.map { _1[0] }.join
+      (lead_words & words).any? || words.any? { initials.start_with?(_1) || squashed.start_with?(_1) }
     end
 
     def segments(field)
