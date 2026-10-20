@@ -1,11 +1,16 @@
 Rails.application.routes.draw do
+  constraints(host: "mcc.fazzle.dev") do
+    match "(*path)", to: redirect { |_, request| "https://neet-pg-choices.fazzle.dev#{request.fullpath}" }, via: %i[get head]
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   resource :session, only: %i[new create destroy]
   get "sign-in/:token" => "sessions#show", as: :sign_in_link
   post "sign-in/:token" => "sessions#consume"
 
-  root "planner#show"
+  root "pages#home"
+  get "plan" => "planner#show", as: :planner
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 

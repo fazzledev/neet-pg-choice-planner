@@ -15,7 +15,7 @@ end
 module SignInHelper
   def sign_in_as(user)
     post sign_in_link_path(user.generate_token_for(:sign_in))
-    assert_redirected_to root_url
+    assert_redirected_to planner_url
   end
 end
 

@@ -8,7 +8,7 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "anyone can open the planner and the catalog without signing in" do
-    get root_path
+    get planner_path
     assert_response :success
     assert_select "#local-banner"
     get catalog_path(@counselling)
@@ -22,7 +22,7 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_nil @student.reload.last_signed_in_at
     post sign_in_link_path(token)
-    assert_redirected_to root_url
+    assert_redirected_to planner_url
     delete session_path
     post sign_in_link_path(token)
     assert_redirected_to new_session_path
@@ -59,7 +59,7 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     token = @student.generate_token_for(:invite)
     travel 3.days do
       post sign_in_link_path(token)
-      assert_redirected_to root_url
+      assert_redirected_to planner_url
     end
   end
 
@@ -72,7 +72,7 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
 
   test "a signed-in student saves their list and gets a conflict on a stale base" do
     sign_in_as @student
-    get root_path
+    get planner_path
     list = @student.choice_lists.sole
     put list_picks_path(list), params: { base: 0, picks: @ids.map { { choice_id: _1, note: "" } } }, as: :json
     assert_response :success

@@ -1,5 +1,5 @@
-const CACHE = "planner-v1"
-const SHELL = ["/"]
+const CACHE = "planner-v2"
+const SHELL = ["/plan"]
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()))
@@ -13,7 +13,7 @@ self.addEventListener("activate", (event) => {
   )
 })
 
-const cacheable = (url) => url.pathname === "/" || url.pathname.startsWith("/assets/") || url.pathname.startsWith("/catalogs/") || url.pathname === "/manifest.json" || url.pathname.startsWith("/icon")
+const cacheable = (url) => url.pathname === "/plan" || url.pathname.startsWith("/assets/") || url.pathname.startsWith("/catalogs/") || url.pathname === "/manifest.json" || url.pathname.startsWith("/icon")
 
 async function networkFirst(request) {
   const cache = await caches.open(CACHE)

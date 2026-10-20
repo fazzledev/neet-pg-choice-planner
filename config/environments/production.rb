@@ -17,7 +17,7 @@ Rails.application.configure do
   config.cache_store = :solid_cache_store
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
-  config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "mcc.fazzle.dev"), protocol: "https" }
+  config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "neet-pg-choices.fazzle.dev"), protocol: "https" }
   config.i18n.fallbacks = true
   config.active_record.dump_schema_after_migration = false
   config.active_record.attributes_for_inspect = [ :id ]

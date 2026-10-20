@@ -8,7 +8,9 @@ servers:
 
 proxy:
   ssl: true
-  host: mcc.fazzle.dev
+  hosts:
+    - neet-pg-choices.fazzle.dev
+    - mcc.fazzle.dev
   app_port: 3000
 
 registry:
@@ -22,7 +24,7 @@ env:
     - RAILS_MASTER_KEY
   clear:
     SOLID_QUEUE_IN_PUMA: true
-    APP_HOST: mcc.fazzle.dev
+    APP_HOST: neet-pg-choices.fazzle.dev
     SMTP_ADDRESS: smtp-relay.brevo.com
     SMTP_USER_NAME: a5471d001@smtp-brevo.com
     SMTP_FROM: Choice Planner <hey@fazzle.dev>

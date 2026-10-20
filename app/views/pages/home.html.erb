@@ -1,0 +1,118 @@
+<% content_for :title, "Choice Planner · plan your NEET PG choices" %>
+<% content_for :body_class, "landing" %>
+<header class="lp-nav">
+  <span class="lp-brand">Choice Planner</span>
+  <nav>
+    <%= link_to "Extension", extension_path %>
+    <%= link_to "https://github.com/fazzledev/mcc-choices", target: "_blank", rel: "noopener", "aria-label": "Source on GitHub" do %><%= icon("github") %><% end %>
+    <%= link_to "Open planner", planner_path, class: "button primary" %>
+  </nav>
+</header>
+
+<main class="lp">
+  <section class="lp-hero">
+    <span class="lp-kicker">NEET PG 2026 counselling</span>
+    <h1>Rank your choices calmly.<br>Then fill them in minutes.</h1>
+    <p class="lp-lede">Search all <%= number_with_delimiter(@choice_count) %> choices across <%= number_with_delimiter(@institute_count) %> institutes, shape your order the way you think, and copy it to the counselling portal one click at a time.</p>
+    <div class="lp-cta">
+      <%= link_to planner_path, class: "button primary lp-big" do %>Start planning<%= icon("arrow-right") %><% end %>
+      <%= link_to extension_path, class: "button lp-big" do %><%= icon("puzzle") %>Get the filler extension<% end %>
+    </div>
+    <p class="lp-note"><%= icon("shield-check") %>Free and open source. No account needed. Works offline.</p>
+  </section>
+
+  <section class="lp-section">
+    <h2>Everything the portal makes hard</h2>
+    <div class="lp-grid">
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("search") %></span>
+        <h3>Find seats fast</h3>
+        <p>Search by college, city or speciality. Filter by course, state, institute type and quota, with as many picks per filter as you like.</p>
+      </article>
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("layers") %></span>
+        <h3>Group the way you think</h3>
+        <p>See the catalog and your order grouped by institute or by speciality, so you can compare options side by side.</p>
+      </article>
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("grip-vertical") %></span>
+        <h3>Drag to rank</h3>
+        <p>Reorder by dragging or by typing a rank, gather a college's seats together, and keep a note on every choice.</p>
+      </article>
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("wifi-off") %></span>
+        <h3>Works offline</h3>
+        <p>Your order is saved in your browser as you go. A dropped connection or a portal outage costs you nothing.</p>
+      </article>
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("cloud") %></span>
+        <h3>Sync and undo</h3>
+        <p>Sign in with an emailed link to use the same order on phone and laptop, with a history you can restore from.</p>
+      </article>
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("phone") %></span>
+        <h3>Ask before you choose</h3>
+        <p>DNB coordinator contacts sit next to the seats, so you can check stipend, bond and duty hours first.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="lp-section lp-split">
+    <div>
+      <span class="lp-kicker">Chrome extension</span>
+      <h2>Copy your order to the portal</h2>
+      <p>On the choice-filling page, a small panel shows only what differs from your plan: choices still missing, ones that should not be there, and ones in a different position.</p>
+      <ol class="lp-steps">
+        <li>Open the planner in Chrome. Your order syncs to the extension by itself.</li>
+        <li>Sign in to the counselling portal yourself, with your password, pin and OTP.</li>
+        <li>Press <strong>Add next missing</strong> until the panel says <em>In sync</em>, then save with the OTP.</li>
+      </ol>
+      <%= link_to extension_path, class: "button lp-big" do %><%= icon("download") %>Install the extension<% end %>
+    </div>
+    <figure class="lp-panel" aria-label="Example of the filler panel">
+      <strong>Choice Planner filler</strong>
+      <p class="lp-panel-sub">60 choices from Choice Planner, synced just now.</p>
+      <div class="lp-panel-group missing">
+        <h4>Missing on the portal (2)</h4>
+        <p><span>#14</span>Aster Medcity, Kochi · Orthopaedics · DNB Quota</p>
+        <p><span>#15</span>Lisie Hospital, Kochi · Orthopaedics · DNB Quota</p>
+      </div>
+      <div class="lp-panel-group moved">
+        <h4>Different position (1)</h4>
+        <p><span>P9→#7</span>Govt. Medical College, Kozhikode · M.S. Orthopaedics</p>
+      </div>
+      <span class="lp-panel-btn">Add next missing</span>
+    </figure>
+  </section>
+
+  <section class="lp-section lp-trust">
+    <h2>You stay in control</h2>
+    <div class="lp-grid three">
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("shield-check") %></span>
+        <h3>Never locks</h3>
+        <p>The extension refuses anything that locks choices. Saving and locking stay with you.</p>
+      </article>
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("eye") %></span>
+        <h3>Never signs in for you</h3>
+        <p>You type your portal password, pin and OTP. Choice Planner never sees them.</p>
+      </article>
+      <article class="lp-card">
+        <span class="lp-icon"><%= icon("github") %></span>
+        <h3>Open source</h3>
+        <p>Every line is on GitHub under the MIT license, so anyone can check what it does.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="lp-final">
+    <h2>Your order, ready before the round opens</h2>
+    <%= link_to planner_path, class: "button primary lp-big" do %>Start planning<%= icon("arrow-right") %><% end %>
+  </section>
+</main>
+
+<footer class="lp-foot">
+  <p>Choice Planner is an independent tool and is not affiliated with the Medical Counselling Committee, NBEMS or the Government of India. Choice data comes from the lists the Medical Counselling Committee publishes; always confirm on the official portal before locking.</p>
+  <p><%= link_to "Source on GitHub", "https://github.com/fazzledev/mcc-choices", target: "_blank", rel: "noopener" %> · MIT license</p>
+</footer>

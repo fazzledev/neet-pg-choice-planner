@@ -1,7 +1,7 @@
 <% content_for :title, "Students · Choice Planner" %>
 <main class="admin">
   <header class="admin-head">
-    <%= link_to root_path, class: "button button-ghost back" do %><%= icon("arrow-left") %><span>Planner</span><% end %>
+    <%= link_to planner_path, class: "button button-ghost back" do %><%= icon("arrow-left") %><span>Planner</span><% end %>
     <h1>Students</h1>
     <span class="muted"><%= pluralize(@users.size, "person") %></span>
   </header>

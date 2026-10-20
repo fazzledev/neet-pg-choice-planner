@@ -1,7 +1,7 @@
 <% content_for :body_class, "login" %>
 <% content_for :javascript_entry, "copy" %>
 <div class="extension-page">
-  <%= link_to root_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
+  <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
   <div class="login-card extension-card">
     <span class="login-brand">Chrome extension · v<%= @version %></span>
     <h1>MCC filler</h1>
