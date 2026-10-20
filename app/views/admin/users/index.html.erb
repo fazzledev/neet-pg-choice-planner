@@ -14,7 +14,7 @@
           <span class="person-name"><%= user.name.presence || user.email %><% if user.admin? %> <span class="badge badge-md">Admin</span><% end %></span>
           <% if user.name.present? %><span class="muted person-email"><%= user.email %></span><% end %>
           <span class="person-meta">
-            <%= list ? link_to("#{pluralize(list.picks.size, "choice")} · open order", list_path(list)) : "No order yet" %>
+            <%= list ? link_to("#{pluralize(list.picks.size, "choice")} · open plan", list_path(list)) : "No plan yet" %>
             <span class="muted">· <%= user.last_signed_in_at ? "signed in #{time_ago_in_words(user.last_signed_in_at)} ago" : "never signed in" %></span>
             <% if user.roll_number.present? %><span class="muted">· Roll <%= user.roll_number %></span><% end %>
           </span>

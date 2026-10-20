@@ -6,7 +6,7 @@
     <p>Check your email. If that address can sign in, a link is on its way. It works once and expires in <%= User::SIGN_IN_LINK_TTL.inspect %>.</p>
     <p><%= link_to "Back to the planner", planner_path %></p>
   <% else %>
-    <p class="muted">Sign in to sync your order across devices. You can also keep using the planner without an account; it saves on this device.</p>
+    <p class="muted">Sign in to sync your plan across devices. You can also keep using the planner without an account; it saves on this device.</p>
     <%= f.label :email, "Email" %>
     <%= f.email_field :email, autocomplete: "email", autofocus: true, required: true %>
     <button type="submit" class="primary">Email me a sign-in link</button>

@@ -347,7 +347,7 @@ function groupCard(group) {
   if (mode === "speciality") head.firstChild.append(iconSvg(config.spriteUrl, first.icon, "icon icon-spec"))
   const text = make("div", { className: "g-text" })
   const picked = group.items.filter((c) => state.pickIndex.has(c.id)).length
-  const count = `${group.items.length} ${mode === "institute" ? (group.items.length === 1 ? "program" : "programs") : group.items.length === 1 ? "institute" : "institutes"}${picked ? ` · ${picked} in your order` : ""}`
+  const count = `${group.items.length} ${mode === "institute" ? (group.items.length === 1 ? "program" : "programs") : group.items.length === 1 ? "institute" : "institutes"}${picked ? ` · ${picked} in your plan` : ""}`
   text.append(make("span", { className: "g-title", textContent: group.label, title: mode === "institute" ? first.inst.name : "" }))
   if (mode === "institute") {
     const meta = make("span", { className: "g-meta" })
@@ -408,7 +408,7 @@ function paintResult(li, id) {
   const btn = li.querySelector(".r-add")
   li.classList.toggle("added", at !== undefined)
   btn.textContent = at === undefined ? "+" : `#${at + 1}`
-  btn.setAttribute("aria-label", at === undefined ? "Add to end of my order" : `In my order at number ${at + 1}, show it`)
+  btn.setAttribute("aria-label", at === undefined ? "Add to end of my plan" : `In my plan at number ${at + 1}, show it`)
 }
 
 function repaintVisibleResults() {
@@ -468,7 +468,7 @@ function paintAlso(li, end, c) {
   box.hidden = elsewhere.length === 0
   if (!elsewhere.length) return
   const list = elsewhere.slice(0, 3).map((x) => `${x.c.speciality} at #${x.i + 1}`).join(", ")
-  li.querySelector(".p-also-text").textContent = `Also in your order: ${list}${elsewhere.length > 3 ? ` +${elsewhere.length - 3}` : ""}`
+  li.querySelector(".p-also-text").textContent = `Also in your plan: ${list}${elsewhere.length > 3 ? ` +${elsewhere.length - 3}` : ""}`
   li.querySelector(".p-gather").textContent = elsewhere[0].i < start ? "Move up next to them" : "Bring here"
 }
 
@@ -698,7 +698,7 @@ async function handleSaveError(err) {
       writeCache()
       setStatus(`Synced ${timeNow()}`)
     } else if (server) {
-      offerChoice(server, "Your order was changed on another device while this one had unsynced edits.")
+      offerChoice(server, "Your plan was changed on another device while this one had unsynced edits.")
     } else {
       setStatus("Changed on another device. Reload to resolve.", true)
       state.conflict = true
@@ -713,7 +713,7 @@ async function handleSaveError(err) {
   }
 }
 
-function offerChoice(server, message, { deviceLabel = "Keep this device's order", accountLabel = "Use my account's order", devicePicks = state.picks, onDone } = {}) {
+function offerChoice(server, message, { deviceLabel = "Keep this device's plan", accountLabel = "Use my account's plan", devicePicks = state.picks, onDone } = {}) {
   state.conflict = true
   clearTimeout(state.saveTimer)
   const box = $("#adopt")
@@ -721,7 +721,7 @@ function offerChoice(server, message, { deviceLabel = "Keep this device's order"
   $("#adopt-device").textContent = deviceLabel
   $("#adopt-account").textContent = accountLabel
   box.hidden = false
-  setStatus("Choose which order to keep", true)
+  setStatus("Choose which plan to keep", true)
 
   const finish = () => {
     box.hidden = true
@@ -791,9 +791,9 @@ async function loadSynced() {
     } else if (samePicks(devicePicks, server.picks)) {
       clearDevice()
     } else {
-      offerChoice(server, "You made an order on this device before signing in, and your account already has one.", {
-        deviceLabel: "Use the order from before I signed in",
-        accountLabel: "Keep my account's order",
+      offerChoice(server, "You made a plan on this device before signing in, and your account already has one.", {
+        deviceLabel: "Use the plan from before I signed in",
+        accountLabel: "Keep my account's plan",
         devicePicks,
         onDone: clearDevice,
       })
@@ -858,8 +858,8 @@ function offerMccImport(event) {
   const same = matched.length === state.picks.length && matched.every((id, i) => state.picks[i].choice_id === id)
   state.mccImport = matched
   $("#mcc-import-text").textContent = same
-    ? `MCC's saved list matches your order (${matched.length} choices).`
-    : `MCC has ${portal.choices.length} saved choices${unknown ? `, ${unknown} not in this catalog and left out` : ""}. Replace your order (${state.picks.length} choices) with MCC's?`
+    ? `MCC's saved list matches your plan (${matched.length} choices).`
+    : `MCC has ${portal.choices.length} saved choices${unknown ? `, ${unknown} not in this catalog and left out` : ""}. Replace your plan (${state.picks.length} choices) with MCC's?`
   $("#mcc-import-apply").hidden = same || state.conflict
   $("#mcc-import-close").textContent = same ? "Close" : "Not now"
   $("#mcc-import").hidden = false
@@ -1390,7 +1390,7 @@ $("#picks-review").addEventListener("change", (e) => {
   $("#sign-out")?.addEventListener("submit", async (e) => {
     if (state.conflict) {
       e.preventDefault()
-      setStatus("Choose which order to keep before signing out.", true)
+      setStatus("Choose which plan to keep before signing out.", true)
       return
     }
     if (state.saving || state.dirty) {

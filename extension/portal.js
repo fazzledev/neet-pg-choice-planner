@@ -102,8 +102,8 @@ function render() {
   state.className = "state"
 
   $("[data-summary]").textContent = order
-    ? `Planner order: ${order.choices.length} choices${order.owner ? ` (${order.owner})` : ""}, synced ${new Date(order.sentAt).toLocaleString()}.`
-    : "No planner order in this browser yet. Open the planner once and it syncs here."
+    ? `Your plan: ${order.choices.length} choices${order.owner ? ` (${order.owner})` : ""}, synced ${new Date(order.sentAt).toLocaleString()}.`
+    : "No plan in this browser yet. Open the planner once and it syncs here."
 
   if (!PortalAdapter.isChoicePage()) {
     state.textContent = "Open Choice Filling to compare."
@@ -133,10 +133,10 @@ function render() {
   state.textContent = `${differences} ${differences === 1 ? "difference" : "differences"}`
   state.classList.add("warn")
   $("[data-diff]").replaceChildren(
-    ...group("Missing on MCC", addable, (c) => `#${c.rank}`),
-    ...group("In your order, no longer on MCC", gone, (c) => `#${c.rank}`),
-    ...group("Different position on MCC", moved, (c) => `MCC ${c.rank}`),
-    ...group("On MCC, not in your order", extra, (c) => `MCC ${c.rank}`),
+    ...group("In your plan, not on MCC yet", addable, (c) => `#${c.rank}`),
+    ...group("In your plan, but MCC no longer offers it", gone, (c) => `#${c.rank}`),
+    ...group("On MCC at a different rank", moved, (c) => `MCC #${c.rank}`),
+    ...group("Saved on MCC, not in your plan", extra, (c) => `MCC #${c.rank}`),
   )
   details.hidden = false
 }
@@ -161,7 +161,7 @@ async function copyToMcc(resumes = 0) {
     }
     const { target } = compare()
     for (let index = 0; index < target.length; index++) {
-      message(`Putting in order ${index + 1} of ${target.length}…`)
+      message(`Arranging ${index + 1} of ${target.length}…`)
       let at = PortalAdapter.readFilled().map(choiceKey).indexOf(target[index])
       while (at > index) {
         stopIfAsked()

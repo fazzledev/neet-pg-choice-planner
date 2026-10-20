@@ -38,12 +38,12 @@
   <% end %>
   <div id="adopt" class="banner warn" hidden>
     <span id="adopt-text"></span>
-    <button type="button" id="adopt-device" class="primary">Use this device's order</button>
-    <button type="button" id="adopt-account">Use my account's order</button>
+    <button type="button" id="adopt-device" class="primary">Use this device's plan</button>
+    <button type="button" id="adopt-account">Use my account's plan</button>
   </div>
   <div id="mcc-import" class="banner warn" hidden>
     <span id="mcc-import-text"></span>
-    <button type="button" id="mcc-import-apply" class="primary">Replace my order</button>
+    <button type="button" id="mcc-import-apply" class="primary">Replace my plan</button>
     <button type="button" id="mcc-import-close">Not now</button>
   </div>
 
@@ -71,10 +71,10 @@
       <button type="button" id="more" class="more" hidden>Show more</button>
     </section>
 
-    <section class="pane order" data-pane="order" aria-label="My order">
+    <section class="pane order" data-pane="order" aria-label="My plan">
       <div class="order-head">
         <div class="order-title">
-          <h2>My order</h2>
+          <h2>My plan</h2>
           <span class="order-sub"><span id="order-count"></span></span>
         </div>
         <% if @list %>
@@ -83,14 +83,14 @@
         <%= link_to extension_path, id: "get-filler", class: "button icon-btn", "aria-label": "Get the MCC filler extension", title: "Get the MCC filler extension" do %><%= icon("puzzle") %><% end %>
         <button type="button" id="export" class="icon-btn" aria-label="Export CSV"><%= icon("download") %></button>
       </div>
-      <div class="segmented" role="radiogroup" aria-label="View my order" id="order-view">
+      <div class="segmented" role="radiogroup" aria-label="View my plan" id="order-view">
         <button type="button" role="radio" data-view="ranked" aria-checked="true">Ranked</button>
         <button type="button" role="radio" data-view="institute" aria-checked="false">Institute</button>
         <button type="button" role="radio" data-view="speciality" aria-checked="false">Speciality</button>
       </div>
       <label class="search search-small" for="order-q">
         <%= icon("search") %>
-        <input id="order-q" type="search" placeholder="Find in my order" autocomplete="off">
+        <input id="order-q" type="search" placeholder="Find in my plan" autocomplete="off">
       </label>
       <ol id="picks" class="picks" aria-busy="true">
         <% 4.times do |i| %>
@@ -104,7 +104,7 @@
 
   <nav class="tabs" aria-label="Sections">
     <button type="button" data-tab="catalog" class="active"><%= icon("search") %>Catalog</button>
-    <button type="button" data-tab="order"><%= icon("list-ordered") %>My order <span id="tab-count" class="count-badge">0</span></button>
+    <button type="button" data-tab="order"><%= icon("list-ordered") %>My plan <span id="tab-count" class="count-badge">0</span></button>
   </nav>
 
   <div id="sheet-backdrop" class="backdrop" hidden></div>
@@ -119,7 +119,7 @@
       <div id="facets"></div>
       <label class="switch">
         <input id="f-hide" type="checkbox">
-        <span>Hide choices already in my order</span>
+        <span>Hide choices already in my plan</span>
       </label>
     </div>
     <div class="sheet-foot">
