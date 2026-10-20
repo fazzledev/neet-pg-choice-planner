@@ -30,4 +30,22 @@ namespace :cutoffs do
       result.mismatched_pages.first(5).each { |page, parsed, layout| puts "  page #{page}: parsed #{parsed.inspect} layout #{layout.inspect}" }
     end
   end
+
+  desc "Match parsed allotments to the catalog and write closing ranks to data/cutoffs/closing_ranks.json"
+  task closing: :environment do
+    catalog = JSON.parse(Rails.root.join("data/available_choices.json").read)
+    courses = YAML.load_file(Rails.root.join("data/cutoffs/course_codes.yml"))
+    result = MccResults::ClosingRanks.new(catalog:, courses:, allotments: Dir[Rails.root.join("data/allotments/*.csv")]).build
+
+    Rails.root.join("data/cutoffs/closing_ranks.json").write(JSON.generate(MccResults::ClosingRanks.serialize(result.ranks)))
+    report = ["| File | All India + DNB rows | Matched | Course not in catalog | Not offered now | Institute unmatched |", "|---|---|---|---|---|---|"]
+    result.stats.sort.each do |file, counts|
+      report << "| #{file} | #{counts[:rows]} | #{counts[:matched]} (#{(100.0 * counts[:matched] / counts[:rows]).round(1)}%) | #{counts[:course_not_in_catalog]} | #{counts[:not_offered_now]} | #{counts[:institute_unmatched]} |"
+    end
+    report << "" << "## Most frequent unmatched institutes" << ""
+    result.unmatched.sort_by { -_2 }.first(60).each { |(quota, code, institute), count| report << "- #{count} × #{quota} #{code}: #{institute}" }
+    Rails.root.join("data/cutoffs/match_report.md").write(report.join("\n") + "\n")
+    puts report.first(17)
+    puts "#{result.ranks.size} choices with closing ranks"
+  end
 end
