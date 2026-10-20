@@ -109,25 +109,15 @@
       <p>It can't reach the counselling portal. Copying to MCC still goes through the extension, and locking stays with you.</p>
       <%= link_to connect_path, class: "button lp-big" do %><%= icon("sparkles") %>Connect your assistant<% end %>
     </div>
-    <figure class="lp-shot lp-shot-chat" aria-label="Screenshot of an AI assistant adding choices to a plan through the planner connector">
+    <figure class="lp-shot lp-shot-chat" aria-label="Example of ChatGPT adding choices to a plan through the planner connector">
       <div class="lp-shot-bar"><span></span><span></span><span></span><em>chatgpt.com</em></div>
       <div class="lp-chat">
         <div class="lp-chat-side" aria-hidden="true"><% 6.times do %><i></i><% end %></div>
         <div class="lp-chat-main">
           <p class="lp-chat-you">Add MD Radiodiagnosis seats in Karnataka after my top five.</p>
-          <p class="lp-chat-tool"><%= icon("search") %>Searched choices · 11 found</p>
-          <p class="lp-chat-tool"><%= icon("list-ordered") %>Add to plan · 11 choices</p>
-          <p class="lp-chat-ai">Done. Your plan now has 71 choices. Want them ordered by city instead?</p>
-        </div>
-      </div>
-      <div class="lp-panel">
-        <strong>NEET PG Choice Planner</strong>
-        <p class="lp-panel-sub">Connector · Add to plan</p>
-        <p class="lp-panel-state">60 → 71 choices</p>
-        <div class="lp-panel-group added">
-          <h4>Added at #6–#16 (11)</h4>
-          <p><span>#6</span>Bangalore Medical College · Radiodiagnosis · All India</p>
-          <p><span>#16</span>Shimoga Inst. of Medical Sciences · Radiodiagnosis · All India</p>
+          <p class="lp-chat-tool"><%= icon("search") %>NEET PG Choice Planner · Search choices</p>
+          <p class="lp-chat-tool"><%= icon("list-ordered") %>NEET PG Choice Planner · Add to plan</p>
+          <p class="lp-chat-ai">Done. I found 11 MD Radiodiagnosis seats in Karnataka and added them at #6 to #16, from Bangalore Medical College to Shimoga Institute of Medical Sciences. Want them ordered by city instead?</p>
         </div>
       </div>
     </figure>
