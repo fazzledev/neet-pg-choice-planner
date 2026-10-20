@@ -16,3 +16,19 @@ dbs:
     sync-interval: 1m
     retention: 168h
     retention-check-interval: 1h
+- path: "/goatcounter-data/db.sqlite3"
+  monitor-interval: 1m
+  checkpoint-interval: 5m
+  replicas:
+  - name: primary
+    type: s3
+    access-key-id: "${S3_ACCESS_KEY_ID}"
+    secret-access-key: "${S3_SECRET_ACCESS_KEY}"
+    endpoint: https://nbg1.your-objectstorage.com
+    region: nbg1
+    bucket: 0-dbs--mcc-fazzle-dev
+    path: "/goatcounter.sqlite3"
+    sign-payload: true
+    sync-interval: 1m
+    retention: 168h
+    retention-check-interval: 1h

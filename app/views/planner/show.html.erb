@@ -1,5 +1,6 @@
 <% content_for :title, "NEET PG Choice Planner" %>
 <% content_for :javascript_entry, "application" %>
+<% content_for :analytics_path, "/plan/guest" unless authenticated? %>
 <div id="planner" class="busy"
      data-counselling="<%= @counselling.slug %>"
      data-catalog-url="<%= catalog_path(@counselling) %>"
@@ -22,6 +23,7 @@
           <div class="menu-pop">
             <span class="menu-email"><%= current_user.email %></span>
             <% if current_user.admin? %><%= link_to admin_users_path, class: "menu-item" do %><%= icon("users") %>Students<% end %><% end %>
+            <% if current_user.admin? %><%= link_to admin_stats_path, class: "menu-item" do %><%= icon("activity") %>Stats<% end %><% end %>
             <%= button_to session_path, method: :delete, form: { id: "sign-out" }, class: "menu-item" do %><%= icon("log-out") %>Sign out<% end %>
           </div>
         </details>

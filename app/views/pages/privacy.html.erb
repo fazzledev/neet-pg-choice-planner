@@ -10,7 +10,7 @@
   <p class="lp-lede">NEET PG Choice Planner is a free, independent tool run by <%= link_to "Syed Fazil Basheer", "https://fazzle.dev" %>. This page says what it keeps, why, and how to have it deleted. Last updated <%= Date.new(2026, 10, 21).to_fs(:long) %>.</p>
 
   <h2>Without signing in</h2>
-  <p>Your plan stays in your own browser. Nothing you plan is sent to us.</p>
+  <p>Your plan stays in your own browser. The choices you pick are never sent to us.</p>
 
   <h2>If you sign in</h2>
   <ul>
@@ -19,11 +19,14 @@
     <li><strong>Your signed-in devices</strong>: the browser name and IP address of each sign-in, so a session can be recognised and ended.</li>
     <li><strong>A name and NEET PG roll number</strong>, only if an administrator added you as a student and filled them in.</li>
   </ul>
-  <p>We use this only to run the planner. We do not sell it, show ads, or use analytics or tracking cookies. The only cookies keep you signed in.</p>
+  <p>We use this only to run the planner. We do not sell it, show ads, or use tracking cookies. The only cookies keep you signed in.</p>
+
+  <h2>Visit counts</h2>
+  <p>To learn how many people use the planner, each page view is counted with <%= link_to "GoatCounter", "https://www.goatcounter.com", target: "_blank", rel: "noopener" %>, which we run on our own server. It records the page, whether you are signed in, the site you came from, your browser, screen size and country, and a few actions such as editing or exporting a plan. It does not record what you picked, sets no cookies, and does not store your IP address or anything that identifies you.</p>
 
   <h2>Where it is kept and who helps</h2>
   <ul>
-    <li>The app and its database run on a server in Germany (Hetzner), with backups in Hetzner object storage, also in Germany.</li>
+    <li>The app, its database and the visit counts run on a server in Germany (Hetzner), with backups in Hetzner object storage, also in Germany.</li>
     <li>Sign-in emails are sent through Brevo.</li>
     <li>Fonts load from Google Fonts, which sees your IP address when they load.</li>
   </ul>

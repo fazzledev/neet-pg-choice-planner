@@ -646,6 +646,12 @@ a { color: var(--accent); }
 .person form { margin: 0; flex: none; }
 .admin-card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 .admin-card h2 { margin: 0; font: 700 22px/1.1 var(--font-display); }
+.stats { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.stats th, .stats td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: right; }
+.stats th:first-child { text-align: left; }
+.stats thead th { font-size: 13px; color: var(--muted); font-weight: 600; }
+.stats tbody td { font-size: 18px; font-weight: 700; }
+.admin-card .button { align-self: flex-start; }
 .admin-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: end; }
 .admin-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
 .admin-form label input:not([type=checkbox]) { width: 100%; }
