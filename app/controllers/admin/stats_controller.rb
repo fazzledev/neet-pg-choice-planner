@@ -11,7 +11,7 @@ module Admin
         {
           joined: @signed_in.where(created_at: span.ago..).count,
           signed_in: @signed_in.where(last_signed_in_at: span.ago..).count,
-          edited: ChoiceList.joins(:snapshots).where(snapshots: { created_at: span.ago.. }).distinct.count(:user_id),
+          edited: ChoiceList.where(counselling: current_counselling).joins(:snapshots).where(snapshots: { created_at: span.ago.. }).distinct.count(:user_id),
           assistants: OauthGrant.where(last_used_at: span.ago..).distinct.count(:user_id)
         }
       end

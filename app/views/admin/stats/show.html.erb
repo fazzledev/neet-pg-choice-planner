@@ -12,7 +12,7 @@
       <thead><tr><th></th><% @windows.each_key do |label| %><th>Last <%= label %></th><% end %></tr></thead>
       <tbody>
         <tr><th>New accounts</th><% @windows.each_value do |w| %><td><%= w[:joined] %></td><% end %></tr>
-        <tr><th>Signed in</th><% @windows.each_value do |w| %><td><%= w[:signed_in] %></td><% end %></tr>
+        <tr><th>Used a sign-in link</th><% @windows.each_value do |w| %><td><%= w[:signed_in] %></td><% end %></tr>
         <tr><th>Changed their plan</th><% @windows.each_value do |w| %><td><%= w[:edited] %></td><% end %></tr>
         <tr><th>Used an assistant</th><% @windows.each_value do |w| %><td><%= w[:assistants] %></td><% end %></tr>
       </tbody>
