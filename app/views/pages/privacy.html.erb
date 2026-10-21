@@ -22,7 +22,7 @@
   <p>We use this only to run the planner. We do not sell it, show ads, or use tracking cookies. The only cookies keep you signed in and protect forms from forgery.</p>
 
   <h2>Visit counts</h2>
-  <p>To learn how many people use the planner, each page view is counted with <%= link_to "GoatCounter", "https://www.goatcounter.com", target: "_blank", rel: "noopener" %>, which we run on our own server. It records the page and its title, whether you are signed in, the site you came from and any campaign tag in the link, your browser and operating system, screen size and country (and region, for visitors from the US, Russia or China), and a few actions such as editing or exporting a plan, or which link you clicked on the home page. It does not record what you picked, sets no cookies, and does not store your IP address or anything that identifies you.</p>
+  <p>To learn how many people use the planner, each page view is counted with <%= link_to "GoatCounter", "https://www.goatcounter.com", target: "_blank", rel: "noopener" %>, which we run on our own server. It records the page and its title, whether you are signed in, the site you came from and any campaign tag in the link, your browser and operating system, screen size and country (and region, for visitors from the US, Russia or China), and which actions you took in the planner: searching, filtering, entering a rank, adding, moving or noting a choice, exporting, and roughly how many choices your plan has (in bands such as 11–50). Each action is counted at most once per page view, and which link you clicked on the home page is counted too. If you are offline, these counts wait in your browser and are sent when you are back online. It does not record what you searched for, your rank, what you picked, sets no cookies, and does not store your IP address or anything that identifies you.</p>
   <p>So we can see how many people are using the planner right now, each open page also tells our own server once a minute that it is open and visible. It sends only a random number kept in that tab, which is forgotten when you close it, and whether you are signed in. We keep that for a day.</p>
 
   <h2>Where it is kept and who helps</h2>
@@ -33,7 +33,7 @@
   </ul>
 
   <h2>The Chrome extension</h2>
-  <p>The extension keeps a copy of your plan in your own browser and reads the MCC choice-filling page only when it is open. It never sees your MCC password, security pin or OTP, and it sends nothing to us or anyone else.</p>
+  <p>The extension keeps a copy of your plan in your own browser and reads the MCC choice-filling page only when it is open. It never sees your MCC password, security pin or OTP, and it makes no network requests of its own. When it copies your plan to MCC or reads MCC's list back, it notes that it did, with the number of choices in the same rough bands, and hands only those notes to the planner the next time you open it, which counts them with the visit counts above. It never records which choices.</p>
 
   <h2>ChatGPT, Claude and other assistants</h2>
   <p>If you connect an AI assistant, we keep its name, the address it returns to, the IP address you allowed it from, when you connected it and when it last used the planner, so you can see it and disconnect it on the <%= link_to "connect page", connect_path %>. It can read the catalog, your email address and name, and your plan, and change your plan, nothing else. What you say to the assistant, and the results it gets from the planner, are handled by that assistant's company under its own privacy policy.</p>
