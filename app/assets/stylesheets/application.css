@@ -760,12 +760,11 @@ a { color: var(--accent); }
 }
 
 .g-row:first-child { border-top: 0; }
-.g-row.added { background: var(--accent-soft); }
 .g-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .g-row-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 600; font-size: 15px; }
 .g-row-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); }
 .g-row .r-add { width: 38px; height: 38px; min-height: 38px; font-size: 22px; box-shadow: none; }
-.g-row.added .r-add { min-width: 50px; height: 36px; min-height: 36px; }
+.g-row.added .r-add { width: auto; min-width: 50px; padding: 0 10px; height: 36px; min-height: 36px; }
 .g-row .contact-btn.icon-only { width: 36px; height: 36px; min-height: 36px; }
 .g-foot { display: flex; justify-content: space-between; gap: 8px; padding: 6px 10px; border-top: 1px solid var(--border); }
 .chip-group { background: var(--surface); }
@@ -814,7 +813,8 @@ button.primary, .button.primary, .r-add {
 }
 
 .result.added { background: var(--accent-soft); border-color: var(--accent-line); }
-.result.added .r-add, .g-row.added .r-add { background: var(--surface); border-color: var(--accent); color: var(--accent-ink); font-size: 15px; font-weight: 700; }
+.result.added .r-add, .g-row.added .r-add { display: inline-flex; align-items: center; justify-content: center; gap: 4px; background: var(--surface); border-color: var(--accent); color: var(--accent-ink); font-size: 15px; font-weight: 700; }
+.r-add .icon { width: 15px; height: 15px; }
 .rank-chip, .best-rank { background: transparent; border: 0; color: var(--text); }
 .count-badge { background: transparent; color: inherit; border: 1px solid currentColor; }
 .filters-btn .count-badge { background: var(--ink); color: var(--on-ink); border-color: var(--on-ink); }
@@ -830,10 +830,11 @@ button.primary, .button.primary, .r-add {
     color: #fff;
   }
 
-  .result.added:hover .r-add, .g-row.added:hover .r-add { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-ink); }
+  .result.added:hover .r-add, .g-row.added:hover .r-add { background: var(--accent); border-color: var(--accent); color: #fff; }
   .review .g-row:hover .rank-chip { background: var(--accent); color: #fff; }
   .result:hover { border-color: var(--accent-line); }
   .g-row:hover { background: var(--surface-2); }
+  .g-row.added:hover { background: var(--accent-soft); }
   .pick:hover .p-card { border-color: var(--accent-line); }
 }
 
