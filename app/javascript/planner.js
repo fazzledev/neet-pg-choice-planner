@@ -1276,7 +1276,7 @@ function bind() {
     if (e.key === "Escape" && !$("#contact-sheet").hidden) closeContact()
   })
   $("#facets").addEventListener("change", (e) => {
-    const input = e.target.closest("input[data-facet]")
+    const input = e.target.closest("input[type=checkbox][data-facet]")
     if (input) toggleFacet(input.dataset.facet, input.value, input.checked)
   })
   $("#facets").addEventListener("click", (e) => {
