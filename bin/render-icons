@@ -15,4 +15,4 @@ rsvg-convert -w 180 -h 180 "$full_bleed_svg" -o public/apple-touch-icon.png
 
 rsvg-convert -w 16 -h 16 "$source_svg" -o extension/icons/icon-16.png
 rsvg-convert -w 48 -h 48 "$source_svg" -o extension/icons/icon-48.png
-rsvg-convert -w 110 -h 110 "$source_svg" | magick png:- -background none -gravity center -extent 128x128 extension/icons/icon-128.png
+rsvg-convert -w 110 -h 110 "$source_svg" | magick png:- -strip -background none -gravity center -extent 128x128 extension/icons/icon-128.png
