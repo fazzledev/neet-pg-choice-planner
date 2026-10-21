@@ -142,15 +142,50 @@ const deviceKey = () => `planner:${config.counselling}:device`
 const accountKey = () => `planner:${config.counselling}:account:${config.owner}`
 const synced = () => Boolean(config.listUrl)
 
+const USAGE_OUTBOX = "planner:usage-outbox"
+const USAGE_OUTBOX_LIMIT = 50
+const EXTENSION_USAGE = /^extension\/[a-z0-9-]+(\/[a-z0-9-]+)?$/
 const tracked = new Set()
 
 function track(event) {
   const name = `${synced() ? "account" : "guest"}/${event}`
   if (tracked.has(name)) return
   tracked.add(name)
-  const send = () => window.goatcounter?.count?.({ path: name, title: name, event: true })
-  if (document.readyState === "complete") send()
-  else window.addEventListener("load", send, { once: true })
+  queueUsage([name])
+}
+
+function queueUsage(names) {
+  storage.set(USAGE_OUTBOX, [...(storage.get(USAGE_OUTBOX) || []), ...names].slice(-USAGE_OUTBOX_LIMIT))
+  sendUsage()
+}
+
+function sendUsage() {
+  if (!navigator.onLine || !window.goatcounter?.count) return
+  const outbox = storage.get(USAGE_OUTBOX) || []
+  if (!outbox.length) return
+  storage.remove(USAGE_OUTBOX)
+  for (const name of outbox) window.goatcounter.count({ path: name, title: name, event: true })
+}
+
+function receiveExtensionUsage(event) {
+  const names = JSON.parse(event.detail)
+  if (!Array.isArray(names)) return
+  const accepted = names.filter((name) => typeof name === "string" && EXTENSION_USAGE.test(name))
+  if (accepted.length) queueUsage(accepted)
+}
+
+function planSizeBucket(count) {
+  if (count === 0) return "0"
+  if (count <= 10) return "1-10"
+  if (count <= 50) return "11-50"
+  if (count <= 200) return "51-200"
+  return "201-plus"
+}
+
+function trackPlanSize() {
+  if (document.visibilityState !== "hidden" || !state.editedThisVisit || state.planSizeTracked) return
+  state.planSizeTracked = true
+  track(`plan-size/${planSizeBucket(state.picks.length)}`)
 }
 
 function csrfToken() {
@@ -619,6 +654,7 @@ function changed() {
   if ($("#f-hide").checked) applyFilters(false)
   else repaintVisibleResults()
   scheduleSave()
+  state.editedThisVisit = true
   track("edited-plan")
 }
 
@@ -635,6 +671,7 @@ function move(from, to) {
   const [item] = state.picks.splice(from, 1)
   state.picks.splice(to, 0, item)
   changed()
+  track("reordered-plan")
   flash(item.choice_id)
 }
 
@@ -881,6 +918,7 @@ function syncFiller() {
 }
 
 function fillerReady() {
+  track("has-extension")
   $("#get-filler").hidden = true
   syncFiller()
   document.dispatchEvent(new CustomEvent("choice-planner:listening"))
@@ -913,6 +951,7 @@ function applyMccImport() {
   state.saveLabel = "Imported from MCC"
   state.importJustApplied = true
   changed()
+  track("imported-from-mcc")
   $("#mcc-import-text").textContent = `Imported ${state.picks.length} choices from MCC.`
   $("#mcc-import-apply").hidden = true
   $("#mcc-import-close").textContent = "Undo"
@@ -1097,6 +1136,7 @@ function toggleFacet(name, value, on) {
   on ? set.add(value) : set.delete(value)
   saveFilters()
   applyFilters()
+  track("used-filters")
 }
 
 function activeFilterCount() {
@@ -1235,12 +1275,14 @@ function showTab(name) {
 function bind() {
   let debounce
   $("#q").addEventListener("input", () => {
+    track("searched-catalog")
     clearTimeout(debounce)
     debounce = setTimeout(() => applyFilters(), 120)
   })
   $("#my-rank").addEventListener("input", (e) => {
     state.profile.rank = Number(e.target.value) || null
     profileChanged()
+    track("entered-rank")
   })
   $("#my-pwd").addEventListener("change", (e) => {
     state.profile.pwd = e.target.checked
@@ -1388,6 +1430,7 @@ function bind() {
     if (!e.target.matches(".p-note")) return
     state.picks[indexOf(e.target)].note = e.target.value
     scheduleSave()
+    track("added-note")
   })
   $("#order-q").addEventListener("input", filterPicks)
   $("#order-view").addEventListener("click", (e) => {
@@ -1433,6 +1476,7 @@ $("#picks-review").addEventListener("change", (e) => {
 
   for (const btn of document.querySelectorAll(".tabs button")) btn.addEventListener("click", () => showTab(btn.dataset.tab))
   $("#export").addEventListener("click", exportCsv)
+  document.addEventListener("choice-filler:usage", receiveExtensionUsage)
   if (document.documentElement.dataset.choiceFiller) fillerReady()
   document.addEventListener("choice-filler:ready", fillerReady)
   document.addEventListener("choice-filler:import", offerMccImport)
@@ -1462,7 +1506,10 @@ $("#picks-review").addEventListener("change", (e) => {
     e.target.submit()
   })
 
+  window.addEventListener("load", sendUsage)
+  document.addEventListener("visibilitychange", trackPlanSize)
   window.addEventListener("online", () => {
+    sendUsage()
     if (synced() && state.dirty && !state.conflict) save()
     else catchUp({ force: true })
   })

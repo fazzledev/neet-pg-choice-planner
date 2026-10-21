@@ -5,7 +5,7 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 ## Release a version
 
 1. Bump `version` in `extension/manifest.json` and merge it.
-2. Tag the merge commit `extension-v<version>` and push the tag: `git tag extension-v1.0.0 && git push origin extension-v1.0.0`.
+2. Tag the merge commit `extension-v<version>` and push the tag: `git tag extension-v1.1.0 && git push origin extension-v1.1.0`.
 3. The `Extension release` workflow checks that the tag matches the manifest, zips `extension/` (without its README) and publishes a GitHub release with the zip and its SHA-256.
 4. Download that zip from the release and upload exactly that file in the developer dashboard. Don't rebuild it locally, so anyone can compare the store version with the tagged source.
 
@@ -33,6 +33,7 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 > • It never sees your MCC password, security pin or OTP.
 > • It never presses anything that locks your choices.
 > • It makes no network requests. Your plan is kept in your own browser, and a list you import from MCC goes only to the planner tab. It is saved to your account only if you are signed in and press Replace.
+> • It keeps anonymous counts of how often Plan → MCC and MCC → Plan are used, with the plan size in rough bands, and hands them to the planner, which adds them to its visit counts. It never records which choices.
 >
 > Open source under the MIT licence: https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension
 >
@@ -52,10 +53,10 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 
 **Permission justifications:**
 
-- `storage`: Holds the student's plan, copied from the planner tab, and a list read from MCC that is waiting to be imported, so the planner tab and the MCC tab can hand them to each other. The extension makes no network requests. An imported MCC list reaches our server only when the signed-in student presses Replace in the planner.
+- `storage`: Holds the student's plan, copied from the planner tab, and a list read from MCC that is waiting to be imported, so the planner tab and the MCC tab can hand them to each other. The extension makes no network requests. An imported MCC list reaches our server only when the signed-in student presses Replace in the planner. It also holds anonymous usage notes (`extension/filled-mcc/<band>`, `extension/read-mcc`) until the planner tab collects them for its visit counts.
 - Host access to `neet-pg-choice-planner.fazzle.dev`, `neet-pg-choices.fazzle.dev` and `mcc.fazzle.dev`: The planner page sends the student's plan to the extension and receives lists imported from MCC.
 - Host access to `mcc.admissions.nic.in`: Reads and rearranges the choice list on MCC's choice-filling page, and shows the sync panel there. It does not touch the sign-in, OTP or lock steps.
 
 **Remote code:** No. Every script is bundled in the package.
 
-**Data usage:** Tick "Website content" only, because it reads the choice list on the MCC page. Then confirm all three statements: the data is not sold, not used for anything unrelated to the single purpose, and not used for creditworthiness or lending.
+**Data usage:** Tick "Website content", because it reads the choice list on the MCC page, and "User activity", because it counts uses of Plan → MCC and MCC → Plan (with the plan size in bands) and the planner sends those counts to its GoatCounter. Then confirm all three statements: the data is not sold, not used for anything unrelated to the single purpose, and not used for creditworthiness or lending.

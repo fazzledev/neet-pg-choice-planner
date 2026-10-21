@@ -19,7 +19,18 @@ async function offerImport() {
   if (portalImport) document.dispatchEvent(new CustomEvent("choice-filler:import", { detail: JSON.stringify(portalImport) }))
 }
 
-document.addEventListener("choice-planner:listening", () => offerImport().catch(() => {}))
+async function handOverUsage() {
+  if (!extensionAlive()) return
+  const { usage } = await chrome.storage.local.get("usage")
+  if (!usage?.length) return
+  await chrome.storage.local.remove("usage")
+  document.dispatchEvent(new CustomEvent("choice-filler:usage", { detail: JSON.stringify(usage) }))
+}
+
+document.addEventListener("choice-planner:listening", () => {
+  offerImport().catch(() => {})
+  handOverUsage().catch(() => {})
+})
 
 document.addEventListener("choice-planner:import-done", () => {
   if (extensionAlive()) chrome.storage.local.remove("portalImport").catch(() => {})

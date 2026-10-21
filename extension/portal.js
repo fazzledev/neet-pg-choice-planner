@@ -61,6 +61,20 @@ let busy = false
 let stopRequested = false
 const COPYING = "choice-filler:copying"
 const MAX_RESUMES = 3
+const USAGE_LIMIT = 50
+
+function sizeBucket(count) {
+  if (count === 0) return "0"
+  if (count <= 10) return "1-10"
+  if (count <= 50) return "11-50"
+  if (count <= 200) return "51-200"
+  return "201-plus"
+}
+
+async function recordUsage(name) {
+  const { usage = [] } = await chrome.storage.local.get("usage")
+  await chrome.storage.local.set({ usage: [...usage, name].slice(-USAGE_LIMIT) })
+}
 
 function message(text, error = false) {
   const box = $("[data-message]")
@@ -202,6 +216,7 @@ async function copyToMcc(resumes = 0) {
       }
     }
     const skipped = gone.length ? ` ${gone.length} ${gone.length === 1 ? "choice" : "choices"} from your plan MCC no longer offers ${gone.length === 1 ? "was" : "were"} skipped.` : ""
+    recordUsage(`extension/filled-mcc/${sizeBucket(target.length)}`).catch(() => {})
     message(`MCC now matches your plan.${skipped} Check it, then press Save and Continue and enter the OTP. Nothing is saved until you do.`)
   } catch (error) {
     message(`Stopped: ${error.message}. Nothing has been saved; reload the page to undo the changes.`, true)
@@ -216,6 +231,7 @@ async function copyToMcc(resumes = 0) {
 async function importFromMcc() {
   const choices = PortalAdapter.readFilled().map((choice, index) => ({ ...choice, rank: index + 1 }))
   await chrome.storage.local.set({ portalImport: { choices, readAt: new Date().toISOString() } })
+  recordUsage("extension/read-mcc").catch(() => {})
   message(`Read ${choices.length} choices from MCC. Confirm in the planner tab that just opened; your plan changes only when you press Replace there.`)
   window.open(PLANNER_URL, "_blank", "noopener")
 }
