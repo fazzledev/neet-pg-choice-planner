@@ -4,7 +4,10 @@ module AnalyticsHelper
     return unless counted_page?
 
     path = content_for(:analytics_path) || request.path
-    javascript_include_tag "goatcounter", async: true, data: { goatcounter: "#{url}/count", goatcounter_settings: { path: path }.to_json }
+    safe_join([
+      javascript_include_tag("goatcounter", async: true, data: { goatcounter: "#{url}/count", goatcounter_settings: { path: path }.to_json }),
+      javascript_include_tag("visitor", defer: true)
+    ])
   end
 
   def presence_tag
