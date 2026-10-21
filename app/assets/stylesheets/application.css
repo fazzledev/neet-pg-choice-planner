@@ -17,6 +17,7 @@
   --ok: #12a150;
   --warn-bg: #fff4d6;
   --warn-ink: #5c4400;
+  --ok-ink: #0b7a3b;
   --pen: #2449c9;
   --radius: 18px;
   --shadow-card: 0 1px 2px rgba(16, 20, 35, .05), 0 4px 16px rgba(16, 20, 35, .04);
@@ -45,6 +46,7 @@
     --danger-soft: #2c1719;
     --warn-bg: #3a2f10;
     --warn-ink: #f3dc9b;
+    --ok-ink: #7fe0a6;
     --pen: #7fa2ff;
     --shadow-card: 0 1px 2px rgba(0, 0, 0, .3);
     --shadow-pop: 0 16px 40px rgba(0, 0, 0, .5);
@@ -871,9 +873,10 @@ button.primary, .button.primary, .r-add {
 .share-link { display: flex; gap: 8px; padding: 2px 4px 4px; }
 .share-link input { flex: 1; min-width: 0; font-size: 14px; }
 .share-copy { flex: none; min-width: 84px; }
-.share-copy[data-copied] { background: var(--ok); border-color: var(--ok); }
-.share-status { margin: 0; padding: 0 10px; font-size: 13px; font-weight: 600; color: var(--ok); }
+.share-copy[data-copied] { background: var(--ok-ink); border-color: var(--ok-ink); color: var(--on-ink); box-shadow: none; }
+.share-status { margin: 0; padding: 0 10px; font-size: 13px; font-weight: 600; color: var(--ok-ink); }
 .share-status:not(:empty) { padding-bottom: 6px; }
+.share-status.failed { color: var(--danger); }
 
 body.landing { display: block; height: auto; min-height: 100%; }
 .lp-nav { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px max(20px, calc((100% - 1080px) / 2)); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }

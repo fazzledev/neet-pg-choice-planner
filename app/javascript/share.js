@@ -8,7 +8,7 @@
     const copy = menu.querySelector(".share-copy")
     const status = menu.querySelector(".share-status")
 
-    if (navigator.share) {
+    if (navigator.share && matchMedia("(pointer: coarse)").matches) {
       summary.addEventListener("click", async (event) => {
         if (menu.open) return
         event.preventDefault()
@@ -22,22 +22,30 @@
 
     input.addEventListener("focus", () => input.select())
 
-    copy.addEventListener("click", async () => {
+    const resetCopy = () => {
       clearTimeout(resetTimers.get(copy))
+      copy.textContent = "Copy"
+      delete copy.dataset.copied
+      status.classList.remove("failed")
+      status.textContent = ""
+    }
+
+    menu.addEventListener("toggle", () => { if (!menu.open) resetCopy() })
+
+    copy.addEventListener("click", async () => {
+      resetCopy()
       try {
         await navigator.clipboard.writeText(url)
-        copy.textContent = "Copied"
-        copy.dataset.copied = "1"
-        status.textContent = "Link copied. Paste it in a chat or email."
       } catch {
         input.focus()
+        status.classList.add("failed")
         status.textContent = "Couldn't copy automatically. The link is selected, so copy it with your keyboard."
+        return
       }
-      resetTimers.set(copy, setTimeout(() => {
-        copy.textContent = "Copy"
-        delete copy.dataset.copied
-        status.textContent = ""
-      }, 4000))
+      copy.textContent = "Copied"
+      copy.dataset.copied = "1"
+      status.textContent = "Link copied. Paste it in a chat or email."
+      resetTimers.set(copy, setTimeout(resetCopy, 4000))
     })
   }
 }
