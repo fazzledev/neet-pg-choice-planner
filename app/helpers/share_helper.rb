@@ -10,5 +10,9 @@ module ShareHelper
 
   def share_telegram_url = "https://t.me/share/url?url=#{ERB::Util.url_encode(root_url)}&text=#{ERB::Util.url_encode(SHARE_TEXT)}"
 
+  def extension_link_whatsapp_url = "https://wa.me/?text=#{ERB::Util.url_encode("Install the MCC filler on my computer: #{extension_url}")}"
+
+  def extension_link_email_url = "mailto:?subject=#{ERB::Util.url_encode("Install the MCC filler on my computer")}&body=#{ERB::Util.url_encode(extension_url)}"
+
   def share_email_url = "mailto:?subject=#{ERB::Util.url_encode(SHARE_TITLE)}&body=#{ERB::Util.url_encode("#{SHARE_TEXT}\n\n#{root_url}")}"
 end

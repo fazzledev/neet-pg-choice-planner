@@ -7,6 +7,13 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
     assert_match "Load unpacked", response.body
   end
 
+  test "counts download and copy-link clicks" do
+    get extension_path
+    assert_select "a[href='#{download_extension_path}'][data-goatcounter-click='extension-page/download']"
+    assert_select ".link-copy input[value='#{extension_url}']"
+    assert_select ".link-copy button[data-goatcounter-click='extension-page/copy-link']"
+  end
+
   test "downloads the extension as a zip of its folder" do
     get download_extension_path
     assert_response :success

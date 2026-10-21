@@ -6,9 +6,21 @@
     <span class="login-brand">Chrome extension · v<%= @version %></span>
     <h1>MCC filler</h1>
     <p class="muted">Makes the MCC choice-filling list match your planner in one click, or brings MCC's list into the planner. You sign in to MCC yourself, save with the OTP yourself, and it never locks.</p>
-    <div class="extension-actions">
-      <%= link_to download_extension_path, class: "button primary block" do %><%= icon("download") %>Download<% end %>
-      <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button block", target: "_blank", rel: "noopener" do %><%= icon("github") %>Source<% end %>
+    <div class="computer-needed touch-only">
+      <p><%= icon("laptop") %><span><strong>Needs Chrome on a laptop or desktop.</strong> Phones can't run Chrome extensions. Send this page to yourself and open it on your computer.</span></p>
+      <div class="share-link link-copy">
+        <input type="text" readonly value="<%= extension_url %>" aria-label="Link to this page">
+        <%= tag.button "Copy", type: "button", class: "primary share-copy", data: click_event("extension-page/copy-link") %>
+      </div>
+      <p class="share-status" role="status"></p>
+      <div class="extension-actions">
+        <%= link_to extension_link_whatsapp_url, class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/whatsapp-link") do %><%= icon("message-circle") %>WhatsApp<% end %>
+        <%= link_to extension_link_email_url, class: "button block", data: click_event("extension-page/email-link") do %><%= icon("mail") %>Email<% end %>
+      </div>
+    </div>
+    <div class="extension-actions no-touch">
+      <%= link_to download_extension_path, class: "button primary block", data: click_event("extension-page/download") do %><%= icon("download") %>Download<% end %>
+      <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/source") do %><%= icon("github") %>Source<% end %>
     </div>
     <ol class="install-steps">
       <li>Unzip the download into a folder. <code>manifest.json</code> sits directly inside it.</li>
@@ -19,3 +31,4 @@
     </ol>
   </div>
 </div>
+<%= javascript_include_tag "link_copy", defer: true %>
