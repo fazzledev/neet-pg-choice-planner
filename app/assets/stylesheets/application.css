@@ -200,7 +200,8 @@ a { color: var(--accent); }
 .pick.skeleton .p-rank { color: var(--border); }
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .sk, .busy .sync-dot { animation: none; } }
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.topbar-actions { position: relative; display: flex; align-items: center; gap: 8px; }
+.topbar-actions .share-menu { position: static; }
 
 .menu { position: relative; }
 .menu summary { list-style: none; cursor: pointer; }
@@ -865,10 +866,14 @@ button.primary, .button.primary, .r-add {
 .copy-btn .icon { width: 16px; height: 16px; }
 .copy-btn .icon:last-child, .copy-btn[data-copied] .icon:first-child { display: none; }
 .copy-btn[data-copied] .icon:last-child { display: inline-block; color: var(--accent); }
-.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-.share-btn .icon:nth-child(2), .share-btn[data-copied] .icon:first-child, .share-done, .share-btn[data-copied] .share-label { display: none; }
-.share-btn[data-copied] .icon:nth-child(2) { display: inline-block; color: var(--accent); }
-.share-btn[data-copied] .share-done { display: inline; }
+.menu-pop.from-left { left: 0; right: auto; }
+.share-pop { width: min(320px, calc(100vw - 32px)); }
+.share-link { display: flex; gap: 8px; padding: 2px 4px 4px; }
+.share-link input { flex: 1; min-width: 0; font-size: 14px; }
+.share-copy { flex: none; min-width: 84px; }
+.share-copy[data-copied] { background: var(--ok); border-color: var(--ok); }
+.share-status { margin: 0; padding: 0 10px; font-size: 13px; font-weight: 600; color: var(--ok); }
+.share-status:not(:empty) { padding-bottom: 6px; }
 
 body.landing { display: block; height: auto; min-height: 100%; }
 .lp-nav { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px max(20px, calc((100% - 1080px) / 2)); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }

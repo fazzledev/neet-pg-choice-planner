@@ -19,7 +19,7 @@
     <div class="lp-cta">
       <%= link_to planner_path, class: "button primary lp-big", data: click_event("landing/hero-start-planning") do %>Start planning<%= icon("arrow-right") %><% end %>
       <%= link_to extension_path, class: "button lp-big", data: click_event("landing/hero-extension") do %><%= icon("puzzle") %>Get the filler extension<% end %>
-      <%= tag.button class: "button lp-big share-btn", type: "button", data: share_data("landing/hero-share") do %><%= icon("share-2") %><%= icon("check") %><span class="share-label">Share with a friend</span><span class="share-done">Link copied</span><% end %>
+      <%= render "shared/share_menu", event_prefix: "landing", summary_class: "button lp-big", label: "Share with a friend", align: "from-left" %>
     </div>
     <p class="lp-note"><%= icon("shield-check") %>Free and open source. No account needed. Works offline.</p>
     <figure class="lp-demo">

@@ -1,42 +1,43 @@
 {
-  const copiedTimers = new WeakMap()
+  const resetTimers = new WeakMap()
 
-  const showCopied = (button, status) => {
-    button.dataset.copied = "1"
-    status.textContent = "Link copied"
-    clearTimeout(copiedTimers.get(button))
-    copiedTimers.set(button, setTimeout(() => {
-      delete button.dataset.copied
-      status.textContent = ""
-    }, 1500))
-  }
+  for (const menu of document.querySelectorAll(".share-menu")) {
+    const { shareUrl: url, shareTitle: title, shareText: text } = menu.dataset
+    const summary = menu.querySelector("summary")
+    const input = menu.querySelector(".share-link input")
+    const copy = menu.querySelector(".share-copy")
+    const status = menu.querySelector(".share-status")
 
-  const copyLink = async (button, status, url) => {
-    try {
-      await navigator.clipboard.writeText(url)
-      showCopied(button, status)
-    } catch {
-      prompt("Copy this link", url)
-    }
-  }
-
-  for (const button of document.querySelectorAll("[data-share-url]")) {
-    const status = document.createElement("span")
-    status.className = "visually-hidden"
-    status.setAttribute("role", "status")
-    button.after(status)
-
-    button.addEventListener("click", async () => {
-      const { shareUrl: url, shareTitle: title, shareText: text } = button.dataset
-      if (navigator.share) {
+    if (navigator.share) {
+      summary.addEventListener("click", async (event) => {
+        if (menu.open) return
+        event.preventDefault()
         try {
           await navigator.share({ title, text, url })
-          return
         } catch (error) {
-          if (error.name === "AbortError") return
+          if (error.name !== "AbortError") menu.open = true
         }
+      })
+    }
+
+    input.addEventListener("focus", () => input.select())
+
+    copy.addEventListener("click", async () => {
+      clearTimeout(resetTimers.get(copy))
+      try {
+        await navigator.clipboard.writeText(url)
+        copy.textContent = "Copied"
+        copy.dataset.copied = "1"
+        status.textContent = "Link copied. Paste it in a chat or email."
+      } catch {
+        input.focus()
+        status.textContent = "Couldn't copy automatically. The link is selected, so copy it with your keyboard."
       }
-      await copyLink(button, status, url)
+      resetTimers.set(copy, setTimeout(() => {
+        copy.textContent = "Copy"
+        delete copy.dataset.copied
+        status.textContent = ""
+      }, 4000))
     })
   }
 }

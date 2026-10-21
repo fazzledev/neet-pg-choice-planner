@@ -18,7 +18,15 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
 
   test "the planner's top bar can share the site" do
     get planner_path
-    assert_select ".topbar button.share-btn[aria-label='Share the planner'][data-share-url='#{root_url}'][data-goatcounter-click='planner/share']"
+    assert_select ".topbar details.share-menu[name=topbar-menu][data-share-url='#{root_url}']" do
+      assert_select "summary[aria-label='Share the planner'][data-goatcounter-click='planner/share-open']"
+      assert_select "input[readonly][value='#{root_url}']"
+      assert_select "button.share-copy[data-goatcounter-click='planner/share-copy']", text: "Copy"
+      assert_select ".share-status[role=status]"
+      assert_select "a[href^='https://wa.me/?text='][data-goatcounter-click='planner/share-whatsapp']"
+      assert_select "a[href^='https://t.me/share/url?url='][data-goatcounter-click='planner/share-telegram']"
+      assert_select "a[href^='mailto:?subject='][data-goatcounter-click='planner/share-email']"
+    end
     assert_select "script[src*=share][defer]"
   end
 
