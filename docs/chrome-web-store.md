@@ -32,7 +32,7 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 > What it never does
 > • It never sees your MCC password, security pin or OTP.
 > • It never presses anything that locks your choices.
-> • It sends nothing to us or anyone else. Your plan is kept only in your own browser.
+> • It makes no network requests. Your plan is kept in your own browser, and a list you import from MCC goes only to the planner tab. It is saved to your account only if you are signed in and press Replace.
 >
 > Open source under the MIT licence: https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension
 >
@@ -52,7 +52,7 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 
 **Permission justifications:**
 
-- `storage`: Holds the student's plan, copied from the planner tab, and a list read from MCC that is waiting to be imported, so the planner tab and the MCC tab can hand them to each other. Nothing leaves the browser.
+- `storage`: Holds the student's plan, copied from the planner tab, and a list read from MCC that is waiting to be imported, so the planner tab and the MCC tab can hand them to each other. The extension makes no network requests. An imported MCC list reaches our server only when the signed-in student presses Replace in the planner.
 - Host access to `neet-pg-choice-planner.fazzle.dev`, `neet-pg-choices.fazzle.dev` and `mcc.fazzle.dev`: The planner page sends the student's plan to the extension and receives lists imported from MCC.
 - Host access to `mcc.admissions.nic.in`: Reads and rearranges the choice list on MCC's choice-filling page, and shows the sync panel there. It does not touch the sign-in, OTP or lock steps.
 

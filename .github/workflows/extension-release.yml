@@ -16,7 +16,8 @@ jobs:
       - name: Check the tag matches the manifest version
         run: |
           manifest_version=$(jq -r .version extension/manifest.json)
-          test "${GITHUB_REF_NAME#extension-v}" = "$manifest_version"
+          tag_version="${GITHUB_REF_NAME#extension-v}"
+          [ "$tag_version" = "$manifest_version" ] || { echo "::error::Tag $tag_version does not match manifest version $manifest_version"; exit 1; }
 
       - name: Zip the extension folder
         run: |

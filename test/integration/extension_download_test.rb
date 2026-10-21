@@ -15,5 +15,6 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
     names = Zip::File.open_buffer(response.body).map(&:name)
     assert_includes names, "manifest.json"
     assert_includes names, "portal.js"
+    assert_includes names, "icons/icon-128.png"
   end
 end
