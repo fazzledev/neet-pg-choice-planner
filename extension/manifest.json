@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NEET PG Choice Planner – MCC Filler",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Copy your NEET PG Choice Planner list to MCC choice filling in one click, or import it back. Never locks. Not affiliated with MCC.",
   "homepage_url": "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension",
   "icons": { "16": "icons/icon-16.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
@@ -16,7 +16,7 @@
   "permissions": ["storage"],
   "content_scripts": [
     {
-      "matches": ["https://neet-pg-choice-planner.fazzle.dev/*", "https://neet-pg-choices.fazzle.dev/*", "https://mcc.fazzle.dev/*"],
+      "matches": ["https://neet-pg-choice-planner.fazzle.dev/*"],
       "exclude_matches": ["https://neet-pg-choice-planner.fazzle.dev/practice", "https://neet-pg-choice-planner.fazzle.dev/practice?*"],
       "js": ["planner-bridge.js"],
       "run_at": "document_start"
