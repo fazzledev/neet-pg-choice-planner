@@ -20,7 +20,7 @@
     </div>
     <div class="topbar-actions">
       <details class="menu" name="topbar-menu">
-        <summary class="round-btn" aria-label="Help"><%= icon("circle-question-mark") %></summary>
+        <%= tag.summary icon("circle-question-mark"), class: "round-btn", aria: { label: "Help" }, data: click_event("planner/help-open") %>
         <div class="menu-pop">
           <span class="menu-note">Stuck, or something looks wrong? Get in touch.</span>
           <%= link_to contact_phone_url, class: "menu-item", data: click_event("planner/help-call") do %><%= icon("phone") %>Call <%= contact_phone_display %><% end %>
