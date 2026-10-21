@@ -19,7 +19,7 @@
   const sampleOrder = {"counselling": "NEET PG Medical Counselling 2026", "owner": null, "sentAt": "2026-10-21T10:30:00+05:30", "choices": [{"rank": 1, "instcd": "700357", "brcd": "GMED", "quota": "All India", "institute": "Atal Bihari Vajpayee Institute of Medical Sciences and Dr. RML Hospital, New Delhi", "program": "M.D. General Medicine"}, {"rank": 2, "instcd": "700360", "brcd": "GMED", "quota": "All India", "institute": "ESIC Medical College & Hospital, Basaidarapur, New Delhi", "program": "M.D. General Medicine"}, {"rank": 3, "instcd": "700391", "brcd": "GMED", "quota": "All India", "institute": "Bangalore Medical College and Research Institute, Bangalore", "program": "M.D. General Medicine"}, {"rank": 4, "instcd": "700363", "brcd": "GMED", "quota": "All India", "institute": "B J Medical College, Ahmedabad", "program": "M.D. General Medicine"}, {"rank": 5, "instcd": "700340", "brcd": "GMED", "quota": "All India", "institute": "Coimbatore Medical College, Coimbatore", "program": "M.D. General Medicine"}, {"rank": 6, "instcd": "700301", "brcd": "GMED", "quota": "All India", "institute": "B. J. Govt. Medical College, Pune", "program": "M.D. General Medicine"}, {"rank": 7, "instcd": "700385", "brcd": "GMED", "quota": "All India", "institute": "Dr. Ram Manohar Lohia Institute of Medical Sciences,Lucknow", "program": "M.D. General Medicine"}, {"rank": 8, "instcd": "700296", "brcd": "GMED", "quota": "All India", "institute": "Gandhi Medical College, Bhopal", "program": "M.D. General Medicine"}]}
   const store = { order: sampleOrder }
   globalThis.chrome = {
-    runtime: { id: "sample" },
+    runtime: { id: "sample", getManifest: () => ({}) },
     storage: {
       local: {
         get: async (key) => ({ [key]: store[key] }),

@@ -71,7 +71,10 @@ function sizeBucket(count) {
   return "201-plus"
 }
 
+const firefoxBuild = Boolean(chrome.runtime.getManifest().browser_specific_settings?.gecko)
+
 async function recordUsage(name) {
+  if (firefoxBuild) return
   const { usage = [] } = await chrome.storage.local.get("usage")
   await chrome.storage.local.set({ usage: [...usage, name].slice(-USAGE_LIMIT) })
 }
