@@ -11,7 +11,7 @@ class FiltersTest < ApplicationSystemTestCase
     within "#facets .facet[data-facet=speciality]" do
       search = find(".facet-search")
       search.fill_in with: search_term
-      find(".facet-option .opt-label", text: speciality).click
+      find(".facet-option .opt-label", exact_text: speciality).click
       assert_selector ".facet-option.on", text: speciality
       assert_text "1 selected"
     end
