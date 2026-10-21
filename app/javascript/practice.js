@@ -16,7 +16,7 @@ let busy = false
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null")
-    if (saved) state = { ...state, ...saved }
+    if (Array.isArray(saved?.filled)) state = { filled: saved.filled, locked: Boolean(saved.locked) }
   } catch {}
   state.filled = state.filled.filter((id) => byId.has(id))
 }
@@ -134,6 +134,7 @@ root.addEventListener("click", (event) => {
     say(`Saved ${state.filled.length} choices. On MCC you would now enter the OTP sent to your phone; here nothing else happens.`)
   }
   if (action === "lock") {
+    if (busy) return
     if (!lockArmed) {
       lockArmed = true
       say("Press Lock choices again to lock. On MCC locking is final and can't be undone. Here, Start over unlocks it.")

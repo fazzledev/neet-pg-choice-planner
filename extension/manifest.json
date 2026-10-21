@@ -9,12 +9,12 @@
   "content_scripts": [
     {
       "matches": ["https://neet-pg-choice-planner.fazzle.dev/*", "https://neet-pg-choices.fazzle.dev/*", "https://mcc.fazzle.dev/*"],
-      "exclude_matches": ["https://neet-pg-choice-planner.fazzle.dev/practice*"],
+      "exclude_matches": ["https://neet-pg-choice-planner.fazzle.dev/practice", "https://neet-pg-choice-planner.fazzle.dev/practice?*"],
       "js": ["planner-bridge.js"],
       "run_at": "document_start"
     },
     {
-      "matches": ["https://mcc.admissions.nic.in/*", "https://neet-pg-choice-planner.fazzle.dev/practice*"],
+      "matches": ["https://mcc.admissions.nic.in/*", "https://neet-pg-choice-planner.fazzle.dev/practice", "https://neet-pg-choice-planner.fazzle.dev/practice?*"],
       "js": ["portal-adapter.js", "portal.js"],
       "run_at": "document_idle"
     }

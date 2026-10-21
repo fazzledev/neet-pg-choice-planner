@@ -73,9 +73,10 @@ function sizeBucket(count) {
 }
 
 const firefoxBuild = Boolean(extensionApi.runtime.getManifest().browser_specific_settings?.gecko)
+const onMcc = location.hostname === "mcc.admissions.nic.in"
 
 async function recordUsage(name) {
-  if (firefoxBuild) return
+  if (firefoxBuild || !onMcc) return
   const { usage = [] } = await extensionApi.storage.local.get("usage")
   await extensionApi.storage.local.set({ usage: [...usage, name].slice(-USAGE_LIMIT) })
 }

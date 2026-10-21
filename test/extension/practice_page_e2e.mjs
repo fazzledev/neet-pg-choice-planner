@@ -1,12 +1,11 @@
 import { spawn } from "node:child_process"
-import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 
 const baseUrl = process.argv[2] || "http://localhost:3000"
 const browserBinary = process.env.CHROMIUM || "chromium"
 const productionOrigin = "https://neet-pg-choice-planner.fazzle.dev"
-const port = 9300 + Math.floor(Math.random() * 600)
 const workDir = mkdtempSync(join(tmpdir(), "practice-e2e-"))
 const extensionDir = join(workDir, "extension")
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -17,28 +16,28 @@ const localOrigin = new URL(baseUrl).origin.replace(/:\d+$/, "")
 writeFileSync(manifestPath, readFileSync(manifestPath, "utf8").replaceAll(productionOrigin, localOrigin))
 
 const browser = spawn(browserBinary, [
-  "--headless=new", `--remote-debugging-port=${port}`, `--user-data-dir=${join(workDir, "profile")}`,
+  "--headless=new", "--remote-debugging-port=0", `--user-data-dir=${join(workDir, "profile")}`,
   `--disable-extensions-except=${extensionDir}`, `--load-extension=${extensionDir}`, "--no-first-run", "about:blank",
 ], { stdio: "ignore" })
 
 async function connect() {
+  const portFile = join(workDir, "profile", "DevToolsActivePort")
   for (let attempt = 0; attempt < 50; attempt++) {
-    try {
-      const { webSocketDebuggerUrl } = await (await fetch(`http://127.0.0.1:${port}/json/version`)).json()
-      return webSocketDebuggerUrl
-    } catch {
-      await pause(200)
+    if (existsSync(portFile)) {
+      const [port, path] = readFileSync(portFile, "utf8").trim().split("\n")
+      if (port && path) return `ws://127.0.0.1:${port}${path}`
     }
+    await pause(200)
   }
   throw new Error("Chromium did not start")
 }
 
-const socket = new WebSocket(await connect())
-await new Promise((resolve) => socket.addEventListener("open", resolve, { once: true }))
+let socket
 let nextId = 0
 const pending = new Map()
 const contexts = []
-socket.addEventListener("message", ({ data }) => {
+function listen() {
+  socket.addEventListener("message", ({ data }) => {
   const message = JSON.parse(data)
   if (message.id && pending.has(message.id)) {
     const { resolve, reject } = pending.get(message.id)
@@ -47,17 +46,15 @@ socket.addEventListener("message", ({ data }) => {
   }
   if (message.method === "Runtime.executionContextCreated") contexts.push(message.params.context)
   if (message.method === "Runtime.executionContextsCleared") contexts.length = 0
-})
+  })
+}
 const send = (method, params = {}, sessionId) => new Promise((resolve, reject) => {
   const id = ++nextId
   pending.set(id, { resolve, reject })
   socket.send(JSON.stringify({ id, method, params, sessionId }))
 })
 
-const { targetId } = await send("Target.createTarget", { url: "about:blank" })
-const { sessionId } = await send("Target.attachToTarget", { targetId, flatten: true })
-await send("Runtime.enable", {}, sessionId)
-await send("Page.enable", {}, sessionId)
+let sessionId
 
 async function evaluate(expression, contextId) {
   const { result, exceptionDetails } = await send("Runtime.evaluate", { expression, contextId, awaitPromise: true, returnByValue: true }, sessionId)
@@ -90,6 +87,17 @@ const check = (label, ok, detail = "") => {
 }
 
 try {
+  socket = new WebSocket(await connect())
+  await new Promise((resolve, reject) => {
+    socket.addEventListener("open", resolve, { once: true })
+    socket.addEventListener("error", () => reject(new Error("Could not connect to Chromium")), { once: true })
+  })
+  listen()
+  const { targetId } = await send("Target.createTarget", { url: "about:blank" })
+  sessionId = (await send("Target.attachToTarget", { targetId, flatten: true })).sessionId
+  await send("Runtime.enable", {}, sessionId)
+  await send("Page.enable", {}, sessionId)
+
   await openPractice()
   const catalog = await evaluate(`fetch(document.querySelector('.practice').dataset.catalogUrl).then((response) => response.json())`)
   const institutes = new Map(catalog.institutes.map(([code, name]) => [code, name]))
@@ -110,10 +118,12 @@ try {
 
   await openPractice()
   await waitFor("the panel to compare", "/difference/.test(document.querySelector('#choice-planner-filler').shadowRoot.querySelector('[data-state]').textContent)")
-  check("panel reports differences before copying", true, await panelText("[data-state]"))
+  const before = await panelText("[data-state]")
+  check("panel reports 9 differences before copying", before === "9 differences", before)
 
   await clickPanel("to-mcc")
-  check("confirmation lists the changes", /add .*remove .*move|add|remove|move/.test(await panelText("[data-confirm-text]")), await panelText("[data-confirm-text]"))
+  const confirmation = await panelText("[data-confirm-text]")
+  check("confirmation says add 5, remove 2, move 2", confirmation.includes("add 5, remove 2, move 2."), confirmation)
   await clickPanel("confirm")
   await waitFor("Plan → MCC to finish", "/MCC now matches|Stopped/.test(document.querySelector('#choice-planner-filler').shadowRoot.querySelector('[data-message]').textContent)", 60000)
   const finished = await panelText("[data-message]")
@@ -130,13 +140,18 @@ try {
   check("list survives a reload", JSON.stringify(await filledKeys()) === JSON.stringify(expected))
   check("panel still in sync after reload", /In sync/.test(await panelText("[data-state]")))
 
-  const lockPressed = await evaluate(`(() => { try { PortalAdapter.safeClick(document.querySelector('#btnLockChoices')); return true } catch { return false } })()`, contexts.find((context) => context.auxData?.type === "isolated")?.id)
-  check("extension refuses to press Lock choices", lockPressed === false)
+  const isolated = contexts.find((context) => context.auxData?.type === "isolated")
+  if (!isolated) throw new Error("The extension's content script context is missing after reload")
+  const lockAttempt = await evaluate(`(() => { try { PortalAdapter.safeClick(document.querySelector('#btnLockChoices')); return "pressed" } catch (error) { return error.message } })()`, isolated.id)
+  check("extension refuses to press Lock choices", /^Refusing to press/.test(lockAttempt), lockAttempt)
+
+  const usage = await evaluate(`chrome.storage.local.get("usage").then(({ usage }) => usage || [])`, isolated.id)
+  check("practice runs are not counted as MCC use", usage.length === 0, JSON.stringify(usage))
 } catch (error) {
   failures.push(error.message)
   console.log(`FAIL ${error.message}`)
 } finally {
-  socket.close()
+  socket?.close()
   browser.kill()
   await pause(300)
   rmSync(workDir, { recursive: true, force: true })

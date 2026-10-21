@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-browser=${1:?usage: bin/build-extension chrome|firefox <output.zip>}
-output=$(realpath -m "${2:?usage: bin/build-extension chrome|firefox <output.zip>}")
+usage="usage: bin/build-extension chrome|firefox <output.zip> [local origin, e.g. http://localhost:3000]"
+browser=${1:?$usage}
+output=$(realpath -m "${2:?$usage}")
+local_origin=${3:-}
 root=$(cd "$(dirname "$0")/.." && pwd)
 staging=$(mktemp -d)
 trap 'rm -rf "$staging"' EXIT
@@ -17,6 +19,12 @@ case "$browser" in
     ;;
   *) echo "Unknown browser: $browser" >&2; exit 1 ;;
 esac
+
+if [ -n "$local_origin" ]; then
+  host_origin=$(sed -E 's#^(https?://[^/:]+).*#\1#' <<<"$local_origin")
+  sed -i "s#https://neet-pg-choice-planner.fazzle.dev#$host_origin#g" "$staging/manifest.json"
+  sed -i "s#https://neet-pg-choice-planner.fazzle.dev#${local_origin%/}#g" "$staging/portal.js"
+fi
 
 rm -f "$output"
 (cd "$staging" && zip -X -q -r "$output" .)
