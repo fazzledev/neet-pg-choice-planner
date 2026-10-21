@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 python3 build_sample_portal.py
 
 shoot() {
-  chromium --headless=new --disable-gpu --hide-scrollbars --allow-file-access-from-files \
+  TZ=Asia/Kolkata LANG=en_US.UTF-8 chromium --headless=new --disable-gpu --hide-scrollbars --allow-file-access-from-files \
     --window-size=1280,800 --virtual-time-budget=8000 --screenshot="$1" "file://$PWD/sample-portal.html#$2" 2>/dev/null
 }
 

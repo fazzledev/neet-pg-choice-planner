@@ -5,7 +5,7 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 ## Release a version
 
 1. Bump `version` in `extension/manifest.json` and merge it.
-2. Tag the merge commit `extension-v<version>` and push the tag: `git tag extension-v1.1.0 && git push origin extension-v1.1.0`.
+2. Tag the merge commit `extension-v<version>` and push the tag: `git tag extension-v1.1.1 && git push origin extension-v1.1.1`.
 3. The `Extension release` workflow checks that the tag matches the manifest, zips `extension/` (without its README) and publishes a GitHub release with the zip and its SHA-256.
 4. Download that zip from the release and upload exactly that file in the developer dashboard. Don't rebuild it locally, so anyone can compare the store version with the tagged source.
 
