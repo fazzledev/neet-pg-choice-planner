@@ -877,7 +877,7 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp-big { min-height: 54px; padding: 0 22px; border-radius: 16px; font-size: 17px; gap: 10px; }
 .lp-note { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; }
 .lp-note .icon { color: var(--ok); }
-.lp-demo { margin: 12px 0 0; width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #11131c; box-shadow: 0 30px 60px rgba(16, 20, 35, .35); }
+.lp-demo { margin: 12px 0 0; width: 90%; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #11131c; box-shadow: 0 30px 60px rgba(16, 20, 35, .35); transform: perspective(1400px) rotateY(-9deg) rotateX(3deg) rotate(.5deg); transform-origin: left center; }
 .lp-demo-video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #11131c; }
 .lp-section { display: flex; flex-direction: column; gap: 28px; }
 .lp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -935,6 +935,7 @@ a.lp-brand { color: inherit; text-decoration: none; }
 .lp-shot .lp-panel { font-size: 12px; gap: 10px; padding: 14px; }
 @media (max-width: 900px) {
   .lp-shot { transform: none; height: 470px; }
+  .lp-demo { transform: none; width: 100%; }
   .lp-shot .lp-panel { left: 12px; right: 12px; width: auto; }
 }
 
