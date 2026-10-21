@@ -1,6 +1,6 @@
 # Chrome Web Store listing
 
-What to paste into the Chrome Web Store developer dashboard for the MCC filler extension, and how a version gets there.
+What to paste into the Chrome Web Store developer dashboard for the MCC Filler extension, and how a version gets there.
 
 ## Release a version
 
