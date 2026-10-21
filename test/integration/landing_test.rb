@@ -27,6 +27,15 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert names.all? { _1.start_with?("landing/") }, "not landing/: #{names.reject { _1.start_with?("landing/") }}"
   end
 
+  test "lets visitors call, WhatsApp or email from the footer" do
+    [root_path, privacy_path].each do |path|
+      get path
+      assert_select "footer a[href='tel:+919940689619']"
+      assert_select "footer a[href='https://wa.me/919940689619']"
+      assert_select "footer a[href='mailto:hey@fazzle.dev']"
+    end
+  end
+
   test "shows the privacy page and links it from the landing page" do
     get privacy_path
     assert_response :success
