@@ -2,7 +2,7 @@
   for (const box of document.querySelectorAll(".link-copy")) {
     const input = box.querySelector("input")
     const copy = box.querySelector("button")
-    const status = box.nextElementSibling
+    const status = box.closest(".computer-needed").querySelector(".share-status")
     let resetTimer
 
     const reset = () => {

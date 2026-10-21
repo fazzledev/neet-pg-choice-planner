@@ -5,6 +5,7 @@ class ExtensionPageTest < ApplicationSystemTestCase
     visit extension_path
     assert_link "Download"
     assert_no_text "Needs Chrome on a laptop or desktop"
+    assert_no_text "Then, on your computer:"
   end
 
   test "a phone is told to open the page on a computer instead" do
@@ -14,7 +15,8 @@ class ExtensionPageTest < ApplicationSystemTestCase
       assert_equal extension_url, find("input[aria-label='Link to this page']").value
       assert_link "WhatsApp", href: %r{\Ahttps://wa.me/}
       assert_link "Email", href: /\Amailto:/
-      assert_no_link "Download"
+      assert_no_link "Download", exact: true
+      assert_text "Then, on your computer:"
 
       page.driver.browser.execute_cdp("Browser.grantPermissions", permissions: ["clipboardReadWrite", "clipboardSanitizedWrite"])
       find(".link-copy button").click
