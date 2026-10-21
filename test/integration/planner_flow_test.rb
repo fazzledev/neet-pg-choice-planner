@@ -28,6 +28,7 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
       assert_select "a[href^='mailto:?subject='][data-goatcounter-click='planner/share-email']"
     end
     assert_select "script[src*=share][defer]"
+    assert_select "script[src*=menus][defer]"
   end
 
   test "the planner's help menu offers a call, WhatsApp and email" do
