@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
   create_table "choice_lists", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "counselling_id", null: false
@@ -120,6 +120,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_090000) do
     t.index ["choice_list_id", "choice_id"], name: "index_picks_on_choice_list_id_and_choice_id", unique: true
     t.index ["choice_list_id", "position"], name: "index_picks_on_choice_list_id_and_position", unique: true
     t.index ["choice_list_id"], name: "index_picks_on_choice_list_id"
+  end
+
+  create_table "presences", force: :cascade do |t|
+    t.string "tab_id", null: false
+    t.boolean "signed_in", default: false, null: false
+    t.datetime "last_seen_at", null: false
+    t.index ["last_seen_at"], name: "index_presences_on_last_seen_at"
+    t.index ["tab_id"], name: "index_presences_on_tab_id", unique: true
   end
 
   create_table "programs", force: :cascade do |t|

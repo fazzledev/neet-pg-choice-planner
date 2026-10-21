@@ -5,6 +5,7 @@ module Admin
     WINDOWS = { "7 days" => 7.days, "30 days" => 30.days }.freeze
 
     def show
+      @active_now = Presence.active.group(:signed_in).count
       @signed_in = User.where.not(last_signed_in_at: nil)
       @with_choices = ChoiceList.where(counselling: current_counselling).joins(:picks).distinct.count(:user_id)
       @windows = WINDOWS.transform_values do |span|

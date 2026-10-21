@@ -6,6 +6,17 @@
     <span class="muted"><%= pluralize(@signed_in.count, "person") %> signed in at least once · <%= pluralize(@with_choices, "plan") %> with choices</span>
   </header>
 
+  <section class="admin-card" id="active-now">
+    <h2>On the site now</h2>
+    <table class="stats">
+      <thead><tr><th></th><th>Signed in</th><th>Guests</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><th>Open tabs</th><td><%= @active_now[true].to_i %></td><td><%= @active_now[false].to_i %></td><td><%= @active_now.values.sum %></td></tr>
+      </tbody>
+    </table>
+    <p class="muted">Tabs open and visible in the last <%= Presence::ACTIVE_WINDOW.inspect %>. One person with two tabs counts twice. Refresh to update.</p>
+  </section>
+
   <section class="admin-card">
     <h2>Signed in</h2>
     <table class="stats">
