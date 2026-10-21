@@ -1,4 +1,4 @@
-const extensionApi = globalThis.browser ?? globalThis.chrome
+const extensionApi = globalThis.browser?.runtime ? globalThis.browser : globalThis.chrome
 const PLANNER_URL = "https://neet-pg-choice-planner.fazzle.dev/plan"
 const label = (choice) => `${choice.institute} · ${choice.program} · ${choice.quota}`
 

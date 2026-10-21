@@ -4,7 +4,7 @@ A Chrome and Firefox extension that makes the MCC choice-filling list match a pl
 
 ## Install
 
-From the Chrome Web Store or Firefox Add-ons once they are listed. To load it by hand in Chrome:
+From the Chrome Web Store or Firefox Add-ons once they are listed. To load it by hand in Chrome (the zip from the site is the Chrome build; Firefox only installs signed add-ons):
 
 1. Open `chrome://extensions` and turn on Developer mode.
 2. Load unpacked, and pick this `extension/` folder.

@@ -1,4 +1,4 @@
-const extensionApi = globalThis.browser ?? globalThis.chrome
+const extensionApi = globalThis.browser?.runtime ? globalThis.browser : globalThis.chrome
 const extensionAlive = () => Boolean(extensionApi?.runtime?.id)
 
 document.documentElement.dataset.choiceFiller = "1"

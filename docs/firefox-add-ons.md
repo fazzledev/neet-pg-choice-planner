@@ -4,7 +4,7 @@ What to enter on addons.mozilla.org (AMO) for the MCC Filler extension. The Chro
 
 ## How the Firefox package differs
 
-- `bin/build-extension firefox <zip>` merges `extension-firefox/manifest-overrides.json` into the manifest. It adds the add-on ID `mcc-filler@neet-pg-choice-planner.fazzle.dev`, Firefox 140+ on desktop and 142+ on Android, and the data collection declaration.
+- `bin/build-extension firefox <zip>` merges `extension-firefox/manifest-overrides.json` into the manifest. It adds the add-on ID `mcc-filler@neet-pg-choice-planner.fazzle.dev`, Firefox 140+ on desktop, and the data collection declaration.
 - The Firefox package keeps no usage counts. Firefox only allows the usage category ("technical and interaction data") as an optional permission the user can refuse, and a content script cannot check that choice, so `portal.js` skips counting when the manifest has a `gecko` section.
 - Data collection declared as required: `websiteContent`, because it reads the choice list on the MCC page and hands it to the planner tab.
 
@@ -18,7 +18,7 @@ The code is not minified or bundled, so AMO does not need a separate source uplo
 
 **Name and summary:** come from the manifest, as on Chrome.
 
-**Categories:** Other (Firefox); for Android, also tick compatibility.
+**Categories:** Other. Leave Firefox for Android unticked: the planner sends phone visitors to a computer, and the Android build is untested.
 
 **Description:** use the Chrome description from `chrome-web-store.md`, but drop the line about anonymous usage counts, which the Firefox version does not keep.
 
