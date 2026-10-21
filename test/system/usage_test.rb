@@ -66,12 +66,18 @@ class UsageTest < ApplicationSystemTestCase
 
     assert_includes outbox, "guest/filter/speciality"
     assert outbox.none? { |name| name.downcase.include?(value.downcase) }
+
+    page.execute_script(%(localStorage.removeItem("planner:usage-outbox")))
+    visit planner_path
+    assert_selector "#facets .facet[data-facet=speciality]", visible: :all
+    assert outbox.none? { |name| name.include?("filter") }
   end
 
   test "opening a saved plan counts its size in a band" do
     visit planner_path
     first(".r-add").click
     assert_selector "#picks li"
+    assert_not_includes outbox, "guest/saved-plan-size/1-10"
 
     visit planner_path
     assert_selector "#picks li"

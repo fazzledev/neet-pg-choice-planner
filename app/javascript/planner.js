@@ -1643,7 +1643,7 @@ async function boot() {
   bind()
   if (synced()) await loadSynced()
   else loadDevice()
-  if (state.picks.length) track(`saved-plan-size/${planSizeBucket(state.picks.length)}`)
+  if (state.picks.length && (!synced() || config.ownList)) track(`saved-plan-size/${planSizeBucket(state.picks.length)}`)
   catchUp()
   renderPicks()
   applyFilters()
