@@ -8,9 +8,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1000]
 
   def with_forgery_protection
+    previous = ActionController::Base.allow_forgery_protection
     ActionController::Base.allow_forgery_protection = true
     yield
   ensure
-    ActionController::Base.allow_forgery_protection = false
+    ActionController::Base.allow_forgery_protection = previous
   end
 end

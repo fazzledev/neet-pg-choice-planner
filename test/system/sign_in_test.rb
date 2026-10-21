@@ -12,9 +12,10 @@ class SignInTest < ApplicationSystemTestCase
       fill_in "Email", with: "student@example.com"
       click_on "Email me a sign-in link"
       assert_text "Check your email"
-      perform_enqueued_jobs
+      assert_emails(1) { perform_enqueued_jobs }
 
-      visit URI(ActionMailer::Base.deliveries.last.text_part.decoded[%r{https?://\S+/sign-in/\S+}]).path
+      emailed_link = ActionMailer::Base.deliveries.last.text_part.decoded[%r{https?://\S+/sign-in/\S+}]
+      visit URI(emailed_link).path
       click_on "Sign in"
 
       assert_current_path planner_path
