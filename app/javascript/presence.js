@@ -18,7 +18,7 @@
     if (document.visibilityState !== "visible") return
     fetch("/presence", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-CSRF-Token": document.querySelector("meta[name=csrf-token]")?.content },
+      headers: { "Content-Type": "application/json" },
       credentials: "same-origin",
       body: JSON.stringify({ tab_id: tabId }),
       keepalive: true,

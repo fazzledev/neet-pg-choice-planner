@@ -1,5 +1,6 @@
 class PresencesController < ApplicationController
   allow_unauthenticated_access
+  skip_forgery_protection
 
   def create
     tab_id = params[:tab_id].to_s

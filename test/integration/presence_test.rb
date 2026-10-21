@@ -31,6 +31,11 @@ class PresenceTest < ActionDispatch::IntegrationTest
     assert Presence.sole.signed_in
   end
 
+  test "pings are accepted without a CSRF token so tabs survive a sign-out elsewhere" do
+    with_forgery_protection { post presence_path, params: { tab_id: TAB }, as: :json }
+    assert_response :no_content
+  end
+
   test "malformed tab ids are refused" do
     post presence_path, params: { tab_id: "x" * 500 }, as: :json
     assert_response :unprocessable_content
@@ -53,8 +58,8 @@ class PresenceTest < ActionDispatch::IntegrationTest
     end
     sign_in_as @admin
     get admin_stats_path
-    assert_select ".admin-card:first-of-type .stats tbody td", text: "1", count: 2
-    assert_select ".admin-card:first-of-type .stats tbody td:last-child", text: "2"
+    assert_select "#active-now .stats tbody td", text: "1", count: 2
+    assert_select "#active-now .stats tbody td:last-child", text: "2"
   end
 
   test "presences older than a day are expired" do
@@ -62,5 +67,15 @@ class PresenceTest < ActionDispatch::IntegrationTest
       Presence.seen!(TAB, signed_in: false)
     end
     assert_equal [TAB], Presence.expired.pluck(:tab_id)
+  end
+
+  private
+
+  def with_forgery_protection
+    previous = ActionController::Base.allow_forgery_protection
+    ActionController::Base.allow_forgery_protection = true
+    yield
+  ensure
+    ActionController::Base.allow_forgery_protection = previous
   end
 end

@@ -7,4 +7,4 @@ production:
     schedule: every day at 3:40
   clear_expired_presences:
     command: "Presence.expired.delete_all"
-    schedule: every day at 3:50
+    schedule: every hour at minute 50
