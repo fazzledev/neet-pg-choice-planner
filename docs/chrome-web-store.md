@@ -44,7 +44,7 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 
 **Privacy policy:** https://neet-pg-choice-planner.fazzle.dev/privacy
 
-**Assets still to make:** at least one 1280×800 screenshot of the MCC panel showing the differences and the Plan → MCC button (blur the candidate's name and roll number), and a 440×280 small promo tile. The 128px icon comes from `extension/icons/icon-128.png`.
+**Assets still to make:** at least one 1280×800 screenshot of the MCC panel showing the differences and the Plan → MCC button (blur the candidate's name and roll number), and a 440×280 small promo tile. The icons in `extension/icons/` are rendered from `public/icon.svg`.
 
 ## Privacy practices tab
 
