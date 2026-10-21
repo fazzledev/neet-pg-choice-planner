@@ -1,0 +1,35 @@
+name: Extension release
+
+on:
+  push:
+    tags: ["extension-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the manifest version
+        run: |
+          manifest_version=$(jq -r .version extension/manifest.json)
+          tag_version="${GITHUB_REF_NAME#extension-v}"
+          [ "$tag_version" = "$manifest_version" ] || { echo "::error::Tag $tag_version does not match manifest version $manifest_version"; exit 1; }
+
+      - name: Zip the extension folder
+        run: |
+          cd extension
+          zip -X -r "../choice-planner-filler-${GITHUB_REF_NAME#extension-v}.zip" . -x README.md
+
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          zip_file="choice-planner-filler-${GITHUB_REF_NAME#extension-v}.zip"
+          sha256sum "$zip_file" > "$zip_file.sha256"
+          gh release create "$GITHUB_REF_NAME" "$zip_file" "$zip_file.sha256" \
+            --title "Extension ${GITHUB_REF_NAME#extension-v}" \
+            --notes "The exact zip uploaded to the Chrome Web Store for this version, built from this tag's extension/ folder."
