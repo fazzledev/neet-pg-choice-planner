@@ -8,8 +8,8 @@ institutes = {institute["code"]: institute["name"] for institute in catalog["ins
 general_medicine = {choice["instcd"]: choice for choice in catalog["choices"] if choice["quota"] == "All India" and choice["program"] == "M.D. General Medicine"}
 
 plan_codes = ["700357", "700360", "700391", "700363", "700340", "700301", "700385", "700296"]
-filled_codes = ["700360", "700357", "700391", "700282", "700340", "700363", "700398"]
-available_codes = plan_codes + ["700282", "700398", "700475", "700308", "701506", "700297"]
+filled_codes = ["700360", "700357", "700391", "701506", "700340", "700363", "700398"]
+available_codes = plan_codes + ["701506", "700398", "700475", "700308", "701506", "700297"]
 
 
 def choice(code):
