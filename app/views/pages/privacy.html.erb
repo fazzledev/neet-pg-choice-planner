@@ -26,7 +26,7 @@
   <p>So we can see how many people are using the planner right now, each open page also tells our own server once a minute that it is open and visible. It sends only a random number kept in that tab, which is forgotten when you close it, and whether you are signed in. We keep that for a day.</p>
 
   <h2>Server logs</h2>
-  <p>Like any website, the server logs each request it receives: the time, the page asked for, your IP address and browser, so we can keep the site running and fix problems. The tab number above is left out of these logs. The logs are capped at a small size, so older entries are overwritten as new ones arrive, and we never use them to count or follow visitors.</p>
+  <p>Like any website, the server logs each request it receives: the time, the page asked for, your IP address and browser, so we can keep the site running and fix problems. This includes the visit counts described above, so while a log entry lasts it links your IP address to the page or action it counted. The tab number above is left out. Each service keeps only about 10 MB of logs and deletes the oldest entries beyond that; at today's traffic that is a few months of entries. We never use the logs to count or follow visitors.</p>
 
   <h2>Where it is kept and who helps</h2>
   <ul>
