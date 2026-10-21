@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+source_svg=public/icon.svg
+full_bleed_svg=$(mktemp --suffix=.svg)
+trap 'rm -f "$full_bleed_svg"' EXIT
+
+sed 's|<rect x="32" y="32" width="448" height="448" rx="104"|<rect x="0" y="0" width="512" height="512"|' "$source_svg" > "$full_bleed_svg"
+grep -q 'width="512" height="512" fill="#3d3bf3"' "$full_bleed_svg"
+
+rsvg-convert -w 512 -h 512 "$source_svg" -o public/icon.png
+rsvg-convert -w 512 -h 512 "$full_bleed_svg" -o public/icon-full-bleed.png
+rsvg-convert -w 180 -h 180 "$full_bleed_svg" -o public/apple-touch-icon.png
+
+rsvg-convert -w 16 -h 16 "$source_svg" -o extension/icons/icon-16.png
+rsvg-convert -w 48 -h 48 "$source_svg" -o extension/icons/icon-48.png
+rsvg-convert -w 110 -h 110 "$source_svg" | magick png:- -background none -gravity center -extent 128x128 extension/icons/icon-128.png
