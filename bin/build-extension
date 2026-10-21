@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-usage="usage: bin/build-extension chrome|firefox <output.zip> [local origin, e.g. http://localhost:3000]"
-browser=${1:?$usage}
-output=$(realpath -m "${2:?$usage}")
-local_origin=${3:-}
+usage="usage: bin/build-extension <output.zip> [local origin, e.g. http://localhost:3000]"
+output=$(realpath -m "${1:?$usage}")
+local_origin=${2:-}
 [[ -z "$local_origin" || "$local_origin" =~ ^https?:// ]] || { echo "$usage" >&2; exit 1; }
 root=$(cd "$(dirname "$0")/.." && pwd)
 staging=$(mktemp -d)
@@ -12,14 +11,6 @@ trap 'rm -rf "$staging"' EXIT
 
 cp -r "$root/extension/." "$staging"
 rm -f "$staging/README.md"
-
-case "$browser" in
-  chrome) ;;
-  firefox)
-    jq -s '.[0] * .[1]' "$root/extension/manifest.json" "$root/extension-firefox/manifest-overrides.json" > "$staging/manifest.json"
-    ;;
-  *) echo "Unknown browser: $browser" >&2; exit 1 ;;
-esac
 
 if [ -n "$local_origin" ]; then
   host_origin=$(sed -E 's#^(https?://[^/:]+).*#\1#' <<<"$local_origin")

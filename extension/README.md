@@ -4,7 +4,7 @@ A Chrome and Firefox extension that makes the MCC choice-filling list match a pl
 
 ## Install
 
-From the Chrome Web Store or Firefox Add-ons once they are listed. To load it by hand in Chrome (the zip from the site is the Chrome build; Firefox only installs signed add-ons):
+From the Chrome Web Store or Firefox Add-ons once they are listed. To load it by hand in Chrome (Firefox only installs signed add-ons, so use Firefox Add-ons there):
 
 1. Open `chrome://extensions` and turn on Developer mode.
 2. Load unpacked, and pick this `extension/` folder.
@@ -20,7 +20,7 @@ To practise first, open https://neet-pg-choice-planner.fazzle.dev/practice inste
 
 ## Usage counts
 
-The extension makes no network requests. When Plan → MCC finishes or MCC → Plan reads the list, it keeps a count in its own storage, such as `extension/filled-mcc/11-50` (the number of choices, in bands 0, 1-10, 11-50, 51-200 and 201-plus) or `extension/read-mcc`. The next time the planner is open, it hands those counts to the planner, which sends them to the planner's own GoatCounter with its other visit counts. No choices, ranks, MCC details or identifiers are kept or sent. The Firefox package keeps no usage counts; see `docs/firefox-add-ons.md`.
+The extension makes no network requests. When Plan → MCC finishes or MCC → Plan reads the list, it keeps a count in its own storage, such as `extension/filled-mcc/11-50` (the number of choices, in bands 0, 1-10, 11-50, 51-200 and 201-plus) or `extension/read-mcc`. The next time the planner is open, it hands those counts to the planner, which sends them to the planner's own GoatCounter with its other visit counts. No choices, ranks, MCC details or identifiers are kept or sent. In Firefox it keeps no usage counts; see `docs/firefox-add-ons.md`.
 
 ## Testing
 
