@@ -1,3 +1,4 @@
+const extensionApi = globalThis.browser ?? globalThis.chrome
 const PLANNER_URL = "https://neet-pg-choice-planner.fazzle.dev/plan"
 const label = (choice) => `${choice.institute} · ${choice.program} · ${choice.quota}`
 
@@ -71,12 +72,12 @@ function sizeBucket(count) {
   return "201-plus"
 }
 
-const firefoxBuild = Boolean(chrome.runtime.getManifest().browser_specific_settings?.gecko)
+const firefoxBuild = Boolean(extensionApi.runtime.getManifest().browser_specific_settings?.gecko)
 
 async function recordUsage(name) {
   if (firefoxBuild) return
-  const { usage = [] } = await chrome.storage.local.get("usage")
-  await chrome.storage.local.set({ usage: [...usage, name].slice(-USAGE_LIMIT) })
+  const { usage = [] } = await extensionApi.storage.local.get("usage")
+  await extensionApi.storage.local.set({ usage: [...usage, name].slice(-USAGE_LIMIT) })
 }
 
 function message(text, error = false) {
@@ -233,7 +234,7 @@ async function copyToMcc(resumes = 0) {
 
 async function importFromMcc() {
   const choices = PortalAdapter.readFilled().map((choice, index) => ({ ...choice, rank: index + 1 }))
-  await chrome.storage.local.set({ portalImport: { choices, readAt: new Date().toISOString() } })
+  await extensionApi.storage.local.set({ portalImport: { choices, readAt: new Date().toISOString() } })
   recordUsage("extension/read-mcc").catch(() => {})
   message(`Read ${choices.length} choices from MCC. Confirm in the planner tab that just opened; your plan changes only when you press Replace there.`)
   window.open(PLANNER_URL, "_blank", "noopener")
@@ -255,7 +256,7 @@ new MutationObserver(() => {
   renderTimer = setTimeout(render, 200)
 }).observe(document.body, { childList: true, subtree: true })
 
-chrome.storage.local.get("order").then((stored) => {
+extensionApi.storage.local.get("order").then((stored) => {
   order = stored.order || null
   render()
   const resumes = sessionStorage.getItem(COPYING)
@@ -268,7 +269,7 @@ chrome.storage.local.get("order").then((stored) => {
   copyToMcc(Number(resumes) + 1)
 })
 
-chrome.storage.onChanged.addListener((changes) => {
+extensionApi.storage.onChanged.addListener((changes) => {
   if (!changes.order) return
   order = changes.order.newValue
   render()
