@@ -206,7 +206,8 @@ a { color: var(--accent); }
 .menu summary { list-style: none; cursor: pointer; }
 .menu summary::-webkit-details-marker { display: none; }
 
-.avatar {
+.avatar,
+.round-btn {
   width: 44px;
   height: 44px;
   border-radius: 22px;
@@ -218,6 +219,8 @@ a { color: var(--accent); }
   font-weight: 700;
   font-size: 14px;
 }
+
+.round-btn { color: var(--text); }
 
 .menu-pop {
   position: absolute;
@@ -236,7 +239,8 @@ a { color: var(--accent); }
 }
 
 .menu-pop form { margin: 0; }
-.menu-email { padding: 8px 10px 10px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--border); margin-bottom: 4px; overflow-wrap: anywhere; }
+.menu-email,
+.menu-note { padding: 8px 10px 10px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--border); margin-bottom: 4px; overflow-wrap: anywhere; }
 
 .menu-item {
   display: flex;
@@ -664,7 +668,7 @@ a { color: var(--accent); }
 @media (max-width: 900px) {
   body { font-size: 15px; }
   .topbar { padding: 14px 16px 10px; border-bottom: 0; background: var(--bg); }
-  .brand-name { font-size: 22px; }
+  .brand-name { font-size: 19px; }
   .topbar-actions .button-ghost span { display: none; }
   .topbar-actions .button-ghost { width: 44px; padding: 0; border-radius: 22px; }
   .banner { display: block; padding: 10px 16px; font-size: 13px; }
