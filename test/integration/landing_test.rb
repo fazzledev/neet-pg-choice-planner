@@ -25,6 +25,7 @@ class LandingTest < ActionDispatch::IntegrationTest
       assert_select "a[href='https://wa.me/?text=#{ERB::Util.url_encode("#{ShareHelper::SHARE_TEXT} #{root_url}")}']"
     end
     assert_select "script[src*=share][defer]"
+    assert_select "script[src*=menus][defer]"
   end
 
   test "every landing link is counted as its own click event" do
