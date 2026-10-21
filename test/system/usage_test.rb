@@ -5,9 +5,9 @@ class UsageTest < ApplicationSystemTestCase
 
   test "guest actions wait in an outbox until GoatCounter can take them" do
     visit planner_path
-    find("#q").fill_in with: "a"
     first(".r-add").click
     assert_selector "#picks li"
+    find("#q").fill_in with: "a"
 
     assert_includes outbox, "guest/searched-catalog"
     assert_includes outbox, "guest/edited-plan"
@@ -54,6 +54,28 @@ class UsageTest < ApplicationSystemTestCase
       document.dispatchEvent(new CustomEvent("choice-filler:usage", { detail: JSON.stringify({ not: "a list" }) }))
     JS
     assert_equal ["extension/filled-mcc/11-50", "extension/filled-mcc/201-plus", "extension/read-mcc"], outbox.grep(%r{\A(extension|guest/edited)})
+  end
+
+  test "filters are counted by name, never by the value chosen" do
+    visit planner_path
+    assert_selector "#facets .facet[data-facet=speciality]", visible: :all
+    click_on "Filters"
+    option = first("#facets .facet[data-facet=speciality] .facet-option .opt-label")
+    value = option.text
+    option.click
+
+    assert_includes outbox, "guest/filter/speciality"
+    assert outbox.none? { |name| name.downcase.include?(value.downcase) }
+  end
+
+  test "opening a saved plan counts its size in a band" do
+    visit planner_path
+    first(".r-add").click
+    assert_selector "#picks li"
+
+    visit planner_path
+    assert_selector "#picks li"
+    assert_includes outbox, "guest/saved-plan-size/1-10"
   end
 
   private

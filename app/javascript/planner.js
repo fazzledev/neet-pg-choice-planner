@@ -1137,6 +1137,7 @@ function toggleFacet(name, value, on) {
   saveFilters()
   applyFilters()
   track("used-filters")
+  if (on) track(`filter/${name}`)
 }
 
 function activeFilterCount() {
@@ -1294,9 +1295,10 @@ function bind() {
     state.profile.category = chip.dataset.category
     profileChanged()
   })
-  $("#f-hide").addEventListener("change", () => {
+  $("#f-hide").addEventListener("change", (e) => {
     saveFilters()
     applyFilters()
+    if (e.target.checked) track("filter/hide-added")
   })
   $("#clear-filters").addEventListener("click", () => {
     for (const n of FACET_NAMES) state.selected[n].clear()
@@ -1328,6 +1330,7 @@ function bind() {
       state.expanded.clear()
       saveFilters()
       applyFilters()
+      if (state.groupBy !== "none") track(`group-by/${state.groupBy}`)
       return
     }
     const chip = e.target.closest("button[data-facet]")
@@ -1640,6 +1643,7 @@ async function boot() {
   bind()
   if (synced()) await loadSynced()
   else loadDevice()
+  if (state.picks.length) track(`saved-plan-size/${planSizeBucket(state.picks.length)}`)
   catchUp()
   renderPicks()
   applyFilters()
