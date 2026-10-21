@@ -46,6 +46,6 @@
 </main>
 
 <footer class="lp-foot">
-  <p>Questions? Call <%= link_to "+91 99406 89619", "tel:+919940689619" %>, <%= link_to "message on WhatsApp", "https://wa.me/919940689619", target: "_blank", rel: "noopener" %> or email <%= mail_to "hey@fazzle.dev" %>.</p>
+  <p>Questions? Call <%= link_to ContactHelper::CONTACT_PHONE_DISPLAY, contact_phone_url %>, <%= link_to "message on WhatsApp", contact_whatsapp_url, target: "_blank", rel: "noopener" %> or email <%= mail_to ContactHelper::CONTACT_EMAIL %>.</p>
   <p><%= link_to "Home", root_path %> · <%= link_to "Source on GitHub", "https://github.com/fazzledev/neet-pg-choice-planner", target: "_blank", rel: "noopener" %></p>
 </footer>

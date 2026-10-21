@@ -19,6 +19,15 @@
       <span class="brand-sub"><span class="sync-dot" aria-hidden="true"></span><span id="save-status" aria-live="polite"><%= @counselling.name %></span></span>
     </div>
     <div class="topbar-actions">
+      <details class="menu">
+        <summary class="round-btn" aria-label="Help"><%= icon("circle-question-mark") %></summary>
+        <div class="menu-pop">
+          <span class="menu-note">Stuck, or something looks wrong? Get in touch.</span>
+          <%= link_to contact_phone_url, class: "menu-item" do %><%= icon("phone") %>Call <%= ContactHelper::CONTACT_PHONE_DISPLAY %><% end %>
+          <%= link_to contact_whatsapp_url, class: "menu-item", target: "_blank", rel: "noopener" do %><%= icon("message-circle") %>Message on WhatsApp<% end %>
+          <%= mail_to ContactHelper::CONTACT_EMAIL, class: "menu-item" do %><%= icon("mail") %>Email <%= ContactHelper::CONTACT_EMAIL %><% end %>
+        </div>
+      </details>
       <% if authenticated? %>
         <details class="menu">
           <summary class="avatar" aria-label="Account menu"><%= current_user.email.first(2).upcase %></summary>

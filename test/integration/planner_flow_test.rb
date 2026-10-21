@@ -16,6 +16,14 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     assert_equal 34, response.parsed_body["choices"].size
   end
 
+  test "the planner's help menu offers a call, WhatsApp and email" do
+    get planner_path
+    assert_select ".topbar details.menu summary[aria-label=Help]"
+    assert_select ".topbar .menu-pop a.menu-item[href='tel:+919940689619']"
+    assert_select ".topbar .menu-pop a.menu-item[href='https://wa.me/919940689619']"
+    assert_select ".topbar .menu-pop a.menu-item[href='mailto:hey@fazzle.dev']"
+  end
+
   test "sign-in links work once" do
     token = @student.generate_token_for(:sign_in)
     get sign_in_link_path(token)
