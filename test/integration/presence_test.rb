@@ -36,6 +36,11 @@ class PresenceTest < ActionDispatch::IntegrationTest
     assert_response :no_content
   end
 
+  test "tab ids are kept out of the request log" do
+    filter = ActiveSupport::ParameterFilter.new(Rails.application.config.filter_parameters)
+    assert_equal({ "tab_id" => "[FILTERED]" }, filter.filter("tab_id" => TAB))
+  end
+
   test "malformed tab ids are refused" do
     post presence_path, params: { tab_id: "x" * 500 }, as: :json
     assert_response :unprocessable_content
