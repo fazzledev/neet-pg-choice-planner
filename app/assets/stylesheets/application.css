@@ -860,6 +860,20 @@ button.primary, .button.primary, .r-add {
 .page-back .icon { width: 16px; height: 16px; }
 .extension-actions { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
 .extension-card .button.block { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; min-height: 54px; border-radius: 16px; font-size: 17px; }
+.touch-only { display: none; }
+.computer-needed { flex-direction: column; gap: 12px; padding: 14px; border-radius: 16px; background: var(--surface-2); }
+.computer-needed > p:first-child { display: flex; gap: 10px; margin: 0; font-size: 14px; }
+.computer-needed > p:first-child .icon { flex: none; width: 22px; height: 22px; color: var(--accent); }
+.computer-needed .share-link { padding: 0; }
+.computer-needed .share-status { padding: 0; }
+.computer-needed .share-status:empty { display: none; }
+.computer-needed .download-anyway { margin: 0; font-size: 13px; }
+.install-lead { margin: 0; font-weight: 600; }
+.computer-needed .extension-actions { grid-template-columns: 1fr 1fr; }
+@media (hover: none) and (pointer: coarse) {
+  .touch-only { display: flex; }
+  .no-touch { display: none; }
+}
 .install-steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
 .install-steps .icon { width: 15px; height: 15px; vertical-align: -2px; }
 .install-steps code { font-size: 13px; padding: 1px 5px; border-radius: 6px; background: var(--surface-2); }
