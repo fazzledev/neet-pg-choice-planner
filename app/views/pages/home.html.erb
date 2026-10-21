@@ -21,6 +21,11 @@
       <%= link_to extension_path, class: "button lp-big", data: click_event("landing/hero-extension") do %><%= icon("puzzle") %>Get the filler extension<% end %>
     </div>
     <p class="lp-note"><%= icon("shield-check") %>Free and open source. No account needed. Works offline.</p>
+    <figure class="lp-demo">
+      <div class="lp-shot-bar"><span></span><span></span><span></span><em>neet-pg-choice-planner.fazzle.dev/plan</em></div>
+      <video class="lp-demo-video" src="<%= asset_path("planner-demo.mp4") %>" poster="<%= asset_path("planner-demo-poster.jpg") %>" muted loop playsinline controls preload="none" aria-label="Searching for MD Radiodiagnosis seats, adding three to the plan, moving one up, and scrolling the ranked plan"></video>
+    </figure>
+    <%= javascript_include_tag "landing", defer: true %>
   </section>
 
   <section class="lp-section">
