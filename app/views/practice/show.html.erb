@@ -1,0 +1,33 @@
+<% content_for :title, "Practice choice filling · NEET PG Choice Planner" %>
+<% content_for :javascript_entry, "practice" %>
+<div class="practice" data-catalog-url="<%= catalog_path(@counselling) %>">
+  <header class="practice-banner">
+    <strong>Practice choice filling. This is not MCC.</strong>
+    <p>A copy of how MCC's choice-filling page works, with this year's real choices, for trying the MCC Filler extension or practising before your real session. Nothing here reaches MCC, and your list stays in this browser.</p>
+    <p class="practice-links"><%= link_to "Get the extension", extension_path %> · <%= link_to "Open the planner", planner_path %></p>
+  </header>
+
+  <p class="practice-status" data-status role="status"></p>
+
+  <section class="practice-panel">
+    <h2>Filled choices <span data-filled-count></span></h2>
+    <table id="filledChoiceContainer" class="practice-table">
+      <thead><tr><th>Institute code</th><th>Institute</th><th>Course code</th><th>Course</th><th>Institute type</th><th>Quota</th><th>Action</th></tr></thead>
+      <tbody data-filled></tbody>
+    </table>
+    <div class="practice-actions">
+      <button type="button" id="btnSave" data-practice="save">Save and Continue</button>
+      <button type="button" id="btnLockChoices" data-practice="lock">Lock choices</button>
+      <button type="button" data-practice="reset">Start over</button>
+    </div>
+  </section>
+
+  <section class="practice-panel">
+    <h2>Available choices <span data-available-count></span></h2>
+    <input type="search" placeholder="Filter by institute, course or quota" aria-label="Filter available choices" data-filter>
+    <table id="avlChoiceContainer" class="practice-table">
+      <thead><tr><th>Institute code</th><th>Institute</th><th>Course code</th><th>Course</th><th>Institute type</th><th>Quota</th><th>Action</th></tr></thead>
+      <tbody data-available></tbody>
+    </table>
+  </section>
+</div>
