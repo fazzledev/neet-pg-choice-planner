@@ -428,7 +428,8 @@ function paintResult(li, id) {
   const at = state.pickIndex.get(id)
   const btn = li.querySelector(".r-add")
   li.classList.toggle("added", at !== undefined)
-  btn.textContent = at === undefined ? "+" : `#${at + 1}`
+  if (at === undefined) btn.textContent = "+"
+  else btn.replaceChildren(iconSvg(config.spriteUrl, "check"), `#${at + 1}`)
   btn.setAttribute("aria-label", at === undefined ? "Add to end of my plan" : `In my plan at number ${at + 1}, show it`)
 }
 
