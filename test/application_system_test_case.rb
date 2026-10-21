@@ -4,6 +4,7 @@ ENV["SE_SKIP_DRIVER_IN_PATH"] ||= "true"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include ActiveJob::TestHelper
+  include ActionMailer::TestHelper
 
   driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1000]
 
