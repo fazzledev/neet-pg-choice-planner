@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   get "connect" => "connections#index", as: :connect
   resources :connections, only: :destroy
 
+  get "practice" => "practice#show", as: :practice
   resource :extension, only: :show do
     get :download
   end

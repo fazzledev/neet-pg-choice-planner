@@ -1023,3 +1023,23 @@ a.lp-brand { color: inherit; text-decoration: none; }
   :root:not([data-theme="light"]) .chance-possible { color: #7fa2ff; }
   :root:not([data-theme="light"]) .chance-borderline { color: #f0b45c; }
 }
+
+.practice { display: flex; flex-direction: column; gap: 16px; width: min(1100px, calc(100% - 32px)); margin: 24px auto 64px; }
+.practice-banner { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border-radius: var(--radius); background: var(--warn-bg); color: var(--warn-ink); }
+.practice-banner strong { font: 700 18px/1.2 var(--font-display); }
+.practice-banner p { margin: 0; }
+.practice-banner a { color: inherit; font-weight: 600; }
+.practice-status:empty { display: none; }
+.practice-status { margin: 0; padding: 10px 14px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
+.practice-panel { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow-x: auto; }
+.practice-panel h2 { margin: 0; font-size: 16px; }
+.practice-panel h2 span { color: var(--muted); font-weight: 500; }
+.practice-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.practice-table th, .practice-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.practice-table th { color: var(--muted); font-weight: 600; white-space: nowrap; }
+.practice-table td:last-child { white-space: nowrap; }
+.practice-table input[type=button] { min-height: 30px; padding: 0 10px; margin-right: 4px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; }
+.practice-table input[type=button]:hover { border-color: var(--accent-line); }
+.practice-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.practice-panel input[type=search] { width: 100%; }
+.practice-table .practice-empty { color: var(--muted); padding: 14px 8px; }
