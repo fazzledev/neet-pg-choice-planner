@@ -13,11 +13,12 @@ class SessionsController < ApplicationController
   end
 
   def show
-    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Referrer-Policy"] = "same-origin"
     @token = params[:token]
   end
 
   def consume
+    response.headers["Referrer-Policy"] = "no-referrer"
     if (user = User.consume_sign_in_token(params[:token]))
       start_new_session_for(user)
       redirect_to after_authentication_url
