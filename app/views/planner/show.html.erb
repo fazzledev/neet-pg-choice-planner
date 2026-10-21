@@ -15,10 +15,11 @@
   <%= turbo_stream_from @list if @list %>
   <header class="topbar">
     <div class="brand">
-      <span class="brand-name">NEET PG Choice Planner</span>
+      <span class="brand-name"><span class="brand-exam">NEET PG </span>Choice Planner</span>
       <span class="brand-sub"><span class="sync-dot" aria-hidden="true"></span><span id="save-status" aria-live="polite"><%= @counselling.name %></span></span>
     </div>
     <div class="topbar-actions">
+      <%= render "shared/share_menu", event_prefix: "planner", summary_class: "round-btn", group: "topbar-menu" %>
       <details class="menu" name="topbar-menu">
         <%= tag.summary icon("circle-question-mark"), class: "round-btn", aria: { label: "Help" }, data: click_event("planner/help-open") %>
         <div class="menu-pop">
@@ -212,3 +213,4 @@
     </li>
   </template>
 </div>
+<%= javascript_include_tag "share", defer: true %>

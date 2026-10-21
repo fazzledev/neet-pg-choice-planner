@@ -1,0 +1,14 @@
+<%= tag.details class: "menu share-menu", name: local_assigns[:group], data: { share_url: root_url, share_title: share_title, share_text: share_text } do %>
+  <%= tag.summary class: summary_class, aria: { label: ("Share the planner" unless local_assigns[:label]) }, title: "Share the planner", data: click_event("#{event_prefix}/share-open") do %><%= icon("share-2") %><%= local_assigns[:label] %><% end %>
+  <div class="menu-pop share-pop <%= local_assigns[:align] %>">
+    <span class="menu-note">Send the planner to a friend preparing for counselling.</span>
+    <div class="share-link">
+      <input type="text" readonly value="<%= root_url %>" aria-label="Link to the planner">
+      <%= tag.button "Copy", type: "button", class: "primary share-copy", data: click_event("#{event_prefix}/share-copy") %>
+    </div>
+    <p class="share-status" role="status"></p>
+    <%= link_to share_whatsapp_url, class: "menu-item", target: "_blank", rel: "noopener", data: click_event("#{event_prefix}/share-whatsapp") do %><%= icon("message-circle") %>Share on WhatsApp<% end %>
+    <%= link_to share_telegram_url, class: "menu-item", target: "_blank", rel: "noopener", data: click_event("#{event_prefix}/share-telegram") do %><%= icon("send") %>Share on Telegram<% end %>
+    <%= link_to share_email_url, class: "menu-item", data: click_event("#{event_prefix}/share-email") do %><%= icon("mail") %>Share by email<% end %>
+  </div>
+<% end %>

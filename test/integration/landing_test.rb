@@ -17,6 +17,16 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select "link[rel=modulepreload]", count: 0
   end
 
+  test "offers a share button that shares the site" do
+    get root_path
+    assert_select ".lp-cta details.share-menu[data-share-url='#{root_url}']" do
+      assert_select "summary[data-goatcounter-click='landing/share-open']", text: "Share with a friend"
+      assert_select "button.share-copy", text: "Copy"
+      assert_select "a[href='https://wa.me/?text=#{ERB::Util.url_encode("#{ShareHelper::SHARE_TEXT} #{root_url}")}']"
+    end
+    assert_select "script[src*=share][defer]"
+  end
+
   test "every landing link is counted as its own click event" do
     get root_path
     links = css_select("a")

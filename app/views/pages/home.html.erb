@@ -19,6 +19,7 @@
     <div class="lp-cta">
       <%= link_to planner_path, class: "button primary lp-big", data: click_event("landing/hero-start-planning") do %>Start planning<%= icon("arrow-right") %><% end %>
       <%= link_to extension_path, class: "button lp-big", data: click_event("landing/hero-extension") do %><%= icon("puzzle") %>Get the filler extension<% end %>
+      <%= render "shared/share_menu", event_prefix: "landing", summary_class: "button lp-big", label: "Share with a friend", align: "from-left" %>
     </div>
     <p class="lp-note"><%= icon("shield-check") %>Free and open source. No account needed. Works offline.</p>
     <figure class="lp-demo">
@@ -26,6 +27,7 @@
       <video class="lp-demo-video" src="<%= asset_path("planner-demo.mp4") %>" poster="<%= asset_path("planner-demo-poster.jpg") %>" muted loop playsinline controls preload="none" aria-label="Entering a rank, filtering to MD Radiodiagnosis in Karnataka and Maharashtra, seeing past closing ranks and chances, adding two seats, moving one up the plan and viewing the plan by institute"></video>
     </figure>
     <%= javascript_include_tag "landing", defer: true %>
+    <%= javascript_include_tag "share", defer: true %>
   </section>
 
   <section class="lp-section">
