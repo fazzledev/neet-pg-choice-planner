@@ -11,9 +11,9 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 
 ## Store listing
 
-**Name:** NEET PG Choice Planner filler
+**Name:** NEET PG Choice Planner – MCC Filler
 
-**Summary (132 characters max):** Makes the MCC choice-filling list match your NEET PG Choice Planner plan, or imports it back. Never locks. Not affiliated with MCC.
+**Summary (132 characters max):** Copy your NEET PG Choice Planner list to MCC choice filling in one click, or import it back. Never locks. Not affiliated with MCC.
 
 **Category:** Productivity
 
@@ -45,7 +45,7 @@ What to paste into the Chrome Web Store developer dashboard for the MCC filler e
 
 **Privacy policy:** https://neet-pg-choice-planner.fazzle.dev/privacy
 
-**Assets still to make:** at least one 1280×800 screenshot of the MCC panel showing the differences and the Plan → MCC button (blur the candidate's name and roll number), and a 440×280 small promo tile. The icons in `extension/icons/` are rendered from `public/icon.svg` by `bin/render-icons`; rerun it after changing the SVG.
+**Images:** upload `docs/store-assets/screenshot-differences.png` and `screenshot-synced.png` as screenshots (1280×800) and `promo-tile.png` as the small promo tile (440×280). `docs/store-assets/render.sh` rebuilds them; the screenshots run the real extension scripts on a sample choice-filling page with made-up choices, so they show no one's MCC details. The icons in `extension/icons/` are rendered from `public/icon.svg` by `bin/render-icons`; rerun it after changing the SVG.
 
 ## Privacy practices tab
 
