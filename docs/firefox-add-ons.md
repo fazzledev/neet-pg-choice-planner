@@ -2,15 +2,15 @@
 
 What to enter on addons.mozilla.org (AMO) for the MCC Filler extension. The Chrome listing is in `chrome-web-store.md`; most of its text carries over.
 
-## How the Firefox package differs
+## How it works in Firefox
 
-- `bin/build-extension firefox <zip>` merges `extension-firefox/manifest-overrides.json` into the manifest. It adds the add-on ID `mcc-filler@neet-pg-choice-planner.fazzle.dev`, Firefox 140+ on desktop (142+ on Android, which web-ext lint requires even though the Android listing stays off), and the data collection declaration.
-- The Firefox package keeps no usage counts. Firefox only allows the usage category ("technical and interaction data") as an optional permission the user can refuse, and a content script cannot check that choice, so `portal.js` skips counting when the manifest has a `gecko` section.
+- The Chrome and Firefox stores get the same zip. `browser_specific_settings` in `extension/manifest.json` holds the Firefox-only settings, which Chrome ignores: the add-on ID `mcc-filler@neet-pg-choice-planner.fazzle.dev`, Firefox 140+ on desktop (142+ on Android, which web-ext lint requires even though the Android listing stays off), and the data collection declaration.
+- In Firefox the extension keeps no usage counts. Firefox only allows the usage category ("technical and interaction data") as an optional permission the user can refuse, and a content script cannot check that choice, so `portal.js` skips counting when it runs in Firefox.
 - Data collection declared as required: `websiteContent`, because it reads the choice list on the MCC page and hands it to the planner tab.
 
 ## Release a version
 
-The same `extension-v<version>` tag that builds the Chrome zip also builds `choice-planner-filler-<version>-firefox.zip` on the GitHub release. Upload that file at https://addons.mozilla.org/developers/addon/submit/ and choose "On this site" for distribution. Lint it first with `npx web-ext lint --source-dir <unzipped folder>`.
+The `extension-v<version>` tag builds `choice-planner-filler-<version>.zip` on the GitHub release, the same file the Chrome Web Store gets. Upload it at https://addons.mozilla.org/developers/addon/submit/ and choose "On this site" for distribution. Lint it first with `npx web-ext lint --source-dir <unzipped folder>`.
 
 The code is not minified or bundled, so AMO does not need a separate source upload.
 

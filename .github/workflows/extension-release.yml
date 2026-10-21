@@ -19,18 +19,15 @@ jobs:
           tag_version="${GITHUB_REF_NAME#extension-v}"
           [ "$tag_version" = "$manifest_version" ] || { echo "::error::Tag $tag_version does not match manifest version $manifest_version"; exit 1; }
 
-      - name: Build the Chrome and Firefox packages
-        run: |
-          version="${GITHUB_REF_NAME#extension-v}"
-          bin/build-extension chrome "choice-planner-filler-$version.zip"
-          bin/build-extension firefox "choice-planner-filler-$version-firefox.zip"
+      - name: Build the package
+        run: bin/build-extension "choice-planner-filler-${GITHUB_REF_NAME#extension-v}.zip"
 
       - name: Publish the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           version="${GITHUB_REF_NAME#extension-v}"
-          sha256sum choice-planner-filler-$version*.zip > "choice-planner-filler-$version.sha256"
-          gh release create "$GITHUB_REF_NAME" choice-planner-filler-$version*.zip "choice-planner-filler-$version.sha256" \
+          sha256sum "choice-planner-filler-$version.zip" > "choice-planner-filler-$version.sha256"
+          gh release create "$GITHUB_REF_NAME" "choice-planner-filler-$version.zip" "choice-planner-filler-$version.sha256" \
             --title "Extension $version" \
-            --notes "The exact packages uploaded to the stores for this version, built from this tag's extension/ folder: choice-planner-filler-$version.zip for the Chrome Web Store and choice-planner-filler-$version-firefox.zip for Firefox Add-ons."
+            --notes "The exact package uploaded to the Chrome Web Store and Firefox Add-ons for this version, built from this tag's extension/ folder."
