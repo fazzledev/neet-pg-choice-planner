@@ -665,6 +665,10 @@ a { color: var(--accent); }
 .login-card label { font-size: 13px; font-weight: 600; color: var(--muted); }
 .login-card button { min-height: 52px; border-radius: 14px; font-size: 16px; }
 
+@media (max-width: 419px) {
+  .brand-exam { display: none; }
+}
+
 @media (max-width: 900px) {
   body { font-size: 15px; }
   .topbar { padding: 14px 16px 10px; border-bottom: 0; background: var(--bg); }
@@ -861,6 +865,9 @@ button.primary, .button.primary, .r-add {
 .copy-btn .icon { width: 16px; height: 16px; }
 .copy-btn .icon:last-child, .copy-btn[data-copied] .icon:first-child { display: none; }
 .copy-btn[data-copied] .icon:last-child { display: inline-block; color: var(--accent); }
+.share-btn .icon:nth-child(2), .share-btn[data-copied] .icon:first-child, .share-done, .share-btn[data-copied] .share-label { display: none; }
+.share-btn[data-copied] .icon:nth-child(2) { display: inline-block; color: var(--accent); }
+.share-btn[data-copied] .share-done { display: inline; }
 
 body.landing { display: block; height: auto; min-height: 100%; }
 .lp-nav { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px max(20px, calc((100% - 1080px) / 2)); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }

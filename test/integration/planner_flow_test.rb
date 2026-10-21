@@ -16,6 +16,12 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     assert_equal 34, response.parsed_body["choices"].size
   end
 
+  test "the planner's top bar can share the site" do
+    get planner_path
+    assert_select ".topbar button.share-btn[aria-label='Share the planner'][data-share-url='#{root_url}'][data-goatcounter-click='planner/share']"
+    assert_select "script[src*=share][defer]"
+  end
+
   test "the planner's help menu offers a call, WhatsApp and email" do
     get planner_path
     assert_select ".topbar details.menu[name=topbar-menu] summary[aria-label=Help][data-goatcounter-click='planner/help-open']"
