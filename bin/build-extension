@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+browser=${1:?usage: bin/build-extension chrome|firefox <output.zip>}
+output=$(realpath -m "${2:?usage: bin/build-extension chrome|firefox <output.zip>}")
+root=$(cd "$(dirname "$0")/.." && pwd)
+staging=$(mktemp -d)
+trap 'rm -rf "$staging"' EXIT
+
+cp -r "$root/extension/." "$staging"
+rm -f "$staging/README.md"
+
+case "$browser" in
+  chrome) ;;
+  firefox)
+    jq -s '.[0] * .[1]' "$root/extension/manifest.json" "$root/extension-firefox/manifest-overrides.json" > "$staging/manifest.json"
+    ;;
+  *) echo "Unknown browser: $browser" >&2; exit 1 ;;
+esac
+
+rm -f "$output"
+(cd "$staging" && zip -X -q -r "$output" .)

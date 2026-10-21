@@ -1,4 +1,5 @@
-const extensionAlive = () => Boolean(globalThis.chrome?.runtime?.id)
+const extensionApi = globalThis.browser?.runtime ? globalThis.browser : globalThis.chrome
+const extensionAlive = () => Boolean(extensionApi?.runtime?.id)
 
 document.documentElement.dataset.choiceFiller = "1"
 
@@ -6,7 +7,7 @@ document.addEventListener("choice-planner:order", async (event) => {
   if (!extensionAlive()) return
   const order = JSON.parse(event.detail)
   try {
-    await chrome.storage.local.set({ order })
+    await extensionApi.storage.local.set({ order })
   } catch {
     return
   }
@@ -15,15 +16,15 @@ document.addEventListener("choice-planner:order", async (event) => {
 
 async function offerImport() {
   if (!extensionAlive()) return
-  const { portalImport } = await chrome.storage.local.get("portalImport")
+  const { portalImport } = await extensionApi.storage.local.get("portalImport")
   if (portalImport) document.dispatchEvent(new CustomEvent("choice-filler:import", { detail: JSON.stringify(portalImport) }))
 }
 
 async function handOverUsage() {
   if (!extensionAlive()) return
-  const { usage } = await chrome.storage.local.get("usage")
+  const { usage } = await extensionApi.storage.local.get("usage")
   if (!usage?.length) return
-  await chrome.storage.local.remove("usage")
+  await extensionApi.storage.local.remove("usage")
   document.dispatchEvent(new CustomEvent("choice-filler:usage", { detail: JSON.stringify(usage) }))
 }
 
@@ -33,7 +34,7 @@ document.addEventListener("choice-planner:listening", () => {
 })
 
 document.addEventListener("choice-planner:import-done", () => {
-  if (extensionAlive()) chrome.storage.local.remove("portalImport").catch(() => {})
+  if (extensionAlive()) extensionApi.storage.local.remove("portalImport").catch(() => {})
 })
 
 
