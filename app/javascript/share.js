@@ -39,7 +39,7 @@
       } catch {
         input.focus()
         status.classList.add("failed")
-        status.textContent = "Couldn't copy automatically. The link is selected, so copy it with your keyboard."
+        status.textContent = "Couldn't copy automatically. The link is selected: copy it with Ctrl+C, or press and hold it."
         return
       }
       copy.textContent = "Copied"
