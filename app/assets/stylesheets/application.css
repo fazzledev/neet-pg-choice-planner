@@ -668,7 +668,7 @@ a { color: var(--accent); }
 @media (max-width: 900px) {
   body { font-size: 15px; }
   .topbar { padding: 14px 16px 10px; border-bottom: 0; background: var(--bg); }
-  .brand-name { font-size: 22px; }
+  .brand-name { font-size: 19px; }
   .topbar-actions .button-ghost span { display: none; }
   .topbar-actions .button-ghost { width: 44px; padding: 0; border-radius: 22px; }
   .banner { display: block; padding: 10px 16px; font-size: 13px; }

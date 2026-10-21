@@ -18,10 +18,11 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
 
   test "the planner's help menu offers a call, WhatsApp and email" do
     get planner_path
-    assert_select ".topbar details.menu summary[aria-label=Help]"
+    assert_select ".topbar details.menu[name=topbar-menu] summary[aria-label=Help]"
     assert_select ".topbar .menu-pop a.menu-item[href='tel:+919940689619']"
     assert_select ".topbar .menu-pop a.menu-item[href='https://wa.me/919940689619']"
     assert_select ".topbar .menu-pop a.menu-item[href='mailto:hey@fazzle.dev']"
+    assert_select ".topbar .menu-pop a[data-goatcounter-click^='planner/help-']", count: 3
   end
 
   test "sign-in links work once" do
