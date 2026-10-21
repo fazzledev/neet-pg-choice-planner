@@ -16,4 +16,4 @@ A Chrome extension that makes the MCC choice-filling list match a plan from NEET
 
 ## Usage counts
 
-The extension makes no network requests. When Plan → MCC finishes or MCC → Plan reads the list, it keeps a count in its own storage, such as `extension/filled-mcc/11-50` (the number of choices, in rough bands) or `extension/read-mcc`. The next time the planner is open, it hands those counts to the planner, which sends them to the planner's own GoatCounter with its other visit counts. No choices, ranks, MCC details or identifiers are kept or sent.
+The extension makes no network requests. When Plan → MCC finishes or MCC → Plan reads the list, it keeps a count in its own storage, such as `extension/filled-mcc/11-50` (the number of choices, in bands 0, 1-10, 11-50, 51-200 and 201-plus) or `extension/read-mcc`. The next time the planner is open, it hands those counts to the planner, which sends them to the planner's own GoatCounter with its other visit counts. No choices, ranks, MCC details or identifiers are kept or sent.

@@ -68,7 +68,7 @@ function sizeBucket(count) {
   if (count <= 10) return "1-10"
   if (count <= 50) return "11-50"
   if (count <= 200) return "51-200"
-  return "200+"
+  return "201-plus"
 }
 
 async function recordUsage(name) {

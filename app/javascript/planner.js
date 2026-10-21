@@ -168,8 +168,10 @@ function sendUsage() {
 }
 
 function receiveExtensionUsage(event) {
-  const names = JSON.parse(event.detail).filter((name) => EXTENSION_USAGE.test(name))
-  if (names.length) queueUsage(names)
+  const names = JSON.parse(event.detail)
+  if (!Array.isArray(names)) return
+  const accepted = names.filter((name) => typeof name === "string" && EXTENSION_USAGE.test(name))
+  if (accepted.length) queueUsage(accepted)
 }
 
 function planSizeBucket(count) {
@@ -177,11 +179,13 @@ function planSizeBucket(count) {
   if (count <= 10) return "1-10"
   if (count <= 50) return "11-50"
   if (count <= 200) return "51-200"
-  return "200+"
+  return "201-plus"
 }
 
 function trackPlanSize() {
-  if (document.visibilityState === "hidden" && state.editedThisVisit) track(`plan-size/${planSizeBucket(state.picks.length)}`)
+  if (document.visibilityState !== "hidden" || !state.editedThisVisit || state.planSizeTracked) return
+  state.planSizeTracked = true
+  track(`plan-size/${planSizeBucket(state.picks.length)}`)
 }
 
 function csrfToken() {

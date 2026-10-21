@@ -31,6 +31,17 @@ class UsageTest < ApplicationSystemTestCase
       document.dispatchEvent(new Event("visibilitychange"))
     JS
     assert_includes outbox, "guest/plan-size/1-10"
+
+    page.execute_script(<<~JS)
+      Object.defineProperty(document, "visibilityState", { value: "visible", configurable: true })
+      document.dispatchEvent(new Event("visibilitychange"))
+    JS
+    all(".r-add").last.click
+    page.execute_script(<<~JS)
+      Object.defineProperty(document, "visibilityState", { value: "hidden", configurable: true })
+      document.dispatchEvent(new Event("visibilitychange"))
+    JS
+    assert_equal 1, outbox.count { |name| name.include?("plan-size") }
   end
 
   test "only well-formed extension counts are accepted from the extension" do
@@ -38,10 +49,11 @@ class UsageTest < ApplicationSystemTestCase
     assert_selector "#picks", visible: :all
     page.execute_script(<<~JS)
       document.dispatchEvent(new CustomEvent("choice-filler:usage", {
-        detail: JSON.stringify(["extension/filled-mcc/11-50", "extension/read-mcc", "guest/edited-plan", "extension/../x", "https://evil.example"])
+        detail: JSON.stringify(["extension/filled-mcc/11-50", "extension/filled-mcc/201-plus", "extension/read-mcc", "guest/edited-plan", "extension/../x", "https://evil.example", 7])
       }))
+      document.dispatchEvent(new CustomEvent("choice-filler:usage", { detail: JSON.stringify({ not: "a list" }) }))
     JS
-    assert_equal ["extension/filled-mcc/11-50", "extension/read-mcc"], outbox
+    assert_equal ["extension/filled-mcc/11-50", "extension/filled-mcc/201-plus", "extension/read-mcc"], outbox.grep(%r{\A(extension|guest/edited)})
   end
 
   private
