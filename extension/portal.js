@@ -72,7 +72,7 @@ function sizeBucket(count) {
   return "201-plus"
 }
 
-const inFirefox = navigator.userAgent.includes("Firefox/")
+const inFirefox = extensionApi.runtime.getURL("").startsWith("moz-extension:")
 const onMcc = location.hostname === "mcc.admissions.nic.in"
 
 async function recordUsage(name) {

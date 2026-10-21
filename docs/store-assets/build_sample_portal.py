@@ -55,7 +55,7 @@ page = f"""<!doctype html>
   const sampleOrder = {json.dumps(order)}
   const store = {{ order: sampleOrder }}
   globalThis.chrome = {{
-    runtime: {{ id: "sample" }},
+    runtime: {{ id: "sample", getURL: (path) => `chrome-extension://sample/${{path}}` }},
     storage: {{
       local: {{
         get: async (key) => ({{ [key]: store[key] }}),
