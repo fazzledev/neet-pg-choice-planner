@@ -8,6 +8,15 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_match "not affiliated with the Medical Counselling Committee", response.body
   end
 
+  test "shows the planner demo without downloading it up front" do
+    get root_path
+    assert_select ".lp-hero video.lp-demo-video[muted][playsinline][controls][preload=none][poster][aria-label]" do |video|
+      assert_match %r{/assets/planner-demo-\h+\.mp4}, video.first["src"]
+    end
+    assert_select "script[src*=landing][defer]"
+    assert_select "link[rel=modulepreload]", count: 0
+  end
+
   test "every landing link is counted as its own click event" do
     get root_path
     links = css_select("a")
