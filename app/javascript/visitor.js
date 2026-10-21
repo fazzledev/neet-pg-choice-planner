@@ -3,10 +3,16 @@
   const today = () => new Date().toLocaleDateString("en-CA")
 
   const read = () => {
+    let raw
     try {
-      return JSON.parse(localStorage.getItem(storageKey))
+      raw = localStorage.getItem(storageKey)
     } catch {
       return undefined
+    }
+    try {
+      return JSON.parse(raw)
+    } catch {
+      return {}
     }
   }
 
@@ -22,12 +28,17 @@
   const countVisit = () => {
     if (!navigator.onLine || !window.goatcounter?.count) return
     const seen = read()
-    if (seen === undefined || seen?.lastCounted === today()) return
+    if (seen === undefined || seen?.lastCounted === today() || window.goatcounter.filter?.()) return
     const name = seen ? "visitor/returning" : "visitor/first"
     if (!write({ lastCounted: today() })) return
     window.goatcounter.count({ path: name, title: name, event: true })
   }
 
-  if (document.readyState === "complete") countVisit()
-  else window.addEventListener("load", countVisit, { once: true })
+  const countWhenVisible = () => {
+    if (document.visibilityState === "visible") return countVisit()
+    document.addEventListener("visibilitychange", countWhenVisible, { once: true })
+  }
+
+  if (document.readyState === "complete") countWhenVisible()
+  else window.addEventListener("load", countWhenVisible, { once: true })
 })()
