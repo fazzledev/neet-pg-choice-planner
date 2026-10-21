@@ -13,7 +13,6 @@ From the Chrome Web Store or Firefox Add-ons once they are listed. To load it by
 
 To practise first, open https://neet-pg-choice-planner.fazzle.dev/practice instead of MCC in step 2. It works like MCC's choice-filling page with this year's choices, and nothing there reaches MCC.
 
-
 1. Open Choice Planner in the same browser. Your plan syncs to the extension on load and after every change.
 2. Sign in to MCC and open Choice Filling. The panel shows In sync, or how many choices differ.
 3. Plan → MCC makes the MCC list an exact copy of the plan: it removes choices not in the plan, adds missing ones and arranges them. Check it, then press Save and Continue and enter the OTP.
