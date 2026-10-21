@@ -39,6 +39,7 @@ class LandingTest < ActionDispatch::IntegrationTest
   test "every privacy page link is counted as its own click event" do
     get privacy_path
     links = css_select("a")
+    assert links.any?
     names = links.map { _1["data-goatcounter-click"] }
     assert_equal links.size, names.compact.size, "untagged: #{links.reject { _1["data-goatcounter-click"] }.map(&:text).map(&:strip)}"
     assert_equal names.uniq, names
