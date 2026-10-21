@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Choice filling (sample)</title>
+<style>
+  body { margin: 0; font: 13px/1.4 system-ui, sans-serif; color: #1d2433; background: #eef1f6; }
+  header { padding: 14px 24px; background: #fff; border-bottom: 1px solid #d9dee8; font-weight: 600; font-size: 15px; }
+  main { padding: 16px 24px; display: grid; gap: 16px; max-width: 860px; }
+  section { background: #fff; border: 1px solid #d9dee8; border-radius: 8px; overflow: hidden; }
+  h2 { margin: 0; padding: 10px 12px; font-size: 13px; background: #f6f7fa; border-bottom: 1px solid #d9dee8; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 6px 10px; text-align: left; border-bottom: 1px solid #eef0f4; vertical-align: top; }
+  th { font-weight: 600; color: #5b6475; font-size: 12px; }
+  td:nth-child(3), td:nth-child(5), th:nth-child(3), th:nth-child(5) { display: none; }
+  button { font: inherit; font-size: 12px; padding: 2px 8px; border: 1px solid #c3c9d6; border-radius: 4px; background: #fff; }
+</style>
+<script>
+  const sampleOrder = {"counselling": "NEET PG Medical Counselling 2026", "owner": null, "sentAt": "2026-10-21T10:30:00+05:30", "choices": [{"rank": 1, "instcd": "700357", "brcd": "GMED", "quota": "All India", "institute": "Atal Bihari Vajpayee Institute of Medical Sciences and Dr. RML Hospital, New Delhi", "program": "M.D. General Medicine"}, {"rank": 2, "instcd": "700360", "brcd": "GMED", "quota": "All India", "institute": "ESIC Medical College & Hospital, Basaidarapur, New Delhi", "program": "M.D. General Medicine"}, {"rank": 3, "instcd": "700391", "brcd": "GMED", "quota": "All India", "institute": "Bangalore Medical College and Research Institute, Bangalore", "program": "M.D. General Medicine"}, {"rank": 4, "instcd": "700363", "brcd": "GMED", "quota": "All India", "institute": "B J Medical College, Ahmedabad", "program": "M.D. General Medicine"}, {"rank": 5, "instcd": "700340", "brcd": "GMED", "quota": "All India", "institute": "Coimbatore Medical College, Coimbatore", "program": "M.D. General Medicine"}, {"rank": 6, "instcd": "700301", "brcd": "GMED", "quota": "All India", "institute": "B. J. Govt. Medical College, Pune", "program": "M.D. General Medicine"}, {"rank": 7, "instcd": "700385", "brcd": "GMED", "quota": "All India", "institute": "Dr. Ram Manohar Lohia Institute of Medical Sciences,Lucknow", "program": "M.D. General Medicine"}, {"rank": 8, "instcd": "700296", "brcd": "GMED", "quota": "All India", "institute": "Gandhi Medical College, Bhopal", "program": "M.D. General Medicine"}]}
+  const store = { order: sampleOrder }
+  globalThis.chrome = {
+    runtime: { id: "sample" },
+    storage: {
+      local: {
+        get: async (key) => ({ [key]: store[key] }),
+        set: async (values) => Object.assign(store, values),
+        remove: async (key) => { delete store[key] },
+      },
+      onChanged: { addListener() {} },
+    },
+  }
+</script>
+</head>
+<body>
+<header>Choice filling · sample page with made-up choices</header>
+<main>
+  <section><h2>Filled choices</h2><table id="filledChoiceContainer"><tr><th>Code</th><th>Institute</th><th>Course code</th><th>Course</th><th>Type</th><th>Quota</th><th></th></tr><tr><td>700360</td><td>ESIC Medical College &amp; Hospital, Basaidarapur, New Delhi</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="Up">Up</button> <button class="fChoice">Remove</button></td></tr><tr><td>700357</td><td>Atal Bihari Vajpayee Institute of Medical Sciences and Dr. RML Hospital, New Delhi</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="Up">Up</button> <button class="fChoice">Remove</button></td></tr><tr><td>700391</td><td>Bangalore Medical College and Research Institute, Bangalore</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="Up">Up</button> <button class="fChoice">Remove</button></td></tr><tr><td>701506</td><td>BRD Medical College, Gorakhpur</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="Up">Up</button> <button class="fChoice">Remove</button></td></tr><tr><td>700340</td><td>Coimbatore Medical College, Coimbatore</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="Up">Up</button> <button class="fChoice">Remove</button></td></tr><tr><td>700363</td><td>B J Medical College, Ahmedabad</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="Up">Up</button> <button class="fChoice">Remove</button></td></tr><tr><td>700398</td><td>Calcutta National Medical College, Kolkata</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="Up">Up</button> <button class="fChoice">Remove</button></td></tr></table></section>
+  <section><h2>Available choices</h2><table id="avlChoiceContainer"><tr><th>Code</th><th>Institute</th><th>Course code</th><th>Course</th><th>Type</th><th>Quota</th><th></th></tr><tr><td>700301</td><td>B. J. Govt. Medical College, Pune</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="aChoice">Add</button></td></tr><tr><td>700385</td><td>Dr. Ram Manohar Lohia Institute of Medical Sciences,Lucknow</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="aChoice">Add</button></td></tr><tr><td>700296</td><td>Gandhi Medical College, Bhopal</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="aChoice">Add</button></td></tr><tr><td>700475</td><td>Andhra Medical College, Visakhapatnam</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="aChoice">Add</button></td></tr><tr><td>700308</td><td>Dr SN Medical College, Jodhpur</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="aChoice">Add</button></td></tr><tr><td>700416</td><td>Belagavi Institute of Medical Sciences, Belagavi</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="aChoice">Add</button></td></tr><tr><td>700297</td><td>Gajra Raja Medical College, Gwalior</td><td>GMED</td><td>M.D. General Medicine</td><td>Government</td><td>All India</td><td><button class="aChoice">Add</button></td></tr></table></section>
+</main>
+<script>
+  const filledTable = document.querySelector("#filledChoiceContainer")
+  const availableTable = document.querySelector("#avlChoiceContainer")
+  const actionCell = (row) => row.cells[row.cells.length - 1]
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("main button")
+    if (!button) return
+    const row = button.closest("tr")
+    if (button.classList.contains("aChoice")) {
+      actionCell(row).innerHTML = '<button class="Up">Up</button> <button class="fChoice">Remove</button>'
+      filledTable.append(row)
+    }
+    if (button.classList.contains("fChoice")) {
+      actionCell(row).innerHTML = '<button class="aChoice">Add</button>'
+      availableTable.append(row)
+    }
+    if (button.classList.contains("Up") && row.previousElementSibling?.querySelector("td")) row.after(row.previousElementSibling)
+  })
+</script>
+<script src="../../extension/portal-adapter.js"></script>
+<script src="../../extension/portal.js"></script>
+<script>
+  const panel = () => document.querySelector("#choice-planner-filler").shadowRoot
+  const scenes = {
+    differences: () => panel().querySelector("details")?.setAttribute("open", ""),
+    synced: () => {
+      panel().querySelector('[data-action="to-mcc"]').click()
+      setTimeout(() => panel().querySelector('[data-action="confirm"]')?.click(), 100)
+    },
+  }
+  setTimeout(() => scenes[location.hash.slice(1)]?.(), 400)
+</script>
+</body>
+</html>
