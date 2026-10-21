@@ -813,11 +813,13 @@ button.primary, .button.primary, .r-add {
   box-shadow: none;
 }
 
-.result.added .r-add, .g-row.added .r-add { background: transparent; border-color: var(--border); color: var(--text); }
+.result.added { background: var(--accent-soft); border-color: var(--accent-line); }
+.result.added .r-add, .g-row.added .r-add { background: var(--surface); border-color: var(--accent); color: var(--accent-ink); font-size: 15px; font-weight: 700; }
 .rank-chip, .best-rank { background: transparent; border: 0; color: var(--text); }
 .count-badge { background: transparent; color: inherit; border: 1px solid currentColor; }
 .filters-btn .count-badge { background: var(--ink); color: var(--on-ink); border-color: var(--on-ink); }
-.g-row.added, .review .g-row.open, .facet-option.on { background: var(--surface-2); }
+.review .g-row.open, .facet-option.on { background: var(--surface-2); }
+.g-row.added { background: var(--accent-soft); }
 .toggle-chip[aria-pressed=true] { background: transparent; border-color: var(--text); color: var(--text); }
 
 @media (hover: hover) {
