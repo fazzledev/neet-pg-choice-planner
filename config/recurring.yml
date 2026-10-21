@@ -5,3 +5,6 @@ production:
   clear_stale_oauth:
     command: "OauthGrant.stale.includes(:session).find_each(&:disconnect!); OauthClient.unclaimed.destroy_all"
     schedule: every day at 3:40
+  clear_expired_presences:
+    command: "Presence.expired.delete_all"
+    schedule: every day at 3:50
