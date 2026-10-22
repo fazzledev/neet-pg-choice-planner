@@ -20,6 +20,10 @@ Each text box's content is in a code block below, exactly as it should be pasted
 
 **Name and summary:** come from the manifest, as on Chrome.
 
+**Add-on URL:** https://addons.mozilla.org/firefox/addon/neet-pg-choice-plan-mcc-filler/ (AMO allows at most 30 characters, so "planner" became "plan").
+
+**Source code question:** No. The extension is plain JavaScript with no build step.
+
 **Experimental / requires payment:** both unticked.
 
 **Categories:** "My add-on doesn't fit into any of the categories".
