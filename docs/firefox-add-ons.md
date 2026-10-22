@@ -93,6 +93,11 @@ No login needed to test. The real MCC page (mcc.admissions.nic.in) requires a NE
 The extension never presses lock or final-submit controls (see FORBIDDEN_CONTROL in portal-adapter.js) and makes no network requests. The code is plain JavaScript, not minified or bundled; the package is a zip of the extension/ folder of https://github.com/fazzledev/neet-pg-choice-planner (built by bin/build-extension, tag extension-v1.3.1).
 ```
 
-**Images:** the two screenshots in `docs/store-assets/` can be added on the listing's edit page after submission. AMO doesn't use the promo tile; the icon comes from the package.
+**Images** (the listing's Edit Product Page → Images, after submission; AMO doesn't take the listing icon from the package):
+- Add-on icon: `extension/icons/icon-128.png`.
+- Screenshots, with captions:
+  - `docs/store-assets/screenshot-differences.png`: "The panel compares MCC's choice list with your plan and lists every difference. Shown on the practice page with sample choices."
+  - `docs/store-assets/screenshot-synced.png`: "After Plan → MCC, the filled list matches your plan in the same order and the panel says In sync. You then save with the OTP yourself."
+- AMO doesn't use the promo tile.
 
-**Homepage:** https://neet-pg-choice-planner.fazzle.dev/extension (set on the listing's edit page after submission).
+**Homepage:** https://neet-pg-choice-planner.fazzle.dev/extension (Additional Details on the Edit Product Page; AMO first fills it from the manifest's `homepage_url`, the GitHub folder).
