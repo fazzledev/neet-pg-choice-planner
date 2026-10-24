@@ -10,8 +10,9 @@ class LandingTest < ActionDispatch::IntegrationTest
 
   test "shows the planner demo without downloading it up front" do
     get root_path
-    assert_select ".lp-hero video.lp-demo-video[muted][playsinline][controls][preload=none][poster][aria-label]" do |video|
-      assert_match %r{/assets/planner-demo-\h+\.mp4}, video.first["src"]
+    assert_select ".lp-hero video.lp-demo-video[muted][playsinline][controls][preload=none][poster][aria-label]", count: 2 do |videos|
+      assert_match %r{/assets/planner-demo-\h+\.mp4}, videos.first["src"]
+      assert_match %r{/assets/planner-demo-mobile-\h+\.mp4}, videos.last["src"]
     end
     assert_select "script[src*=landing][defer]"
     assert_select "link[rel=modulepreload]", count: 0
