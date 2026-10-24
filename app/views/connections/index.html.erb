@@ -2,7 +2,7 @@
 <% content_for :body_class, "login" %>
 <% content_for :javascript_entry, "copy" %>
 <div class="extension-page">
-  <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
+  <nav class="page-back-row"><%= link_to root_path, class: "page-back" do %><%= icon("arrow-left") %>Home<% end %><%= link_to planner_path, class: "page-back" do %>Planner<% end %></nav>
   <div class="login-card extension-card connect-card">
     <span class="login-brand">AI assistants</span>
     <h1>Plan with ChatGPT or Claude</h1>
@@ -28,6 +28,7 @@
     <p class="muted">In Claude Code, run <code>claude mcp add --transport http neet-pg-planner <%= @server_url %></code>, then <code>/mcp</code> to sign in.</p>
 
     <p class="muted">Open the emailed sign-in link in the same browser that is connecting, so it comes back to the Allow page.</p>
+    <p class="muted">Your assistant works on the plan saved to your account. If you planned without signing in, first open the planner while signed in, on the device you planned on, so your plan moves to your account.</p>
 
     <h2>Try asking</h2>
     <ul class="connect-examples">

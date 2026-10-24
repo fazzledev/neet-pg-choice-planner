@@ -15,10 +15,10 @@
     <span class="lp-kicker">NEET PG 2026 counselling</span>
     <p class="lp-greeting">Dear Doctors,</p>
     <h1>Plan your choices calmly.<br>Then fill them in minutes.</h1>
-    <p class="lp-lede">Search all <%= number_with_delimiter(@choice_count) %> choices across <%= number_with_delimiter(@institute_count) %> institutes, shape your plan the way you think, and copy it to the counselling portal in one click.</p>
+    <p class="lp-lede">Search all <%= number_with_delimiter(@choice_count) %> choices across <%= number_with_delimiter(@institute_count) %> institutes, shape your plan the way you think, and copy it to the counselling portal in a few clicks.</p>
     <div class="lp-cta">
       <%= link_to planner_path, class: "button primary lp-big", data: click_event("landing/hero-start-planning") do %>Start planning<%= icon("arrow-right") %><% end %>
-      <%= link_to extension_path, class: "button lp-big", data: click_event("landing/hero-extension") do %><%= icon("puzzle") %>Get the filler extension<% end %>
+      <%= link_to extension_path, class: "button lp-big", data: click_event("landing/hero-extension") do %><%= icon("puzzle") %>Get the MCC Filler extension<% end %>
       <%= render "shared/share_menu", event_prefix: "landing", summary_class: "button lp-big", label: "Share with a friend", align: "from-left" %>
     </div>
     <p class="lp-note"><%= icon("shield-check") %>Free and open source. No account needed. Works offline.</p>
@@ -52,64 +52,65 @@
       <article class="lp-card">
         <span class="lp-icon"><%= icon("wifi-off") %></span>
         <h3>Works offline</h3>
-        <p>Your plan is saved in your browser as you go. A dropped connection or a portal outage costs you nothing.</p>
+        <p>Your plan is saved in your browser as you go. After your first visit, a dropped connection or a portal outage costs you nothing.</p>
       </article>
       <article class="lp-card">
         <span class="lp-icon"><%= icon("cloud") %></span>
-        <h3>Sync and undo</h3>
+        <h3>Sync and history</h3>
         <p>Sign in with an emailed link to use the same plan on phone and laptop, with a history you can restore from.</p>
       </article>
       <article class="lp-card">
         <span class="lp-icon"><%= icon("phone") %></span>
         <h3>Ask before you choose</h3>
-        <p>For shortlisted DNB hospitals, the coordinator's contact sits next to the seat, so you can ask about stipend, bond and duty hours first.</p>
+        <p>Where a DNB hospital lists a coordinator, their contact sits next to the seat, so you can ask about stipend, bond and duty hours first.</p>
       </article>
       <article class="lp-card">
         <span class="lp-icon"><%= icon("trending-up") %></span>
         <h3>See past closing ranks</h3>
-        <p>Most choices show how deep MCC allotted them in 2023–2025, round by round, for Open and your category.</p>
+        <p>Most choices show the last rank MCC allotted them to in 2023–2025, round by round, for Open and your category.</p>
       </article>
       <article class="lp-card">
         <span class="lp-icon"><%= icon("target") %></span>
         <h3>Know your chances</h3>
-        <p>Enter your rank to see each choice marked Likely, Possible, Borderline or Reach. A rough guide from past rounds, not a prediction.</p>
+        <p>Enter your rank and category to see each choice marked Likely, Possible, Borderline or Reach. A rough guide from past rounds, not a prediction.</p>
       </article>
     </div>
   </section>
 
   <section class="lp-section lp-split">
     <div>
-      <span class="lp-kicker">Chrome extension</span>
+      <span class="lp-kicker">MCC Filler extension</span>
       <h2>Copy your plan to the portal</h2>
-<p>Plan in Choice Planner, then let the extension make the counselling portal match. It works in Chrome on a computer.</p>
+      <p>Plan here, then let MCC Filler make the counselling portal match. It works in Chrome, Edge and Brave on a computer, with Firefox coming soon.</p>
       <ol class="lp-steps">
-        <li>Open the planner in Chrome. Your plan syncs to the extension by itself.</li>
+        <li>Install MCC Filler, then reload the planner. Your plan syncs to the extension by itself from then on.</li>
         <li>Sign in to the counselling portal yourself and open Choice Filling. The panel says <em>In sync</em> or how many choices differ.</li>
         <li>Press <strong>Plan → MCC</strong>. MCC becomes an exact copy of your plan: missing choices added, dropped ones removed, everything in your order of preference. Check it, then press Save and Continue and enter the OTP.</li>
       </ol>
       <p>Changed your list on the portal directly? <strong>MCC → Plan</strong> makes your plan a copy of MCC instead, and you can undo it.</p>
-      <%= link_to extension_path, class: "button lp-big", data: click_event("landing/extension-install") do %><%= icon("puzzle") %>Install the extension<% end %>
+      <p>Nervous about the real portal? Try it first on the <%= link_to "practice page", practice_path, data: click_event("landing/extension-practice") %>, which works like MCC's choice filling with this year's choices.</p>
+      <%= link_to extension_path, class: "button lp-big", data: click_event("landing/extension-install") do %><%= icon("puzzle") %>Install MCC Filler<% end %>
     </div>
-<figure class="lp-shot" aria-label="Screenshot of the extension panel on the MCC choice-filling page">
-  <div class="lp-shot-bar"><span></span><span></span><span></span><em>mcc.admissions.nic.in/Applicant/Choice/ChoiceFilling.aspx</em></div>
-  <div class="lp-shot-page" aria-hidden="true">
-    <div class="lp-shot-head"><b>Available Choice(s)</b><b>Filled Choice(s)</b></div>
-    <% 7.times do %><div class="lp-shot-row"><i></i><i></i></div><% end %>
-  </div>
-  <div class="lp-panel">
-      <strong>NEET PG Choice Planner</strong>
-      <p class="lp-panel-sub">Your plan: 60 choices, synced just now.</p>
-      <p class="lp-panel-state">3 differences</p>
-      <div class="lp-panel-group missing">
-        <h4>In your plan, not on MCC yet (2)</h4>
-        <p><span>#14</span>Aster Medcity, Kochi · Orthopaedics · DNB Quota</p>
-        <p><span>#15</span>Lisie Hospital, Kochi · Orthopaedics · DNB Quota</p>
+    <figure class="lp-shot" aria-label="Screenshot of the extension panel on the MCC choice-filling page">
+      <div class="lp-shot-bar"><span></span><span></span><span></span><em>mcc.admissions.nic.in/Applicant/Choice/ChoiceFilling.aspx</em></div>
+      <div class="lp-shot-page" aria-hidden="true">
+        <div class="lp-shot-head"><b>Available Choice(s)</b><b>Filled Choice(s)</b></div>
+        <% 7.times do %><div class="lp-shot-row"><i></i><i></i></div><% end %>
       </div>
-      <div class="lp-panel-group moved">
-        <h4>On MCC at a different rank (1)</h4>
-        <p><span>MCC #9</span>Govt. Medical College, Kozhikode · M.S. Orthopaedics</p>
-      </div>
-      <div class="lp-panel-actions"><span class="lp-panel-btn">Plan → MCC</span><span class="lp-panel-btn ghost">MCC → Plan</span></div>
+      <div class="lp-panel">
+        <strong>NEET PG Choice Planner</strong>
+        <p class="lp-panel-sub">Your plan: 60 choices, synced just now.</p>
+        <p class="lp-panel-state">3 differences</p>
+        <div class="lp-panel-group missing">
+          <h4>In your plan, not on MCC yet (2)</h4>
+          <p><span>#14</span>Aster Medcity, Kochi · Orthopaedics · DNB Quota</p>
+          <p><span>#15</span>Lisie Hospital, Kochi · Orthopaedics · DNB Quota</p>
+        </div>
+        <div class="lp-panel-group moved">
+          <h4>On MCC at a different rank (1)</h4>
+          <p><span>MCC #9</span>Govt. Medical College, Kozhikode · M.S. Orthopaedics</p>
+        </div>
+        <div class="lp-panel-actions"><span class="lp-panel-btn">Plan → MCC</span><span class="lp-panel-btn ghost">MCC → Plan</span></div>
       </div>
     </figure>
   </section>
@@ -121,7 +122,7 @@
       <p>Connect the planner to ChatGPT or Claude and talk your list into shape. Your assistant searches every choice, reads DNB contacts, and adds, ranks or notes choices in your plan. Each change is saved to your plan, and History keeps earlier versions you can restore.</p>
       <ol class="lp-steps">
         <li>Add the planner as a connector in ChatGPT or Claude, using the link on the connect page.</li>
-        <li>Sign in with your email and press <strong>Allow</strong>.</li>
+        <li>Sign in with your email and press <strong>Allow</strong>. Planned without an account? Open the planner once while signed in, on the device you planned on, so your plan moves to your account.</li>
         <li>Ask in your own words: “Move every DNB seat below my MD and MS choices.”</li>
       </ol>
       <p>It can't reach the counselling portal. Copying to MCC still goes through the extension, and locking stays with you.</p>
@@ -147,12 +148,12 @@
       <article class="lp-card">
         <span class="lp-icon"><%= icon("shield-check") %></span>
         <h3>Never locks</h3>
-        <p>The extension refuses anything that locks choices. Saving and locking stay with you.</p>
+        <p>MCC Filler refuses anything that locks choices. Saving and locking stay with you.</p>
       </article>
       <article class="lp-card">
-        <span class="lp-icon"><%= icon("eye") %></span>
+        <span class="lp-icon"><%= icon("key-round") %></span>
         <h3>Never signs in for you</h3>
-        <p>You type your portal password, pin and OTP. Choice Planner never sees them.</p>
+        <p>You type your portal password, security PIN and OTP. Choice Planner never sees them.</p>
       </article>
       <article class="lp-card">
         <span class="lp-icon"><%= icon("github") %></span>

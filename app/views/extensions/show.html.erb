@@ -1,7 +1,8 @@
+<% content_for :title, "MCC Filler extension · NEET PG Choice Planner" %>
 <% content_for :body_class, "login" %>
 <% content_for :javascript_entry, "copy" %>
 <div class="extension-page">
-  <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
+  <nav class="page-back-row"><%= link_to root_path, class: "page-back" do %><%= icon("arrow-left") %>Home<% end %><%= link_to planner_path, class: "page-back" do %>Planner<% end %></nav>
   <div class="login-card extension-card">
     <span class="login-brand">Browser extension · v<%= @version %></span>
     <h1>MCC Filler</h1>

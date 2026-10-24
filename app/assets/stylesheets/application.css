@@ -855,6 +855,7 @@ button.primary, .button.primary, .r-add {
 
 .extension-page { display: flex; flex-direction: column; gap: 12px; width: min(440px, calc(100% - 32px)); }
 .extension-page .login-card { width: 100%; }
+.page-back-row { align-self: flex-start; display: flex; gap: 12px; }
 .page-back { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; padding: 4px 2px; font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none; }
 .page-back:hover { color: var(--text); }
 .page-back .icon { width: 16px; height: 16px; }
