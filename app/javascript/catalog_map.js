@@ -35,7 +35,10 @@ export function createMap(el, { onSelect, shape }) {
   const india = states.getBounds()
   const paintStates = () => states.setStyle({ color: color("--border"), weight: 1, fillColor: color("--surface"), fillOpacity: 1 })
   paintStates()
-  const fitIndia = () => map.setMinZoom(map.getBoundsZoom(india))
+  const fitIndia = () => {
+    map.options.minZoom = 0
+    map.setMinZoom(map.getBoundsZoom(india))
+  }
   map.fitBounds(india)
   fitIndia()
   map.setMaxBounds(india.pad(0.15))
