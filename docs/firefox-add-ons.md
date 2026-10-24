@@ -2,6 +2,10 @@
 
 What to enter on addons.mozilla.org (AMO) for the MCC Filler extension. The Chrome listing is in `chrome-web-store.md`; most of its text carries over.
 
+## Status
+
+Submitted on 2026-10-22 as version 1.3.1 and awaiting Mozilla's review. Developer profile "Fazzle Dev" (homepage fazzle.dev, sign-in with two-step authentication). Once Mozilla approves it, set `cattr_accessor :firefox_listed, default: true` in `app/models/extension_package.rb`: `/extension` and the landing page then show the Firefox Add-ons badge and list Firefox as available.
+
 ## How it works in Firefox
 
 - The Chrome and Firefox stores get the same zip. `browser_specific_settings` in `extension/manifest.json` holds the Firefox-only settings, which Chrome ignores: the add-on ID `mcc-filler@neet-pg-choice-planner.fazzle.dev`, Firefox 140+ on desktop and 142+ on Android, and the data collection declaration. Because the manifest names Android, AMO lists it for Firefox for Android too and won't let that be unticked. It should work there, but it hasn't been tested on a phone.
@@ -10,7 +14,7 @@ What to enter on addons.mozilla.org (AMO) for the MCC Filler extension. The Chro
 
 ## Release a version
 
-The `extension-v<version>` tag builds `choice-planner-filler-<version>.zip` on the GitHub release, the same file the Chrome Web Store gets. Upload it at https://addons.mozilla.org/developers/addon/submit/ and choose "On this site" for distribution. Lint it first with `npx web-ext lint --source-dir <unzipped folder>`.
+The `extension-v<version>` tag builds `choice-planner-filler-<version>.zip` on the GitHub release, the same file the Chrome Web Store gets. For a new version, open the add-on in the Developer Hub and use **Upload New Version**; the first submission used https://addons.mozilla.org/developers/addon/submit/ with "On this site" for distribution. Lint it first with `npx web-ext lint --source-dir <unzipped folder>`.
 
 The code is not minified or bundled, so AMO does not need a separate source upload.
 

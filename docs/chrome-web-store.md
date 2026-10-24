@@ -2,12 +2,16 @@
 
 What to paste into the Chrome Web Store developer dashboard for the MCC Filler extension, and how a version gets there. Each text box's content is in a code block below, exactly as it should be pasted.
 
+## Status
+
+Live since 2026-10-24 as version 1.3.1: https://chromewebstore.google.com/detail/dknkamnnjakgmgggbeomoakajbkdennd (item ID `dknkamnnjakgmgggbeomoakajbkdennd`, publisher hey@fazzle.dev, non-trader). The developer account needs 2-Step Verification on the Google account and a verified contact email before anything can be uploaded or published. `/extension` links to the listing through `ExtensionPackage::CHROME_WEB_STORE_URL`.
+
 ## Release a version
 
 1. Bump `version` in `extension/manifest.json` and merge it.
 2. Tag the merge commit `extension-v<version>` and push the tag: `git tag extension-v<version> && git push origin extension-v<version>`.
 3. The `Extension release` workflow checks that the tag matches the manifest, builds the package with `bin/build-extension` and publishes a GitHub release with the zip and its SHA-256. The same zip goes to Firefox Add-ons (see `firefox-add-ons.md`).
-4. Download `choice-planner-filler-<version>.zip` from the release and upload exactly that file in the developer dashboard. Don't rebuild it locally, so anyone can compare the store version with the tagged source.
+4. Download `choice-planner-filler-<version>.zip` from the release and upload exactly that file on the existing item's **Package** tab (Upload new package), then submit it for review. Don't rebuild it locally, so anyone can compare the store version with the tagged source.
 
 ## Store listing tab
 
