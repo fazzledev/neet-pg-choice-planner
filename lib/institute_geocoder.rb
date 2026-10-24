@@ -38,7 +38,7 @@ class InstituteGeocoder
 
   def locate(inst)
     attempts(inst).each do |kind, params|
-      hit = search(params).find { in_state?(_1, inst[:state]) && _1["place_rank"].to_i >= MIN_PLACE_RANK }
+      hit = search(params).find { in_states?(_1, inst[:states]) && _1["place_rank"].to_i >= MIN_PLACE_RANK }
       return [hit["lat"].to_f.round(5), hit["lon"].to_f.round(5), precision(kind, hit["place_rank"].to_i)] if hit
     end
     nil
@@ -55,12 +55,11 @@ class InstituteGeocoder
     address = inst[:address].to_s.squish
     parts = address.split(/\s*,\s*/).reject(&:blank?)
     pincode = address[/(?<!\d)[1-9]\d{2}\s?\d{3}(?!\d)/]&.delete(" ")
-    state_known = inst[:state].present?
     list = [[:address, { q: address }]]
-    list << [:address, { q: "#{inst[:name]}, #{inst[:state]}" }] if state_known
+    inst[:states].each { list << [:address, { q: "#{inst[:name]}, #{_1}" }] }
     list << [:pincode, { postalcode: pincode, country: "India" }] if pincode
     (1...parts.size - 1).each { list << [:locality, { q: parts.drop(_1).join(", ") }] }
-    towns(address).each { list << [:town, { q: "#{_1}, #{inst[:state]}" }] } if state_known
+    towns(address).product(inst[:states]).each { |town, state| list << [:town, { q: "#{town}, #{state}" }] }
     list.reject { _2[:q] == "" }.uniq { _2 }
   end
 
@@ -96,11 +95,11 @@ class InstituteGeocoder
     @last_request = Process.clock_gettime(Process::CLOCK_MONOTONIC)
   end
 
-  def in_state?(hit, state)
-    return true if state.blank?
+  def in_states?(hit, states)
+    return true if states.empty?
 
     found = hit.dig("address", "state").to_s
-    STATE_SPELLINGS.fetch(state, [state]).any? { found.casecmp?(_1) } || found.include?(state) || state.include?(found.presence || "\0")
+    states.any? { |state| STATE_SPELLINGS.fetch(state, [state]).any? { found.casecmp?(_1) } || found.include?(state) || state.include?(found.presence || "\0") }
   end
 
   def save

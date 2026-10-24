@@ -15,7 +15,10 @@ namespace :planner do
   task geocode: :environment do
     $stdout.sync = true
     counselling = Counselling.find_by!(active: true)
-    institutes = counselling.institutes.order(:code).map { { code: _1.code, name: _1.name, address: _1.address, state: _1.state_doubtful ? nil : _1.state } }
+    institutes = counselling.institutes.order(:code).map do |inst|
+      states = inst.state_doubtful ? Places.candidates("#{inst.name} #{inst.address}") : [inst.state].compact_blank
+      { code: inst.code, name: inst.name, address: inst.address, states: states }
+    end
     found = InstituteGeocoder.new(Rails.root.join("data/institute_locations.json"), institutes).run
     puts "#{found.values.compact.size} of #{found.size} institutes located"
   end

@@ -71,6 +71,10 @@ module Places
     [best[:state], doubtful]
   end
 
+  def self.candidates(text)
+    (STATE_NEEDLES + ALIAS_NEEDLES).filter_map { |re, state| state if text.match?(re) }.uniq
+  end
+
   def self.state_for(text)
     locate(text).first
   end
