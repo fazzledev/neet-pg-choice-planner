@@ -119,6 +119,10 @@ const state = {
   mapPoint: null,
   mapPoints: new Map(),
   refitMap: false,
+  mapSubject: "plan",
+  mapLens: true,
+  planDepth: null,
+  likelyOnly: false,
   orderView: "ranked",
   expanded: new Set(),
 }
@@ -482,71 +486,326 @@ function plural(n, one, many = `${one}s`) {
   return `${n.toLocaleString()} ${n === 1 ? one : many}`
 }
 
+const CHANCE_ORDER = ["likely", "possible", "borderline", "reach", "none"]
+const CHANCE_WORDS = { likely: "Likely", possible: "Possible", borderline: "Borderline", reach: "Reach", none: "No past data" }
+const mapSubjectKey = () => `planner:${config.counselling}:map-subject`
+const mapLensKey = () => `planner:${config.counselling}:map-lens`
+
+function lensOn() {
+  return state.mapLens && Boolean(state.profile.rank) && Boolean(state.cutoffs)
+}
+
+function closingFor(c) {
+  const mains = cutoffYears(c).map((year) => year.main).filter(Boolean)
+  return mains.length ? Math.min(...mains) : null
+}
+
+function chanceFor(c) {
+  const closing = closingFor(c)
+  return closing ? chanceOf(state.profile.rank, closing)[1] : "none"
+}
+
+function bestChance(chances) {
+  return chances.reduce((best, chance) => (CHANCE_ORDER.indexOf(chance) < CHANCE_ORDER.indexOf(best) ? chance : best), "none")
+}
+
+function placeOf(c) {
+  const place = state.locations?.[c.inst.code]
+  return place && { key: `${place[0]},${place[1]}`, lat: place[0], lng: place[1], city: place[2] }
+}
+
+function rankList(ranks) {
+  const shown = ranks.slice(0, 3).map((rank) => `#${rank}`).join(" ")
+  return ranks.length > 3 ? `${shown} +${ranks.length - 3}` : shown
+}
+
 function mapPoints() {
+  const lens = lensOn()
   const points = new Map()
   const unplaced = new Set()
   for (const c of state.filtered) {
-    const place = state.locations[c.inst.code]
+    const chance = lens ? chanceFor(c) : null
+    if (state.likelyOnly && lens && chance !== "likely") continue
+    const place = placeOf(c)
     if (!place) {
       unplaced.add(c.inst.code)
       continue
     }
-    const [lat, lng, city] = place
-    const key = `${lat},${lng}`
-    if (!points.has(key)) points.set(key, { key, lat, lng, city, institutes: new Map(), choices: 0, picked: false })
-    const point = points.get(key)
+    if (!points.has(place.key)) points.set(place.key, { ...place, institutes: new Map(), choices: 0, ranks: [], chances: [] })
+    const point = points.get(place.key)
     if (!point.institutes.has(c.inst.code)) point.institutes.set(c.inst.code, [])
     point.institutes.get(c.inst.code).push(c)
     point.choices += 1
-    if (state.pickIndex.has(c.id)) point.picked = true
+    if (chance) point.chances.push(chance)
+    if (state.pickIndex.has(c.id)) point.ranks.push(state.pickIndex.get(c.id) + 1)
   }
   for (const point of points.values()) {
-    point.label = `${point.city} · ${plural(point.institutes.size, "institute")} · ${plural(point.choices, "choice")}`
+    point.ranks.sort((a, b) => a - b)
+    const inPlan = point.ranks.length > 0
+    const best = lens ? bestChance(point.chances) : null
+    point.best = best
+    point.fill = lens ? `--chance-${best}` : inPlan ? "--accent" : "--accent-soft"
+    point.stroke = lens ? "--bg" : "--accent"
+    point.opacity = lens && !inPlan && (best === "reach" || best === "none") ? 0.4 : 1
+    point.ring = lens && inPlan
+    point.name = inPlan ? `${point.city} ${rankList(point.ranks)}` : point.city
+    point.priority = point.institutes.size
+    point.label = `${point.city} · ${plural(point.institutes.size, "institute")} · ${plural(point.choices, "choice")}${best ? ` · best odds ${CHANCE_WORDS[best]}` : ""}${inPlan ? ` · your ${rankList(point.ranks)}` : ""}`
     point.radius = Math.min(14, 3 + 1.4 * Math.sqrt(point.institutes.size))
   }
   return { points, unplaced: unplaced.size }
 }
 
+function planDepth() {
+  return Math.min(state.planDepth ?? state.picks.length, state.picks.length)
+}
+
+function planOutlook() {
+  const lens = lensOn()
+  const entries = state.picks.map((pick, i) => {
+    const c = state.byId.get(pick.choice_id)
+    return { c, rank: i + 1, chance: lens ? chanceFor(c) : null }
+  })
+  const firstLikely = lens ? entries.find((e) => e.chance === "likely") : null
+  const depth = planDepth()
+  const shown = entries.slice(0, depth)
+  const landing = firstLikely && firstLikely.rank <= depth ? firstLikely : null
+  return { lens, entries, shown, depth, firstLikely, landing }
+}
+
+function planPoints(outlook) {
+  const points = new Map()
+  let unplaced = 0
+  for (const entry of outlook.shown) {
+    const place = placeOf(entry.c)
+    if (!place) {
+      unplaced += 1
+      continue
+    }
+    if (!points.has(place.key)) points.set(place.key, { ...place, entries: [], institutes: new Set() })
+    const point = points.get(place.key)
+    point.entries.push(entry)
+    point.institutes.add(entry.c.inst.code)
+  }
+  for (const point of points.values()) {
+    const ranks = point.entries.map((e) => e.rank)
+    const before = point.entries.filter((e) => !outlook.landing || e.rank <= outlook.landing.rank)
+    const fallback = outlook.lens && before.length === 0
+    const best = outlook.lens && !fallback ? bestChance(before.map((e) => e.chance)) : null
+    point.ranks = ranks
+    point.landing = Boolean(outlook.landing && point.entries.includes(outlook.landing))
+    point.fallback = fallback
+    point.fill = !outlook.lens ? "--accent" : fallback ? null : `--chance-${best}`
+    point.stroke = fallback ? "--faint" : "--bg"
+    point.opacity = 1
+    point.ring = point.landing
+    point.name = `${point.city} ${rankList(ranks)}`
+    point.priority = -ranks[0]
+    point.label = `${point.city} · your ${ranks.map((rank) => `#${rank}`).join(", ")}${point.landing ? " · most likely landing" : fallback ? " · fallbacks only" : best ? ` · best odds ${CHANCE_WORDS[best]}` : ""}`
+    point.radius = Math.min(14, 4 + 1.6 * Math.sqrt(ranks.length))
+  }
+  return { points, unplaced }
+}
+
 function mapPanelGroups() {
   const point = state.mapPoints?.get(state.mapPoint)
-  if (!point) return []
+  if (!point || !point.institutes || state.mapSubject === "plan") return []
   return [...point.institutes.values()].map((items) => ({ key: items[0].inst.code, items, label: items[0].inst.short })).sort((a, b) => a.label.localeCompare(b.label))
 }
 
 function renderMapResults() {
-  const institutes = new Set(state.filtered.map((c) => c.inst.code)).size
-  $("#result-count").textContent = `${plural(institutes, "institute")} · ${plural(state.filtered.length, "choice")}`
+  const plan = state.mapSubject === "plan"
+  $(".pane.catalog").classList.toggle("map-plan", plan)
+  for (const btn of document.querySelectorAll("#map-subject button")) btn.setAttribute("aria-checked", String(btn.dataset.subject === state.mapSubject))
+  $("#map-lens").checked = lensOn()
+  $("#map-lens").disabled = !state.profile.rank
   $("#more").hidden = true
-  paintAddAll()
+  $("#add-all").hidden = plan
+  if (!plan) paintAddAll()
+  const outlook = plan ? planOutlook() : null
+  if (plan) $("#result-count").textContent = `${plural(state.picks.length, "choice")} in your plan`
+  else {
+    const institutes = new Set(state.filtered.map((c) => c.inst.code)).size
+    $("#result-count").textContent = `${plural(institutes, "institute")} · ${plural(state.filtered.length, "choice")}`
+  }
   if (!catalogMap) return
-  const { points, unplaced } = mapPoints()
+  const { points, unplaced } = plan ? planPoints(outlook) : mapPoints()
   state.mapPoints = points
   if (!points.has(state.mapPoint)) state.mapPoint = null
   catalogMap.show([...points.values()], { fit: state.refitMap, selected: state.mapPoint })
   state.refitMap = false
-  const hint = state.filtered.length === 0 ? "No choices match these filters." : "Each pin is a city. Filled pins have a choice in your plan. Tap a pin to see its institutes."
-  $("#map-hint").textContent = unplaced ? `${hint} ${plural(unplaced, "institute")} could not be placed on the map; switch to List to see them.` : hint
-  renderMapPanel()
+  renderMapDepth(outlook)
+  renderMapCard(outlook, points)
+  renderMapLegend(plan)
+  const hint = plan
+    ? state.picks.length ? "Each pin is a city, labelled with your ranks there. Tap one to see those choices." : ""
+    : state.filtered.length ? "Each pin is a city. Tap one to see its institutes." : "No choices match these filters."
+  const lost = plan ? `${plural(unplaced, "choice")} in your plan could not be placed on the map.` : `${plural(unplaced, "institute")} could not be placed on the map; switch to List to see them.`
+  $("#map-hint").textContent = [hint, unplaced ? lost : ""].filter(Boolean).join(" ")
+  renderMapPanel(outlook)
 }
 
-function renderMapPanel() {
-  const groups = mapPanelGroups()
-  const panel = $("#map-panel")
-  panel.hidden = groups.length === 0
-  if (!groups.length) return
+function renderMapDepth(outlook) {
+  const box = $("#map-depth")
+  box.hidden = !outlook || state.picks.length < 2
+  if (box.hidden) return
+  const input = $("#map-depth-input")
+  input.max = state.picks.length
+  input.value = outlook.depth
+  $("#map-depth-label").textContent = `Show choices #1 to #${outlook.depth}`
+  const marker = $("#map-depth-marker")
+  marker.hidden = !outlook.firstLikely
+  if (outlook.firstLikely) {
+    marker.textContent = `Likely from #${outlook.firstLikely.rank}`
+    marker.style.left = `${((outlook.firstLikely.rank - 1) / Math.max(1, state.picks.length - 1)) * 100}%`
+  }
+}
+
+function cardNodes(tone, eyebrow, lines, action) {
+  const nodes = [make("span", { className: `map-card-eyebrow ${tone}`, textContent: eyebrow })]
+  for (const [text, className] of lines) nodes.push(make("span", { className: className || "", textContent: text }))
+  if (action) {
+    const btn = make("button", { type: "button", className: "primary map-card-action", textContent: action.label })
+    btn.dataset.action = action.name
+    nodes.push(btn)
+  }
+  return nodes
+}
+
+function renderMapCard(outlook, points) {
+  const card = $("#map-card")
+  const rank = state.profile.rank
+  let content = null
+  let tone = "neutral"
+  if (state.mapSubject === "plan" && !state.picks.length) {
+    content = cardNodes("neutral", "Your plan is empty", [["Add choices from the catalog, then come back to see where they are."]], { name: "show-all", label: "Show all seats" })
+  } else if (!rank) {
+    content = cardNodes("neutral", "Where would you most likely land?", [["Add your NEET PG rank and category. Each city is then coloured by your odds there, and your most likely choice is marked."]], { name: "add-rank", label: "Add your rank" })
+  } else if (!lensOn()) {
+    content = null
+  } else if (state.mapSubject === "plan") {
+    const { landing, firstLikely, depth, shown } = outlook
+    if (landing) {
+      tone = "likely"
+      const above = landing.rank - 1
+      const below = shown.length - landing.rank
+      const closing = closingFor(landing.c)
+      content = cardNodes("likely", `Most likely: your #${landing.rank}`, [
+        [landing.c.inst.short, "map-card-title"],
+        [`${landing.c.program}${closing ? ` · last closed at ${rankFormat.format(closing)}` : ""}`, "map-card-muted"],
+        [above ? `Above it: ${plural(above, "choice")} you get only if cutoffs fall your way` : "It is your first choice.", "map-card-muted"],
+        [below ? `Below it: ${plural(below, "fallback")} if it doesn't work out` : "Nothing below it on the map.", "map-card-muted"],
+      ])
+    } else if (firstLikely) {
+      tone = "borderline"
+      content = cardNodes("borderline", `Through #${depth}: nothing likely yet`, [[`None of these look Likely at rank ${rankFormat.format(rank)}. You'd get one only if this year's cutoffs fall your way.`], [`Your first Likely choice is #${firstLikely.rank}, in ${placeOf(firstLikely.c)?.city || firstLikely.c.inst.short}.`, "map-card-muted"]], { name: "depth-all", label: "Show the whole plan" })
+    } else {
+      tone = "borderline"
+      content = cardNodes("borderline", `None of your ${plural(state.picks.length, "choice")} look Likely`, [[`At rank ${rankFormat.format(rank)}, if this year's cutoffs land near past years, this list may not get you a seat. Add a few Likely seats below your favourites as a safety net.`]], { name: "show-likely", label: "Show Likely seats on the map" })
+    }
+  } else {
+    const likelyCities = [...points.values()].filter((p) => p.best === "likely").length
+    const likelyPicks = state.picks.filter((pick) => chanceFor(state.byId.get(pick.choice_id)) === "likely").length
+    tone = "likely"
+    content = cardNodes("likely", `${plural(likelyCities, "city", "cities")} with a Likely seat`, [[`for these filters at rank ${rankFormat.format(rank)}.`], [likelyPicks ? `${plural(likelyPicks, "choice")} in your plan look Likely.` : "None of the choices in your plan look Likely yet.", "map-card-muted"]], { name: "toggle-likely", label: state.likelyOnly ? "Show every city" : "Show only Likely cities" })
+  }
+  card.hidden = !content
+  card.className = `map-card ${tone}`
+  if (content) card.replaceChildren(...content)
+}
+
+function renderMapLegend(plan) {
+  const legend = $("#map-legend")
+  const lens = lensOn()
+  legend.hidden = !lens
+  if (!lens) return
+  const rows = [make("span", { className: "map-legend-title", textContent: `Odds at rank ${rankFormat.format(state.profile.rank)}` })]
+  for (const kind of ["reach", "borderline", "possible", "likely", "none"]) {
+    const row = make("span", { className: "map-legend-row" })
+    row.append(make("span", { className: `map-swatch chance-fill-${kind}` }), document.createTextNode(CHANCE_WORDS[kind]))
+    rows.push(row)
+  }
+  const ring = make("span", { className: "map-legend-row" })
+  ring.append(make("span", { className: "map-swatch ring" }), document.createTextNode(plan ? "Most likely landing" : "In your plan"))
+  rows.push(ring)
+  if (plan) {
+    const hollow = make("span", { className: "map-legend-row" })
+    hollow.append(make("span", { className: "map-swatch hollow" }), document.createTextNode("Only fallbacks there"))
+    rows.push(hollow)
+  }
+  rows.push(make("span", { className: "map-legend-note", textContent: "From past closing ranks. A rough guide, not a prediction." }))
+  legend.replaceChildren(...rows)
+}
+
+function planPanelRows(point, outlook) {
+  return point.entries.map((entry) => {
+    const li = make("li", { className: "map-plan-row" })
+    li.dataset.id = entry.c.id
+    const text = make("span", { className: "map-plan-text" })
+    const actions = make("span", { className: "map-plan-actions" })
+    if (entry.chance) actions.append(make("span", { className: `chance chance-${entry.chance}`, textContent: outlook.landing === entry ? "Most likely" : CHANCE_WORDS[entry.chance] }))
+    actions.append(make("button", { type: "button", className: "button-link map-plan-show", textContent: "Show in plan" }))
+    text.append(make("span", { className: "g-row-title", textContent: entry.c.inst.short, title: entry.c.inst.name }), make("span", { className: "g-row-meta", textContent: `${entry.c.program} · ${entry.c.quota}` }), actions)
+    li.append(make("span", { className: "rank-chip", textContent: `#${entry.rank}` }), text)
+    return li
+  })
+}
+
+function renderMapPanel(outlook) {
   const point = state.mapPoints.get(state.mapPoint)
-  const picked = groups.flatMap((g) => g.items).filter((c) => state.pickIndex.has(c.id)).length
+  const panel = $("#map-panel")
+  panel.hidden = !point
+  if (!point) return
   $("#map-panel-title").textContent = point.city
+  if (state.mapSubject === "plan") {
+    $("#map-panel-note").textContent = `${plural(point.entries.length, "choice")} in your plan`
+    $("#map-results").replaceChildren(...planPanelRows(point, outlook))
+    return
+  }
+  const groups = mapPanelGroups()
+  const picked = groups.flatMap((g) => g.items).filter((c) => state.pickIndex.has(c.id)).length
   $("#map-panel-note").textContent = `${plural(groups.length, "institute")} · ${plural(point.choices, "choice")}${picked ? ` · ${picked} in your plan` : ""}`
   $("#map-results").replaceChildren(...groups.map((g) => groupCard(g, "institute")))
 }
 
 function selectMapPoint(key) {
-  state.mapPoint = key
-  track("map/opened-pin")
+  state.mapPoint = state.mapSubject === "plan" && state.mapPoint === key ? null : key
+  track(`map/opened-pin/${state.mapSubject}`)
   renderMapResults()
-  catalogMap.reveal(key)
-  if (matchMedia("(max-width: 900px)").matches) $("#map-panel").scrollIntoView({ behavior: "smooth", block: "start" })
+  if (state.mapPoint) catalogMap.reveal(key)
+  if (state.mapPoint && matchMedia("(max-width: 900px)").matches) $("#map-panel").scrollIntoView({ behavior: "smooth", block: "start" })
+}
+
+function setMapSubject(subject) {
+  if (state.mapSubject === subject) return
+  state.mapSubject = subject
+  state.mapPoint = null
+  state.likelyOnly = false
+  state.refitMap = true
+  storage.set(mapSubjectKey(), subject)
+  track(`map/subject/${subject}`)
+  renderMapResults()
+}
+
+function mapCardAction(name) {
+  if (name === "show-all") setMapSubject("all")
+  else if (name === "add-rank") {
+    openSheet()
+    $("#my-rank").focus()
+  } else if (name === "depth-all") {
+    state.planDepth = null
+    renderMapResults()
+  } else if (name === "show-likely") {
+    setMapSubject("all")
+    state.likelyOnly = true
+    state.refitMap = true
+    renderMapResults()
+  } else if (name === "toggle-likely") {
+    state.likelyOnly = !state.likelyOnly
+    state.mapPoint = null
+    state.refitMap = true
+    renderMapResults()
+  }
 }
 
 function loadCatalogMap() {
@@ -574,10 +833,14 @@ const catalogViewKey = () => `planner:${config.counselling}:catalog-view`
 async function setCatalogView(view) {
   state.catalogView = view
   storage.set(catalogViewKey(), view)
+  if (phoneLayout() && $(".pane.catalog").classList.contains("active")) {
+    for (const btn of document.querySelectorAll(".tabs button")) btn.classList.toggle("active", btn.dataset.tab === (view === "map" ? "map" : "catalog"))
+  }
   for (const btn of document.querySelectorAll("#catalog-view button")) btn.setAttribute("aria-checked", String(btn.dataset.view === view))
   const map = view === "map"
   $("#results").hidden = map
   $("#catalog-map").hidden = !map
+  if (!map) $(".pane.catalog").classList.remove("map-plan")
   if (!map) {
     renderResults()
     return
@@ -1404,10 +1667,15 @@ function closeContact() {
   document.body.style.overflow = ""
 }
 
+const phoneLayout = () => matchMedia("(max-width: 900px)").matches
+
 function showTab(name) {
+  const pane = name === "map" ? "catalog" : name
   for (const btn of document.querySelectorAll(".tabs button")) btn.classList.toggle("active", btn.dataset.tab === name)
-  for (const pane of document.querySelectorAll(".pane")) pane.classList.toggle("active", pane.dataset.pane === name)
-  if (name === "catalog" && state.catalogView === "map") catalogMap?.resize()
+  for (const el of document.querySelectorAll(".pane")) el.classList.toggle("active", el.dataset.pane === pane)
+  if (name === "map" && state.catalogView !== "map") setCatalogView("map")
+  else if (name === "catalog" && state.catalogView === "map" && phoneLayout()) setCatalogView("list")
+  else if (pane === "catalog" && state.catalogView === "map") catalogMap?.resize()
 }
 
 function bind() {
@@ -1547,6 +1815,35 @@ function bind() {
   $("#map-panel-close").addEventListener("click", () => {
     state.mapPoint = null
     renderMapResults()
+  })
+  $("#map-subject").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-subject]")
+    if (btn) setMapSubject(btn.dataset.subject)
+  })
+  $("#map-lens").addEventListener("change", (e) => {
+    state.mapLens = e.target.checked
+    storage.set(mapLensKey(), state.mapLens)
+    track(`map/odds/${state.mapLens ? "on" : "off"}`)
+    renderMapResults()
+  })
+  $("#map-depth-input").addEventListener("input", (e) => {
+    const depth = Number(e.target.value)
+    state.planDepth = depth >= state.picks.length ? null : depth
+    renderMapResults()
+  })
+  $("#map-card").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-action]")
+    if (btn) mapCardAction(btn.dataset.action)
+  })
+  $("#map-results").addEventListener("click", (e) => {
+    const show = e.target.closest(".map-plan-show")
+    if (!show) return
+    const id = Number(show.closest("li[data-id]").dataset.id)
+    showTab("order")
+    setOrderView("ranked")
+    state.openPick = id
+    renderPicks()
+    flash(id)
   })
 
   const picks = $("#picks")
@@ -1751,6 +2048,7 @@ function repaintCutoffs() {
     const c = state.byId.get(Number(el.dataset.id))
     if (c) paintCutoff(el.querySelector(".cutoff"), c)
   }
+  if (state.catalogView === "map") renderMapResults()
 }
 
 function restoreProfile() {
@@ -1799,6 +2097,8 @@ async function boot() {
     savedView = localStorage.getItem(`planner:${config.counselling}:order-view`) || "ranked"
   } catch {}
   setOrderView(["ranked", "institute", "speciality"].includes(savedView) ? savedView : "ranked")
+  state.mapSubject = storage.get(mapSubjectKey()) === "all" ? "all" : "plan"
+  state.mapLens = storage.get(mapLensKey()) !== false
   if (storage.get(catalogViewKey()) === "map") setCatalogView("map")
   loadCutoffs()
 }

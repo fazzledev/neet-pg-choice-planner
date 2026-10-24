@@ -24,7 +24,7 @@ class InstitutePlaces
   KNOWN_CITIES = Places::ALIASES.transform_keys(&:downcase).except(*Places::AMBIGUOUS.map(&:downcase)).freeze
   STATE_WORDS = (Places::STATES + %w[Orissa Pondicherry Uttaranchal]).map { _1.downcase.delete(" ") }.to_set.freeze
   DISTRICT_SPELLINGS = {
-    "Ananthnag" => "Anantnag", "Jhujhunu" => "Jhunjhunu", "Surendra Nagar" => "Surendranagar", "Darjiling" => "Darjeeling", "K.V.Rangareddy" => "Rangareddy", "Karim Nagar" => "Karimnagar", "Mahabub Nagar" => "Mahabubnagar",
+    "Ananthnag" => "Anantnag", "Jhujhunu" => "Jhunjhunu", "Surendra Nagar" => "Surendranagar", "Darjiling" => "Darjeeling", "K.V.Rangareddy" => "Rangareddy", "Karim Nagar" => "Karimnagar", "Varansi" => "Varanasi", "Mahabub Nagar" => "Mahabubnagar",
     "Gandhi Nagar" => "Gandhinagar", "Ganganagar" => "Sri Ganganagar", "Ahmed Nagar" => "Ahmednagar",
     "South Dinajpur" => "Balurghat", "North Dinajpur" => "Raiganj"
   }.freeze
@@ -32,6 +32,7 @@ class InstitutePlaces
   TYPO_MIN_LENGTH = 8
   SETTLEMENT_RANK = 13
   LADAKH_DISTRICTS = %w[Leh Kargil].freeze
+  CITY_OVERRIDES = { "904641" => "Aizawl", "701701" => "Nashik", "701402" => "Chennai" }.freeze
   CITY_STATES = %w[Delhi Chandigarh Puducherry].freeze
   NETWORK_ERRORS = [Net::OpenTimeout, Net::ReadTimeout, SocketError, Errno::ECONNRESET, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError].freeze
 
@@ -68,7 +69,7 @@ class InstitutePlaces
 
   def area_for(inst)
     text = "#{inst[:name]} #{inst[:address]}"
-    city = InstituteName.city_in(text, text.split(",").map(&:strip))
+    city = CITY_OVERRIDES[inst[:code]] || InstituteName.city_in(text, text.split(",").map(&:strip))
     city ||= inst[:states].first if inst[:states].one? && CITY_STATES.include?(inst[:states].first)
     by_pin = text.scan(PIN).map(&:join).filter_map { pincodes[_1] }.find { |state, _| inst[:states].empty? || inst[:states].include?(state) }
     state, district = by_pin || district_named(city, inst[:states]) || (district_mentioned(text, inst[:states]) unless city)
