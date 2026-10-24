@@ -857,6 +857,7 @@ async function setCatalogView(view) {
   const map = view === "map"
   $("#results").hidden = map
   $("#catalog-map").hidden = !map
+  $(".map-toolbar").hidden = !map
   if (!map) $(".pane.catalog").classList.remove("map-plan")
   if (!map) {
     renderResults()

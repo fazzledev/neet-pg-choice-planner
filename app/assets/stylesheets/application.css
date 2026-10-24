@@ -354,7 +354,8 @@ a { color: var(--accent); }
 .chip .icon { width: 20px; height: 20px; }
 .chip-label { overflow: hidden; text-overflow: ellipsis; }
 
-.result-bar { flex: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 36px; }
+.result-bar { flex: none; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; min-height: 36px; }
+.result-lead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; min-width: 0; }
 
 .results, .picks, .snapshots { list-style: none; margin: 0; padding: 0; }
 .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 12px; align-content: start; }
@@ -1173,6 +1174,7 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .map-hint { margin: 0; color: var(--muted); font-size: 13px; }
 .pane.catalog.map-plan .searchbar, .pane.catalog.map-plan #active-chips { display: none; }
 .map-toolbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.map-toolbar[hidden] { display: none; }
 .map-lens { min-height: 36px; font-size: 14px; }
 .map-side { position: absolute; top: 12px; right: 12px; z-index: 1; display: flex; flex-direction: column; gap: 10px; width: min(380px, calc(100% - 24px)); max-height: calc(100% - 48px); overflow: auto; pointer-events: none; }
 .map-side > * { pointer-events: auto; }
@@ -1228,7 +1230,6 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
   .map-frame { display: contents; }
   .map-canvas { flex: none; height: max(320px, calc(100dvh - 380px)); min-height: 0; }
   .map-panel { position: static; order: 2; width: auto; max-height: none; overflow: visible; padding: 0; background: none; box-shadow: none; scroll-margin-top: 12px; }
-  .map-toolbar { order: -2; justify-content: space-between; }
   .map-side { display: contents; }
   .map-card { order: -1; box-shadow: none; }
   .map-legend { position: static; order: 1; flex-direction: row; flex-wrap: wrap; gap: 6px 12px; padding: 0; border: 0; background: none; box-shadow: none; }
