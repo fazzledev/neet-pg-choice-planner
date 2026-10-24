@@ -77,7 +77,16 @@
       </div>
       <div id="active-chips" class="chips" hidden></div>
       <div class="result-bar">
-        <span id="result-count" class="eyebrow">Loading choices…</span>
+        <span class="result-lead">
+          <span class="map-toolbar" hidden>
+            <span class="segmented segmented-small" role="radiogroup" aria-label="Show on the map" id="map-subject">
+              <button type="button" role="radio" data-subject="plan" aria-checked="true">My plan</button>
+              <button type="button" role="radio" data-subject="all" aria-checked="false">All seats</button>
+            </span>
+            <label class="switch map-lens"><input id="map-lens" type="checkbox"><span>Odds at my rank</span></label>
+          </span>
+          <span id="result-count" class="eyebrow">Loading choices…</span>
+        </span>
         <span class="result-actions">
           <button type="button" id="add-all" class="button-link"></button>
           <span class="segmented segmented-small" role="radiogroup" aria-label="Show choices as" id="catalog-view">
@@ -94,17 +103,26 @@
       <button type="button" id="more" class="more" hidden>Show more</button>
       <div id="catalog-map" class="catalog-map" hidden>
         <div class="map-frame">
-          <div id="map-canvas" class="map-canvas" role="application" aria-label="Map of institutes in the current results"></div>
-          <aside id="map-panel" class="map-panel" hidden aria-live="polite">
-            <div class="map-panel-head">
-              <div class="map-panel-text">
-                <span id="map-panel-title" class="g-title"></span>
-                <span id="map-panel-note" class="g-meta"></span>
+          <div id="map-canvas" class="map-canvas" role="application" aria-label="Map of the cities on the map"></div>
+          <div class="map-side">
+            <div id="map-card" class="map-card" hidden aria-live="polite"></div>
+            <aside id="map-panel" class="map-panel" hidden aria-live="polite">
+              <div class="map-panel-head">
+                <div class="map-panel-text">
+                  <span id="map-panel-title" class="g-title"></span>
+                  <span id="map-panel-note" class="g-meta"></span>
+                </div>
+                <button type="button" id="map-panel-close" class="icon-btn" aria-label="Close"><%= icon("x") %></button>
               </div>
-              <button type="button" id="map-panel-close" class="icon-btn" aria-label="Close"><%= icon("x") %></button>
-            </div>
-            <ol id="map-results" class="results grouped map-results"></ol>
-          </aside>
+              <ol id="map-results" class="results grouped map-results"></ol>
+            </aside>
+          </div>
+          <div id="map-legend" class="map-legend" hidden></div>
+        </div>
+        <div id="map-depth" class="map-depth" hidden>
+          <label for="map-depth-input" class="map-depth-head"><span id="map-depth-label"></span><span class="muted">Drag to see how your plan unfolds</span></label>
+          <input id="map-depth-input" type="range" min="1" step="1">
+          <div class="map-depth-track"><span id="map-depth-marker" class="map-depth-marker" hidden></span></div>
         </div>
         <p id="map-hint" class="map-hint"></p>
       </div>
@@ -143,6 +161,7 @@
 
   <nav class="tabs" aria-label="Sections">
     <button type="button" data-tab="catalog" class="active"><%= icon("search") %>Catalog</button>
+    <button type="button" data-tab="map"><%= icon("map") %>Map</button>
     <button type="button" data-tab="order"><%= icon("list-ordered") %>My plan <span id="tab-count" class="count-badge">0</span></button>
   </nav>
 
