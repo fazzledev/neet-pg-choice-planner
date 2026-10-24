@@ -920,7 +920,7 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp-proof a { color: inherit; text-underline-offset: 3px; }
 .lp-proof a:hover { color: var(--text); }
 .lp-compare-pin { display: flex; flex-direction: column; gap: 28px; }
-.lp-compare.pinned::after { content: ""; height: 45vh; }
+.lp-compare.pinned::after { content: ""; height: 90vh; }
 .lp-compare.pinned .lp-compare-pin { position: sticky; top: 24px; }
 .lp-compare-switch { align-self: flex-start; display: inline-flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; }
 .lp-compare-switch button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 600; transition: background .3s, color .3s; }
@@ -928,11 +928,9 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp-compare[data-view="portal"] .lp-compare-switch .portal { background: var(--danger); color: #fff; }
 .lp-compare[data-view="planner"] .lp-compare-switch .planner { background: var(--accent); color: #fff; }
 .lp-card.lp-flip { display: grid; }
-.lp-face { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 10px; transition: opacity .35s, transform .35s, visibility .35s; transition-delay: calc(var(--i, 0) * 50ms); }
+.lp-face { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 10px; transition: opacity .35s, transform .35s, visibility .35s; }
 .lp-face.portal .lp-icon { background: color-mix(in srgb, var(--danger) 10%, var(--surface)); color: var(--danger); }
 .lp-flip[data-view="portal"] .lp-face.planner, .lp-flip:not([data-view="portal"]) .lp-face.portal { opacity: 0; visibility: hidden; transform: translateY(8px); }
-.lp-flip:nth-child(2) { --i: 1; } .lp-flip:nth-child(3) { --i: 2; } .lp-flip:nth-child(4) { --i: 3; }
-.lp-flip:nth-child(5) { --i: 4; } .lp-flip:nth-child(6) { --i: 5; } .lp-flip:nth-child(7) { --i: 6; } .lp-flip:nth-child(8) { --i: 7; }
 @media (prefers-reduced-motion: reduce) { .lp-face, .lp-compare-switch button { transition: none; } }
 .lp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .lp-grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }

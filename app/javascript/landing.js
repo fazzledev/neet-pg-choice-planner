@@ -16,8 +16,10 @@
 
     const show = (view, targets = cards) => {
       targets.forEach((card) => { card.dataset.view = view })
-      compare.dataset.view = view
-      buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.show === view)))
+      const flipped = cards.filter((card) => card.dataset.view !== "portal").length
+      const shown = flipped > cards.length / 2 ? "planner" : "portal"
+      compare.dataset.view = shown
+      buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.show === shown)))
     }
 
     buttons.forEach((button) => button.addEventListener("click", () => {
@@ -30,12 +32,13 @@
     if (!calm && pinnable) {
       compare.classList.add("pinned")
       pin.style.top = `${Math.max(24, (window.innerHeight - pin.offsetHeight) / 2)}px`
-      let shown = null
       const follow = () => {
         const travel = compare.offsetHeight - pin.offsetHeight
         const progress = (parseFloat(pin.style.top) - compare.getBoundingClientRect().top) / travel
-        const view = progress > 0.4 ? "planner" : "portal"
-        if (view !== shown) show(shown = view)
+        cards.forEach((card, index) => {
+          const view = progress > 0.2 + index * 0.08 ? "planner" : "portal"
+          if (card.dataset.view !== view) show(view, [card])
+        })
       }
       window.addEventListener("scroll", follow, { passive: true })
       stopFollowingScroll = () => window.removeEventListener("scroll", follow)
