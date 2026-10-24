@@ -4,7 +4,7 @@ Rails.application.configure do
   config.enable_reloading = false
   config.assume_ssl = true
   config.middleware.insert_before ActionDispatch::Static, Rack::Deflater, include: %w[
-    text/html text/css text/javascript text/plain text/vnd.turbo-stream.html
+    text/html text/css text/javascript text/plain text/csv text/vnd.turbo-stream.html
     application/javascript application/json application/geo+json application/manifest+json image/svg+xml
   ]
   config.force_ssl = true
