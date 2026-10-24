@@ -551,6 +551,7 @@ function selectMapPoint(key) {
   state.mapPoint = key
   track("map/opened-pin")
   renderMapResults()
+  if (matchMedia("(max-width: 900px)").matches) $("#map-panel").scrollIntoView({ behavior: "smooth", block: "start" })
 }
 
 function loadCatalogMap() {

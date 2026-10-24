@@ -1165,10 +1165,11 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .map-canvas .leaflet-control-attribution a { color: var(--accent); }
 
 @media (max-width: 900px) {
-  .catalog-map { min-height: max(380px, calc(100dvh - 330px)); }
-  .map-canvas { min-height: max(340px, calc(100dvh - 370px)); }
-  .map-panel { top: auto; right: 8px; bottom: 36px; left: 8px; width: auto; max-height: 62%; }
-  .segmented-small button { padding: 0 10px; }
+  .catalog-map { min-height: 0; }
+  .map-canvas { flex: none; height: max(320px, calc(100dvh - 380px)); min-height: 0; }
+  .map-panel { position: static; order: 2; width: auto; max-height: none; overflow: visible; padding: 0; background: none; box-shadow: none; scroll-margin-top: 12px; }
+  .segmented-small button { padding: 0 9px; }
+  .seg-label { display: none; }
 }
 @media (prefers-color-scheme: dark) {
   .map-canvas .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.9); }
