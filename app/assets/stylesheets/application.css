@@ -1136,3 +1136,9 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
   .ext-groups, .ext-groups.two-groups { grid-template-columns: 1fr; }
   .ext-main { gap: 36px; padding-top: 28px; }
 }
+.ai-apps { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.ai-apps li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); font-weight: 700; font-size: 14px; }
+.ai-apps .icon, .ai-heading .icon { width: 22px; height: 22px; }
+.ai-app-claude .icon { color: #d97757; }
+.ai-app-chatgpt .icon { color: var(--text); }
+.ai-heading { display: flex; align-items: center; gap: 8px; }
