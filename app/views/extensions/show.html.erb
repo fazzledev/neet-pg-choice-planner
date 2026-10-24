@@ -17,7 +17,7 @@
         <%= link_to extension_link_whatsapp_url, class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/whatsapp-link") do %><%= icon("message-circle") %>WhatsApp<% end %>
         <%= link_to extension_link_email_url, class: "button block", data: click_event("extension-page/email-link") do %><%= icon("mail") %>Email<% end %>
       </div>
-      <p class="muted download-anyway">Already on a computer? <%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %></p>
+      <p class="muted store-anyway">Already on a computer? <%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %></p>
     </div>
     <div class="extension-actions no-touch">
       <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "button primary block", target: "_blank", rel: "noopener", data: click_event("extension-page/add-to-chrome") do %><%= icon("puzzle") %>Add to Chrome<% end %>

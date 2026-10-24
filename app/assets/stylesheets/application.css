@@ -867,7 +867,7 @@ button.primary, .button.primary, .r-add {
 .computer-needed .share-link { padding: 0; }
 .computer-needed .share-status { padding: 0; }
 .computer-needed .share-status:empty { display: none; }
-.computer-needed .download-anyway { margin: 0; font-size: 13px; }
+.computer-needed .store-anyway { margin: 0; font-size: 13px; }
 .install-lead { margin: 0; font-weight: 600; }
 .computer-needed .extension-actions { grid-template-columns: 1fr 1fr; }
 @media (hover: none) and (pointer: coarse) {

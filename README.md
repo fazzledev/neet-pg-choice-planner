@@ -16,7 +16,7 @@ Plan your NEET PG counselling choices calmly, then copy them to the MCC portal i
 
 ## The extension
 
-`extension/` is a Chrome extension; the app serves it as a zip at `/extension`. On the MCC choice-filling page it shows *In sync* or how many choices differ from your plan, with two buttons:
+`extension/` is the MCC Filler browser extension, on the [Chrome Web Store](https://chromewebstore.google.com/detail/dknkamnnjakgmgggbeomoakajbkdennd) and submitted to Firefox Add-ons. `/extension` links to the store and still serves the folder as a zip for installing by hand. On the MCC choice-filling page it shows *In sync* or how many choices differ from your plan, with two buttons:
 
 - **Plan → MCC** makes the MCC list an exact copy of your plan: adds missing choices, removes ones not in your plan, and arranges them in your order. You check it, then press Save and Continue and enter the OTP.
 - **MCC → Plan** makes your plan a copy of what is saved on MCC, after you confirm in the planner. It can be undone.
