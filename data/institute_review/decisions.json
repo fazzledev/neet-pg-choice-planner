@@ -1,0 +1,64 @@
+{
+  "700481": {
+    "town": "Secunderabad",
+    "why": "MCC record names Secunderabad; kept as the record's town"
+  },
+  "700563": {
+    "town": "Hanamkonda",
+    "title": "Rohini Medicare, Hanamkonda",
+    "why": "MCC record names Hanamkonda; title matches the town"
+  },
+  "701201": {
+    "town": "Hanamkonda",
+    "title": "Ekashilaa Hospitals (formerly Maxcare), Hanamkonda",
+    "why": "MCC record names Hanamkonda; title matches the town"
+  },
+  "701210": {
+    "town": "Hanamkonda",
+    "title": "Rainbow Childrens Hospital, Hanamkonda",
+    "why": "MCC record names Hanamkonda; title matches the town"
+  },
+  "701211": {
+    "town": "Hanamkonda",
+    "title": "Amrutha Childrens Hospital, Hanamkonda",
+    "why": "MCC record names Hanamkonda; title matches the town"
+  },
+  "700759": {
+    "title": "Government Medical College and Associated Hospital, Anantnag",
+    "why": "different site (Janglat Mandi) from 904588 (Dailgam); keep MCC's distinguishing words"
+  },
+  "700760": {
+    "title": "Associated Hospital Government Medical College, Kathua",
+    "why": "MCC lists the associated hospital separately from 904634"
+  },
+  "700761": {
+    "title": "Associated Hospital Government Medical College, Baramulla",
+    "why": "MCC lists the associated hospital separately from 904589"
+  },
+  "903285": {
+    "town": "Biharsharif",
+    "why": "MCC record spelling"
+  },
+  "904216": {
+    "town": "Vasai",
+    "why": "MCC record says Vasai (West)"
+  },
+  "701452": {
+    "town": "Hanamkonda",
+    "title": "Laxmi Narasimha Hospital, Hanamkonda",
+    "why": "MCC record names Hanamkonda; title matches the town"
+  },
+  "700848": {
+    "town": "Kozhippara",
+    "title": "Ahalia Foundation Eye Hospital, Kozhippara",
+    "why": "same Ahalia campus as 701319 and 701418 at Kozhippara"
+  },
+  "904546": {
+    "title": "Sri Sri Holistic Hospital, Kukatpally, Hyderabad",
+    "why": "locality alone names no city"
+  },
+  "701258": {
+    "title": "Chittaranjan National Cancer Institute, Kolkata",
+    "why": "entry covers both CNCI campuses; 903354 is the Hazra campus"
+  }
+}

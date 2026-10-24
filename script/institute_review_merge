@@ -13,8 +13,8 @@ RENAMES = [
   %w[Puducherry Pondicherry], %w[Thoothukudi Tuticorin], %w[Tiruchirappalli Trichy], %w[Brahmapur Berhampur],
   %w[Baharampur Berhampore], %w[Rajamahendravaram Rajahmundry], %w[Bardhaman Burdwan], %w[Medinipur Midnapore],
   %w[Purnia Purnea], %w[Chhapra Chapra], %w[Budaun Badaun], %w[Kancheepuram Kanchipuram], %w[Tiruvallur Thiruvallur],
-  %w[Palai Pala], %w[Krishnanagar Krishnagar], %w[Thrissur Trichur], %w[Kollam Quilon], %w[Alappuzha Alleppey],
-  %w[Nashik Nasik], %w[Varanasi Banaras], %w[Kanpur Cawnpore], %w[Odisha Orissa]
+  %w[Palai Pala], %w[Anantapur Ananthapuram Anantapuramu], %w[Tiruvannamalai Thiruvannamalai], %w[Krishnanagar Krishnagar], %w[Thrissur Trichur], %w[Kollam Quilon], %w[Alappuzha Alleppey],
+  %w[Nashik Nasik], %w[Bhubaneswar Bhubaneshwar],
 ].freeze
 
 def read_jsonl(path) = File.readlines(path).map { JSON.parse(_1) }
@@ -23,15 +23,26 @@ def name_key(name) = name.downcase.gsub(/[^a-z0-9]+/, " ").squeeze(" ").strip
 
 ledger = read_jsonl("#{ROOT}/ledger.jsonl").to_h { [_1["code"], _1] }
 first = Dir["#{ROOT}/results/*.jsonl"].flat_map { read_jsonl(_1) }.to_h { [_1["code"], _1] }
+decisions = JSON.parse(File.read("#{ROOT}/decisions.json"))
 second = Dir["#{ROOT}/second_pass/{results,results_rest}/*.jsonl"].flat_map { read_jsonl(_1) }.to_h { [_1["code"], _1] }
 
 missing = ledger.keys - second.keys
 abort "second pass missing #{missing.size} codes: #{missing.first(10).join(', ')}" if missing.any?
 
-def record_spelling(town, text)
-  group = RENAMES.find { |names| names.any? { _1.casecmp?(town) } } or return town
-  present = group.select { mentions?(text, _1) }
-  present.one? ? present.first : town
+def rename_group(town) = RENAMES.find { |names| names.any? { _1.casecmp?(town) } }
+
+def record_spelling(town, name, address)
+  group = rename_group(town) or return town
+  [name, address].each do |text|
+    present = group.select { mentions?(text.to_s, _1) }
+    return present.first if present.one?
+  end
+  town
+end
+
+def harmonise_title(title, town)
+  group = rename_group(town) or return title
+  (group - [town]).reduce(title) { |t, other| t.gsub(/(?<![A-Za-z])#{Regexp.escape(other)}(?![A-Za-z])/i, town) }
 end
 
 def tidy_title(title)
@@ -40,10 +51,12 @@ end
 
 final = ledger.map do |code, row|
   verdict = second.fetch(code)
-  text = "#{row['name']} #{row['address']}"
   state = verdict["state"]
-  town = state == "Delhi" ? "Delhi" : record_spelling(verdict["town"], text)
-  { code:, town:, district: verdict["district"], state:, title: tidy_title(verdict["title"]), old_title: row["title"], old_map_city: row["map_city"], confidence: verdict["confidence"] }
+  town = state == "Delhi" ? "Delhi" : record_spelling(verdict["town"], row["name"], row["address"])
+  decision = decisions.fetch(code, {})
+  town = decision.fetch("town", town)
+  title = tidy_title(decision.fetch("title") { harmonise_title(verdict["title"], town) })
+  { code:, town:, district: verdict["district"], state:, title:, old_title: row["title"], old_map_city: row["map_city"], confidence: verdict["confidence"] }
 end
 
 by_code = final.to_h { [_1[:code], _1] }
