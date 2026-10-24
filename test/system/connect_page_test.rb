@@ -37,6 +37,7 @@ class ConnectPageTest < ApplicationSystemTestCase
         assert_includes prompt, "Using the NEET PG Choice Planner connector: #{question}"
         assert_match %r{don't guess\. Tell me how to connect it from http\S+/connect\.\z}, prompt
       end
+      assert_equal URI.decode_www_form_component(chatgpt.split("q=", 2).last), find("button.conn-ask-copy")["data-copy"]
       page.driver.browser.execute_cdp("Browser.grantPermissions", permissions: ["clipboardReadWrite", "clipboardSanitizedWrite"])
       click_on "Copy"
       assert_selector "[role=status]", text: "Copied. Paste it into your assistant."
