@@ -24,7 +24,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :catalogs, only: :show
+  resources :catalogs, only: :show do
+    member { get :locations }
+  end
   get "cutoffs" => "cutoffs#show", as: :cutoffs
 
   get ".well-known/oauth-protected-resource(/mcp)" => "oauth/metadata#protected_resource", as: :oauth_protected_resource

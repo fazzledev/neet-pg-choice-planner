@@ -6,4 +6,9 @@ class CatalogsController < ApplicationController
     json = counselling.catalog_json
     render json: json if stale?(etag: Digest::SHA256.hexdigest(json), public: true)
   end
+
+  def locations
+    json = Counselling.find(params[:id]).locations_json
+    render json: json if stale?(etag: Digest::SHA256.hexdigest(json), public: true)
+  end
 end

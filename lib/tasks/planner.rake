@@ -11,6 +11,15 @@ namespace :planner do
     puts "#{contacts.size} institute contacts"
   end
 
+  desc "Find map coordinates for institutes still missing from data/institute_locations.json"
+  task geocode: :environment do
+    $stdout.sync = true
+    counselling = Counselling.find_by!(active: true)
+    institutes = counselling.institutes.order(:code).map { { code: _1.code, name: _1.name, address: _1.address, state: _1.state_doubtful ? nil : _1.state } }
+    found = InstituteGeocoder.new(Rails.root.join("data/institute_locations.json"), institutes).run
+    puts "#{found.values.compact.size} of #{found.size} institutes located"
+  end
+
   desc "Make an admin: rake planner:admin[you@example.com]"
   task :admin, %i[email] => :environment do |_, args|
     user = User.for_email(args.fetch(:email))

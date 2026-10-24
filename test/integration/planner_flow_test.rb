@@ -16,6 +16,18 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     assert_equal 34, response.parsed_body["choices"].size
   end
 
+  test "the catalog map gets coordinates for this counselling's institutes only" do
+    code = @counselling.institutes.first.code
+    places = { code => [19.0, 72.8, "address"], "999999" => [10.0, 76.0, "town"] }
+    assert_equal({ code => [19.0, 72.8, "address"] }, JSON.parse(@counselling.locations_json(places)))
+    get locations_catalog_path(@counselling)
+    assert_response :success
+    assert_kind_of Hash, response.parsed_body
+    get planner_path
+    assert_select "#planner[data-locations-url='#{locations_catalog_path(@counselling)}']"
+    assert_select "#catalog-view button[data-view=map]", text: "Map"
+  end
+
   test "the planner's top bar can share the site" do
     get planner_path
     assert_select ".topbar details.share-menu[name=topbar-menu][data-share-url='#{root_url}']" do
