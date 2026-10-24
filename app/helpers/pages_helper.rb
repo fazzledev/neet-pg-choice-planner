@@ -11,7 +11,7 @@ module PagesHelper
     PortalVsPlanner.new("triangle-alert", "Crashes at peak hours", "In Round 1, students lost hours waiting for the page to load.",
       "wifi-off", "Plan offline", "Your plan saves in your browser. Copy it to MCC in minutes once the portal is up."),
     PortalVsPlanner.new("calendar-x", "Opens only in rounds", "You can't start your list until choice filling opens.",
-      "cloud", "Plan ahead, anywhere", "Start before the round opens, on phone or laptop, with a history you can restore."),
+      "cloud", "Plan ahead, anywhere", "Start before the round opens. Sign in to use it on phone and laptop, with a history you can restore."),
     PortalVsPlanner.new("file-question", "No closing ranks", "Past allotments sit in separate PDFs, round by round.",
       "trending-up", "See past closing ranks", "2023–2025, round by round, for Open and your category, on most seats."),
     PortalVsPlanner.new("circle-question-mark", "No sense of your odds", "Nothing tells you which seats are within reach of your rank.",

@@ -22,16 +22,7 @@
       buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.show === shown)))
     }
 
-    buttons.forEach((button) => button.addEventListener("click", () => {
-      stopFollowingScroll()
-      show(button.dataset.show)
-    }))
-
-    const pinnable = window.matchMedia("(min-width: 1101px) and (min-height: 860px)").matches
-
-    if (!calm && pinnable) {
-      compare.classList.add("pinned")
-      pin.style.top = `${Math.max(24, (window.innerHeight - pin.offsetHeight) / 2)}px`
+    const followPinned = () => {
       const follow = () => {
         const travel = compare.offsetHeight - pin.offsetHeight
         const progress = (parseFloat(pin.style.top) - compare.getBoundingClientRect().top) / travel
@@ -41,18 +32,55 @@
         })
       }
       window.addEventListener("scroll", follow, { passive: true })
-      stopFollowingScroll = () => window.removeEventListener("scroll", follow)
       follow()
-    } else if (!calm) {
+      return () => window.removeEventListener("scroll", follow)
+    }
+
+    const followEachCard = () => {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) show("planner", [entry.target])
           else if (entry.boundingClientRect.top > 0) show("portal", [entry.target])
         })
       }, { rootMargin: "0px 0px -40% 0px" })
-      show("portal")
       cards.forEach((card) => observer.observe(card))
-      stopFollowingScroll = () => observer.disconnect()
+      return () => observer.disconnect()
     }
+
+    const pinnable = window.matchMedia("(min-width: 1101px) and (min-height: 860px)")
+    let following = !calm
+
+    const followScroll = () => {
+      stopFollowingScroll()
+      compare.classList.remove("pinned")
+      pin.style.top = ""
+      if (!following) return
+
+      if (pinnable.matches) {
+        compare.classList.add("pinned")
+        const top = (window.innerHeight - pin.offsetHeight) / 2
+        if (top >= 24) {
+          pin.style.top = `${top}px`
+          stopFollowingScroll = followPinned()
+          return
+        }
+        compare.classList.remove("pinned")
+      }
+      stopFollowingScroll = followEachCard()
+    }
+
+    buttons.forEach((button) => button.addEventListener("click", () => {
+      following = false
+      followScroll()
+      show(button.dataset.show)
+    }))
+
+    let resizing
+    window.addEventListener("resize", () => {
+      clearTimeout(resizing)
+      resizing = setTimeout(followScroll, 200)
+    })
+
+    followScroll()
   }
 }

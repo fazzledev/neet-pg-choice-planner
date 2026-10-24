@@ -17,6 +17,21 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select "link[rel=modulepreload]", count: 0
   end
 
+  test "compares the portal with the planner and shows the planner without scripts" do
+    get root_path
+    assert_select ".lp-compare[data-view=planner]" do
+      assert_select "h2", text: /choices\. None of the pain\./
+      assert_select "button[data-show=planner][aria-pressed=true]"
+      assert_select "button[data-show=portal][aria-pressed=false]"
+      assert_select ".lp-flip", count: PagesHelper::PORTAL_VS_PLANNER.size do |cards|
+        cards.each do |card|
+          assert_select card, ".lp-face.portal", count: 1
+          assert_select card, ".lp-face.planner", count: 1
+        end
+      end
+    end
+  end
+
   test "offers a share button that shares the site" do
     get root_path
     assert_select ".lp-cta details.share-menu[data-share-url='#{root_url}']" do
