@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require_relative "../config/environment"
+
+geonames = Rails.root.join(ARGV.fetch(0))
+locations = JSON.parse(File.read(ARGV.fetch(1)))
+out = Rails.root.join("data/institute_review/ledger.jsonl")
+
+pin_rows = Hash.new { |h, k| h[k] = [] }
+File.foreach(geonames) do |line|
+  _, pin, place, state, _, district = line.chomp.split("\t")
+  pin_rows[pin] << [state, district, place]
+end
+
+rows = Counselling.current.institutes.order(:code).map do |inst|
+  text = "#{inst.name} #{inst.address}"
+  pins = text.scan(/(?<!\d)[1-9]\d{2}\s?\d{3}(?!\d)/).map { _1.delete(" ") }.uniq
+  pin_info = pins.map do |pin|
+    found = pin_rows[pin]
+    districts = found.map { |state, district, _| "#{district}, #{state}" }.tally.sort_by { -_2 }.map(&:first)
+    { pin:, districts: districts.first(3), places: found.map(&:last).uniq.first(6) }
+  end
+  map = locations[inst.code]
+  {
+    code: inst.code,
+    name: inst.name,
+    address: inst.address,
+    state: inst.state,
+    state_doubtful: inst.state_doubtful,
+    title: InstituteName.shorten(inst.name),
+    map_city: map&.last,
+    map_latlng: map&.first(2),
+    pincodes: pin_info
+  }
+end
+
+File.write(out, rows.map(&:to_json).join("\n") + "\n")
+puts "#{rows.size} institutes -> #{out}"
