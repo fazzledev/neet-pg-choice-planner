@@ -1,10 +1,19 @@
 {
-  const video = document.querySelector(".lp-demo-video")
+  const video = document.querySelector(".lp-demo-video.wide")
+  const phoneVideo = document.querySelector(".lp-demo-video.phone")
   const roomy = window.matchMedia("(min-width: 900px)").matches
+  const phone = window.matchMedia("(max-width: 600px)").matches
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches
   const saveData = navigator.connection?.saveData
 
   if (video && roomy && !calm && !saveData) video.play().catch(() => {})
+
+  if (phoneVideo && phone && !calm && !saveData) {
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) phoneVideo.play().catch(() => {})
+      else phoneVideo.pause()
+    }, { threshold: 0.4 }).observe(phoneVideo)
+  }
 
   const compare = document.querySelector(".lp-compare")
 
