@@ -11,16 +11,16 @@ class PracticeTest < ApplicationSystemTestCase
     first, second = available_institute_codes.first(2)
     add first
     add second
-    assert_equal [first, second], filled_institute_codes
+    assert_filled_order [first, second]
 
     within(filled_row(second)) { find("input.Up").click }
-    assert_equal [second, first], wait_for_filled_order([second, first])
+    assert_filled_order [second, first]
 
     within(filled_row(first)) { find("input.fChoice").click }
-    assert_equal [second], wait_for_filled_order([second])
+    assert_filled_order [second]
 
     visit practice_path
-    assert_equal [second], wait_for_filled_order([second])
+    assert_filled_order [second]
   end
 
   test "locking takes two presses and start over unlocks" do
@@ -62,12 +62,15 @@ class PracticeTest < ApplicationSystemTestCase
     all("#filledChoiceContainer tbody tr[data-choice-id]").map { |row| row.find("td", match: :first).text }
   end
 
-  def wait_for_filled_order(expected)
-    Timeout.timeout(Capybara.default_max_wait_time) do
-      sleep 0.05 until filled_institute_codes == expected
+  def assert_filled_order(expected)
+    assert_equal expected, filled_order_once_it_matches(expected)
+  end
+
+  def filled_order_once_it_matches(expected)
+    page.document.synchronize do
+      filled_institute_codes.tap { |actual| raise Capybara::ExpectationNotMet unless actual == expected }
     end
-    filled_institute_codes
-  rescue Timeout::Error
+  rescue Capybara::ExpectationNotMet
     filled_institute_codes
   end
 end
