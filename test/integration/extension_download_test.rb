@@ -23,30 +23,33 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
 
   test "Chrome gets the Chrome Web Store badge and no Firefox note" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" }
-    assert_select ".store-badges a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']"
+    assert_select ".ext-install a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}'] img[alt='Available in the Chrome Web Store']"
     assert_select ".store-note", count: 0
   end
 
-  test "Firefox is told its version is in review and still gets the Chrome badge" do
+  test "Firefox is told its version is coming soon and still gets the Chrome badge" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0" }
-    assert_select ".store-note strong", text: "Firefox version coming soon"
-    assert_select ".store-note", text: /in Mozilla's review/
-    assert_select ".store-badges a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']"
-    assert_select ".store-badges a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}']", count: 0
+    assert_select ".store-note strong", text: "Coming to Firefox soon"
+    assert_select ".ext-install a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']"
+    assert_select ".ext-install a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}']", count: 0
   end
 
   test "Firefox gets the Firefox Add-ons badge once the add-on is listed" do
     ExtensionPackage.firefox_listed = true
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0" }
-    assert_select ".store-badges a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}'][data-goatcounter-click='extension-page/firefox-add-ons'] img[alt='Get the add-on for Firefox']"
-    assert_select ".store-badges a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']", count: 0
+    assert_select ".ext-install a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}'][data-goatcounter-click='extension-page/firefox-add-ons'] img[alt='Get the add-on for Firefox']"
+    assert_select ".ext-install a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']", count: 0
     assert_select ".store-note", count: 0
+    assert_select ".ext-group-now li strong", text: "Firefox"
+    assert_select ".ext-group-soon", count: 0
   end
 
-  test "Safari is told which browsers it works in" do
+  test "browsers are grouped as available now, coming soon and not supported" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
-    assert_select ".store-note strong", text: "Needs Chrome, Edge or Brave"
-    assert_select ".store-note", text: /Open this page in one of them to install it\./
+    assert_equal %w[Chrome Edge Brave Opera], css_select(".ext-group-now li strong").map(&:text)
+    assert_equal %w[Firefox], css_select(".ext-group-soon li strong").map(&:text)
+    assert_equal ["Safari", "Chrome on phones"], css_select(".ext-group-no li strong").map(&:text)
+    assert_select ".ext-group img[src*='browsers/']", count: 7
     assert_equal "User-Agent", response.headers["Vary"]
   end
 
