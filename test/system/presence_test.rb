@@ -18,12 +18,12 @@ class PresenceSystemTest < ApplicationSystemTestCase
   private
 
   def eventually
-    Timeout.timeout(5) do
-      loop do
-        result = yield
-        return result if result
-        sleep 0.1
-      end
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 5
+    until Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
+      result = yield
+      return result if result
+      sleep 0.1
     end
+    flunk "condition not met within 5 seconds"
   end
 end
