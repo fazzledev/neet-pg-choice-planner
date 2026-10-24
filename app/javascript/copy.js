@@ -9,7 +9,7 @@ for (const button of document.querySelectorAll("[data-copy]")) {
       setTimeout(() => delete button.dataset.copied, 1500)
     } catch {
       field?.select()
-      if (status) status.textContent = "Couldn't copy. The link is selected, so copy it by hand."
+      if (status) status.textContent = field ? "Couldn't copy. The link is selected, so copy it by hand." : "Couldn't copy. Use Ask ChatGPT or Ask Claude instead."
     }
   })
 }

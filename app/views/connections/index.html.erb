@@ -69,13 +69,14 @@
 
   <section aria-labelledby="ask-title">
     <h2 id="ask-title">Try asking</h2>
+    <p class="conn-asks-lead">Connect your assistant first, then try one of these.</p>
     <ul class="conn-asks">
       <% ConnectionsHelper::EXAMPLE_QUESTIONS.each_with_index do |question, index| %>
         <li>
           <span>“<%= question %>”</span>
           <div class="conn-ask-actions">
-            <%= link_to ask_chatgpt_url(question), class: "button ai-app-chatgpt", target: "_blank", rel: "noopener", data: click_event("connect/ask-chatgpt") do %><%= icon("openai") %>Ask ChatGPT<% end %>
-            <%= link_to ask_claude_url(question), class: "button ai-app-claude", target: "_blank", rel: "noopener", data: click_event("connect/ask-claude") do %><%= icon("claude") %>Ask Claude<% end %>
+            <%= link_to ask_chatgpt_url(question), class: "button ai-app-chatgpt", target: "_blank", rel: "noopener", "aria-label": "Ask ChatGPT: #{question}", data: click_event("connect/ask-chatgpt") do %><%= icon("openai") %>Ask ChatGPT<% end %>
+            <%= link_to ask_claude_url(question), class: "button ai-app-claude", target: "_blank", rel: "noopener", "aria-label": "Ask Claude: #{question}", data: click_event("connect/ask-claude") do %><%= icon("claude") %>Ask Claude<% end %>
             <button type="button" class="button conn-ask-copy" data-copy="<%= ask_prompt(question) %>" data-copy-status="#ask-status-<%= index %>" aria-label="Copy this question"><%= icon("copy") %>Copy</button>
           </div>
           <p class="conn-copy-status" id="ask-status-<%= index %>" role="status"></p>

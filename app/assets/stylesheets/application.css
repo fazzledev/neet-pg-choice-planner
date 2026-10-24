@@ -1171,10 +1171,10 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .conn-asks { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
 .conn-asks li { display: flex; flex-direction: column; gap: 14px; padding: 18px; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow-card); font-size: 15px; line-height: 1.5; }
 .conn-asks li > p { margin: 0; font-size: 13px; }
+.conn-asks-lead { margin: -8px 0 16px; color: var(--muted); }
 .conn-ask-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
 .conn-ask-actions .button { min-height: 40px; font-size: 14px; }
 .conn-ask-actions .icon { width: 18px; height: 18px; }
-.conn-ask-actions .ai-app-claude .icon { color: #d97757; }
 .conn-ask-copy[data-copied] { border-color: var(--ok-ink); color: var(--ok-ink); }
 .conn-connected { gap: 4px; padding: 20px 22px; }
 .conn-connected h2 { margin: 0 0 6px; font: 700 18px/1.3 var(--font-body); letter-spacing: 0; }
