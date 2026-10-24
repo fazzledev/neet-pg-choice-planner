@@ -31,6 +31,14 @@
             <span>Have Chrome, Edge or Brave too?</span>
             <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 44 %><% end %>
           </div>
+        <% elsif @browser == :other %>
+          <div class="store-note" role="note">
+            <span><strong>Needs Chrome, Edge, Brave or Opera</strong>This browser can't run the extension. Open this page in one of them to install it.</span>
+          </div>
+          <div class="ext-alt">
+            <span>Already have one of them?</span>
+            <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 44 %><% end %>
+          </div>
         <% else %>
           <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 64 %><% end %>
           <span class="ext-badge-meta">v<%= @version %> · also for Edge, Brave and Opera<br>Updates itself from the store</span>
@@ -58,7 +66,7 @@
       </ul>
     </div>
 
-    <figure class="ext-shot no-touch" aria-label="The MCC Filler panel on MCC's choice-filling page">
+    <figure class="ext-shot no-touch" role="img" aria-label="The MCC Filler panel on MCC's choice-filling page, showing 9 differences and the Plan to MCC button">
       <div class="ext-shot-bar"><span></span><span></span><span></span><span class="ext-shot-url">mcc.admissions.nic.in · Choice Filling</span></div>
       <div class="ext-shot-page">
         <span>Filled choices</span>
@@ -77,12 +85,12 @@
 
   <section class="ext-browsers" aria-labelledby="browsers-title">
     <h2 id="browsers-title">Which browsers it works in</h2>
-    <div class="ext-groups">
+    <div class="ext-groups<%= " two-groups" if ExtensionPackage.firefox_listed %>">
       <section class="ext-group ext-group-now" aria-labelledby="group-now">
         <h3 id="group-now"><%= icon("check") %>Available now</h3>
         <ul>
           <% [["chrome", "Chrome"], ["edge", "Edge"], ["brave", "Brave"], ["opera", "Opera"], *(ExtensionPackage.firefox_listed ? [["firefox", "Firefox"]] : [])].each do |logo, name| %>
-            <li><%= image_tag "browsers/#{logo}.svg", alt: "", width: 28, height: 28 %><span><strong><%= name %></strong>On a computer</span></li>
+            <li><%= image_tag "browsers/#{logo}.svg", alt: "", width: 28, height: 28 %><span><strong><%= name %></strong></span></li>
           <% end %>
         </ul>
       </section>
@@ -133,8 +141,8 @@
       <p class="muted">For Chrome without the store, or to read the code. A hand-installed copy doesn't update itself.</p>
     </div>
     <div class="extension-actions">
-      <%= link_to download_extension_path, class: "button", data: click_event("extension-page/download") do %><%= icon("download") %>Download<% end %>
-      <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button", target: "_blank", rel: "noopener", data: click_event("extension-page/source") do %><%= icon("github") %>Source<% end %>
+      <%= link_to download_extension_path, class: "button", data: click_event("extension-page/download") do %><%= icon("download") %>Download zip<% end %>
+      <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button", target: "_blank", rel: "noopener", data: click_event("extension-page/source") do %><%= icon("github") %>Source on GitHub<% end %>
     </div>
     <details>
       <summary>How to install the download</summary>

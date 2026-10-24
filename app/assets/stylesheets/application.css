@@ -856,6 +856,8 @@ button.primary, .button.primary, .r-add {
 .page-back { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; padding: 4px 2px; font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none; }
 .page-back:hover { color: var(--text); }
 .page-back .icon { width: 16px; height: 16px; }
+.extension-page { display: flex; flex-direction: column; gap: 12px; width: min(440px, calc(100% - 32px)); }
+.extension-page .login-card { width: 100%; }
 .extension-actions { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
 .extension-card .button.block { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; min-height: 54px; border-radius: 16px; font-size: 17px; }
 .touch-only { display: none; }
@@ -875,7 +877,7 @@ button.primary, .button.primary, .r-add {
 .install-steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
 .install-steps .icon { width: 15px; height: 15px; vertical-align: -2px; }
 .install-steps code { font-size: 13px; padding: 1px 5px; border-radius: 6px; background: var(--surface-2); }
-.login-card .copy-btn { display: inline-flex; align-items: center; min-height: 0; height: auto; padding: 0 4px; line-height: 1; vertical-align: -3px; color: var(--muted); border: 0; }
+.copy-btn { display: inline-flex; align-items: center; min-height: 0; height: auto; padding: 0 4px; line-height: 1; vertical-align: -3px; color: var(--muted); border: 0; }
 .copy-btn:hover { color: var(--accent); }
 .copy-btn .icon { width: 16px; height: 16px; }
 .copy-btn .icon:last-child, .copy-btn[data-copied] .icon:first-child { display: none; }
@@ -1064,6 +1066,7 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .store-note strong { display: block; font-size: 16px; }
 .ext-alt { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; color: var(--muted); }
 .ext-intro .computer-needed { background: var(--surface); box-shadow: var(--shadow-card); }
+.computer-needed .button, .computer-needed .share-copy { min-height: 46px; }
 .ext-trust { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
 .ext-trust li { display: flex; align-items: center; gap: 10px; }
 .ext-trust .icon { flex: none; width: 20px; height: 20px; color: var(--ok); }
@@ -1083,6 +1086,7 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .ext-shot-actions span { padding: 7px 11px; border-radius: 10px; border: 1px solid #3a3d78; font-weight: 600; }
 .ext-shot-actions .primary { background: #3d3bf3; border-color: #3d3bf3; }
 .ext-groups { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+.ext-groups.two-groups { grid-template-columns: 2fr 1fr; }
 .ext-group { display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 16px; }
 .ext-group h3 { margin: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; }
 .ext-group h3 .icon { width: 16px; height: 16px; }
@@ -1117,7 +1121,7 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .manual-install details { flex: 1 1 100%; }
 .manual-install summary { cursor: pointer; color: var(--muted); font-weight: 600; }
 .manual-install details .install-steps { margin-top: 10px; }
-@media not ((hover: none) and (pointer: coarse)) {
+@media not all and (hover: none) and (pointer: coarse) {
   .ext-install, .manual-install { display: flex; }
 }
 @media (max-width: 760px) {

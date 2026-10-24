@@ -7,8 +7,8 @@ class ExtensionPageTest < ApplicationSystemTestCase
     assert_text "Which browsers it works in"
     within ".manual-install" do
       assert_text "Install by hand"
-      assert_link "Download", href: download_extension_path
-      assert_link "Source"
+      assert_link "Download zip", href: download_extension_path
+      assert_link "Source on GitHub"
       assert_no_text "Load unpacked"
       find("summary").click
       assert_text "Load unpacked"

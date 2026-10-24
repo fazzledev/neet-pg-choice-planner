@@ -44,6 +44,12 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
     assert_select ".ext-group-soon", count: 0
   end
 
+  test "Safari is told it needs another browser and gets a smaller Chrome badge" do
+    get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
+    assert_select ".store-note strong", text: "Needs Chrome, Edge, Brave or Opera"
+    assert_select ".ext-alt a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}'] img[height='44']"
+  end
+
   test "browsers are grouped as available now, coming soon and not supported" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
     assert_equal %w[Chrome Edge Brave Opera], css_select(".ext-group-now li strong").map(&:text)
