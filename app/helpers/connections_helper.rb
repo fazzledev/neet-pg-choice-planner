@@ -7,7 +7,9 @@ module ConnectionsHelper
     "Who is the DNB coordinator for the hospitals in my plan in Kerala?"
   ].freeze
 
-  def ask_prompt(question) = "Using NEET PG Choice Planner: #{question}"
+  def ask_prompt(question)
+    "Using the NEET PG Choice Planner connector: #{question} If you can't reach the planner, don't guess. Tell me how to connect it from #{connect_url}."
+  end
 
   def ask_chatgpt_url(question) = "https://chatgpt.com/?q=#{ERB::Util.url_encode(ask_prompt(question))}"
 
