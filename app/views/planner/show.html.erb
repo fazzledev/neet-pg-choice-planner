@@ -50,8 +50,6 @@
 
   <% if @list && @list.user_id != current_user.id %>
     <p class="banner">Viewing <strong><%= @list.user.display_name %></strong>'s order. Changes save to their list.</p>
-  <% elsif !@list %>
-    <p class="banner" id="local-banner">Saved on this device only. <%= link_to "Sign in", new_session_path %> to keep it safe and use it on other devices.</p>
   <% end %>
   <div id="adopt" class="banner warn" hidden>
     <span id="adopt-text"></span>

@@ -827,6 +827,11 @@ function setStatus(text, error = false) {
   root.classList.toggle("sync-error", error)
 }
 
+function savedWhen(date) {
+  const today = date.toDateString() === new Date().toDateString()
+  return today ? date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : date.toLocaleDateString([], { day: "numeric", month: "short" })
+}
+
 function timeNow() {
   return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
 }
@@ -845,7 +850,7 @@ function scheduleSave() {
   writeCache()
   if (!synced()) {
     state.saveLabel = null
-    setStatus(`Saved on this device ${timeNow()}`)
+    setStatus(`Saved on this device only · ${timeNow()}`)
     return
   }
   if (state.conflict) return
@@ -1016,7 +1021,7 @@ function loadDevice() {
   const device = storage.get(deviceKey())
   setPicks(device?.picks || [])
   if (state.picks.length) track("opened-saved-plan")
-  setStatus(device?.savedAt ? `Saved on this device ${new Date(device.savedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}` : "Saves on this device as you go")
+  setStatus(device?.savedAt ? `Saved on this device only · ${savedWhen(new Date(device.savedAt))}` : "Saves on this device only, as you go")
 }
 
 function exportCsv() {
