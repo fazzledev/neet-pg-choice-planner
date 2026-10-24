@@ -688,7 +688,9 @@ function renderMapCard(outlook, points) {
   } else if (!rank) {
     content = cardNodes("neutral", "Where would you most likely land?", [["Add your NEET PG rank and category. Each city is then coloured by your odds there, and your most likely choice is marked."]], { name: "add-rank", label: "Add your rank" })
   } else if (!state.cutoffs) {
-    content = cardNodes("neutral", "Loading past closing ranks", [["Your odds appear here once they load."]])
+    content = state.cutoffsFailed
+      ? cardNodes("neutral", "Couldn't load past closing ranks", [["Check your connection and reload the page to see your odds."]], { name: "add-rank", label: "Change your rank" })
+      : cardNodes("neutral", "Loading past closing ranks", [["Your odds appear here once they load."]])
   } else if (!lensOn()) {
     content = null
   } else if (state.mapSubject === "plan") {
@@ -1620,9 +1622,10 @@ function closeSheet() {
   $("#sheet-backdrop").hidden = true
   $("#filter-sheet").hidden = true
   document.body.style.overflow = ""
-  const target = sheetOpener?.isConnected && sheetOpener.offsetParent ? sheetOpener : $("#filters-open")
+  const visible = (el) => el?.isConnected && el.offsetParent
+  const target = [sheetOpener, $("#map-legend [data-action=add-rank]"), $("#map-card [data-action]"), $("#map-subject [aria-checked=true]"), $("#filters-open")].find(visible)
   sheetOpener = null
-  target.focus()
+  target?.focus()
 }
 
 const CONFIDENCE_TEXT = {
@@ -2100,7 +2103,10 @@ async function loadCutoffs() {
     state.cutoffs = await api(config.cutoffsUrl)
     chanceCache.clear()
     repaintCutoffs()
-  } catch {}
+  } catch {
+    state.cutoffsFailed = true
+    if (state.catalogView === "map") renderMapResults()
+  }
 }
 
 async function boot() {
