@@ -31,56 +31,37 @@
     <%= javascript_include_tag "menus", defer: true %>
   </section>
 
-  <section class="lp-section">
-    <div class="lp-head">
-      <h2>Everything the <span class="lp-rotate" data-more="crashy fiddly glitchy sluggish"><span class="on">clunky</span></span> portal makes hard</h2>
-      <p class="lp-proof">Sound familiar? From r/neetpgcounselling during Round 1:
-        <%= link_to "“MCC site crashing”", "https://www.reddit.com/r/neetpgcounselling/comments/1xao3qb/mcc_site_crashing/", target: "_blank", rel: "noopener", data: click_event("landing/reddit-site-crashing") %> ·
-        <%= link_to "“Is the mcc site down?”", "https://www.reddit.com/r/neetpgcounselling/comments/1xakuds/is_the_mcc_site_down/", target: "_blank", rel: "noopener", data: click_event("landing/reddit-site-down") %> ·
-        <%= link_to "“Mcc neet pg choice filling page isn't working”", "https://www.reddit.com/r/neetpgcounselling/comments/1x844rz/mcc_neet_pg_choice_filling_page_isnt_working/", target: "_blank", rel: "noopener", data: click_event("landing/reddit-page-not-working") %>
-      </p>
-    </div>
-    <div class="lp-grid four">
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("search") %></span>
-        <h3>Find seats fast</h3>
-        <p>Search by college, city or speciality. Filter by course, state, institute type and quota, with as many picks per filter as you like.</p>
-      </article>
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("layers") %></span>
-        <h3>Group the way you think</h3>
-        <p>See the catalog and your plan grouped by institute or by speciality, so you can compare options side by side.</p>
-      </article>
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("grip-vertical") %></span>
-        <h3>Drag to rank</h3>
-        <p>Reorder by dragging or by typing a rank, gather a college's seats together, and keep a note on every choice.</p>
-      </article>
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("wifi-off") %></span>
-        <h3>Works offline</h3>
-        <p>Your plan is saved in your browser as you go. After your first visit, a dropped connection or a portal outage costs you nothing.</p>
-      </article>
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("cloud") %></span>
-        <h3>Sync and history</h3>
-        <p>Sign in with an emailed link to use the same plan on phone and laptop, with a history you can restore from.</p>
-      </article>
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("phone") %></span>
-        <h3>Ask before you choose</h3>
-        <p>Where a DNB hospital lists a coordinator, their contact sits next to the seat, so you can ask about stipend, bond and duty hours first.</p>
-      </article>
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("trending-up") %></span>
-        <h3>See past closing ranks</h3>
-        <p>Most choices show how far down the ranks MCC allotted them in 2023–2025, round by round, for Open and your category.</p>
-      </article>
-      <article class="lp-card">
-        <span class="lp-icon"><%= icon("target") %></span>
-        <h3>Know your chances</h3>
-        <p>Enter your rank and category to see each choice marked Likely, Possible, Borderline or Reach. A rough guide from past rounds, not a prediction.</p>
-      </article>
+  <section class="lp-section lp-compare" data-view="planner">
+    <div class="lp-compare-pin">
+      <div class="lp-head">
+        <span class="lp-kicker">Why not just use the portal?</span>
+        <h2>Same <%= number_with_delimiter(@choice_count) %> choices. None of the pain.</h2>
+        <p class="lp-proof">Sound familiar? From r/neetpgcounselling during Round 1:
+          <%= link_to "“MCC site crashing”", "https://www.reddit.com/r/neetpgcounselling/comments/1xao3qb/mcc_site_crashing/", target: "_blank", rel: "noopener", data: click_event("landing/reddit-site-crashing") %> ·
+          <%= link_to "“Is the mcc site down?”", "https://www.reddit.com/r/neetpgcounselling/comments/1xakuds/is_the_mcc_site_down/", target: "_blank", rel: "noopener", data: click_event("landing/reddit-site-down") %> ·
+          <%= link_to "“Mcc neet pg choice filling page isn't working”", "https://www.reddit.com/r/neetpgcounselling/comments/1x844rz/mcc_neet_pg_choice_filling_page_isnt_working/", target: "_blank", rel: "noopener", data: click_event("landing/reddit-page-not-working") %>
+        </p>
+      </div>
+      <div class="lp-compare-switch" role="group" aria-label="Compare the portal with the planner">
+        <%= tag.button type: "button", class: "portal", aria: { pressed: false }, data: { show: "portal", **click_event("landing/compare-portal") } do %><%= icon("triangle-alert") %>On the portal<% end %>
+        <%= tag.button type: "button", class: "planner", aria: { pressed: true }, data: { show: "planner", **click_event("landing/compare-planner") } do %><%= icon("check") %>With the planner<% end %>
+      </div>
+      <div class="lp-grid four">
+        <% portal_vs_planner.each do |card| %>
+          <article class="lp-card lp-flip">
+            <div class="lp-face portal">
+              <span class="lp-icon"><%= icon(card.portal_icon) %></span>
+              <h3><%= card.portal_title %></h3>
+              <p><%= card.portal_text %></p>
+            </div>
+            <div class="lp-face planner">
+              <span class="lp-icon"><%= icon(card.planner_icon) %></span>
+              <h3><%= card.planner_title %></h3>
+              <p><%= card.planner_text %></p>
+            </div>
+          </article>
+        <% end %>
+      </div>
     </div>
   </section>
 

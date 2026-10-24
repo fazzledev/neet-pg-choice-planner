@@ -6,22 +6,50 @@
 
   if (video && roomy && !calm && !saveData) video.play().catch(() => {})
 
-  const rotating = document.querySelector(".lp-rotate")
-  let shown = 0
+  const compare = document.querySelector(".lp-compare")
 
-  if (rotating && !calm) {
-    for (const word of rotating.dataset.more.split(" ")) {
-      const span = document.createElement("span")
-      span.setAttribute("aria-hidden", "true")
-      span.textContent = word
-      rotating.append(span)
+  if (compare) {
+    const pin = compare.querySelector(".lp-compare-pin")
+    const cards = [...compare.querySelectorAll(".lp-flip")]
+    const buttons = [...compare.querySelectorAll("[data-show]")]
+    let stopFollowingScroll = () => {}
+
+    const show = (view, targets = cards) => {
+      targets.forEach((card) => { card.dataset.view = view })
+      compare.dataset.view = view
+      buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.show === view)))
     }
-    const words = [...rotating.children]
 
-    setInterval(() => {
-      words[shown].classList.remove("on")
-      shown = (shown + 1) % words.length
-      words[shown].classList.add("on")
-    }, 2200)
+    buttons.forEach((button) => button.addEventListener("click", () => {
+      stopFollowingScroll()
+      show(button.dataset.show)
+    }))
+
+    const pinnable = window.matchMedia("(min-width: 1101px) and (min-height: 860px)").matches
+
+    if (!calm && pinnable) {
+      compare.classList.add("pinned")
+      pin.style.top = `${Math.max(24, (window.innerHeight - pin.offsetHeight) / 2)}px`
+      let shown = null
+      const follow = () => {
+        const travel = compare.offsetHeight - pin.offsetHeight
+        const progress = (parseFloat(pin.style.top) - compare.getBoundingClientRect().top) / travel
+        const view = progress > 0.4 ? "planner" : "portal"
+        if (view !== shown) show(shown = view)
+      }
+      window.addEventListener("scroll", follow, { passive: true })
+      stopFollowingScroll = () => window.removeEventListener("scroll", follow)
+      follow()
+    } else if (!calm) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) show("planner", [entry.target])
+          else if (entry.boundingClientRect.top > 0) show("portal", [entry.target])
+        })
+      }, { rootMargin: "0px 0px -40% 0px" })
+      show("portal")
+      cards.forEach((card) => observer.observe(card))
+      stopFollowingScroll = () => observer.disconnect()
+    }
   }
 }
