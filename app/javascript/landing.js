@@ -4,14 +4,19 @@
   const roomy = window.matchMedia("(min-width: 900px)").matches
   const phone = window.matchMedia("(max-width: 600px)").matches
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  const saveData = navigator.connection?.saveData
+  const saveData = navigator.connection?.saveData || ["slow-2g", "2g"].includes(navigator.connection?.effectiveType)
 
   if (video && roomy && !calm && !saveData) video.play().catch(() => {})
 
   if (phoneVideo && phone && !calm && !saveData) {
+    let inView = false
+    let pausedByViewer = false
+    phoneVideo.addEventListener("pause", () => { if (inView) pausedByViewer = true })
+    phoneVideo.addEventListener("play", () => { pausedByViewer = false })
     new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) phoneVideo.play().catch(() => {})
-      else phoneVideo.pause()
+      inView = entry.isIntersecting
+      if (inView && !pausedByViewer) phoneVideo.play().catch(() => {})
+      else if (!inView) phoneVideo.pause()
     }, { threshold: 0.4 }).observe(phoneVideo)
   }
 
