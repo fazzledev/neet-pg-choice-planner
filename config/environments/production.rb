@@ -3,7 +3,9 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   config.enable_reloading = false
   config.assume_ssl = true
-  config.middleware.use Rack::Deflater
+  config.middleware.insert_before ActionDispatch::Static, Rack::Deflater,
+    include: %w[text/html text/css text/javascript text/plain text/csv text/vnd.turbo-stream.html application/json application/geo+json image/svg+xml],
+    if: ->(_env, status, _headers, _body) { status != 206 }
   config.force_ssl = true
   config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
   config.hosts = %w[neet-pg-choice-planner.fazzle.dev neet-pg-choices.fazzle.dev mcc.fazzle.dev]
