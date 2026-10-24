@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+require "json"
+require "erb"
+
+ROOT = File.expand_path("../data/institute_review", __dir__)
+require_relative "institute_review_renames"
+
+def read_jsonl(path) = File.readlines(path).map { JSON.parse(_1) }
+def squash(s) = s.to_s.downcase.gsub(/[^a-z]/, "")
+
+final = read_jsonl("#{ROOT}/final.jsonl")
+ledger = read_jsonl("#{ROOT}/ledger.jsonl").to_h { [_1["code"], _1] }
+second = Dir["#{ROOT}/second_pass/{results,results_rest}/*.jsonl"].flat_map { read_jsonl(_1) }.to_h { [_1["code"], _1] }
+
+def same_place?(a, b)
+  return true if squash(a) == squash(b)
+
+  RENAMES.any? { |g| g.any? { squash(_1) == squash(a) } && g.any? { squash(_1) == squash(b) } }
+end
+
+pin_key = ->(f) { [f["state"], squash((RENAMES.find { |g| g.any? { squash(_1) == squash(f["town"]) } } || [f["town"]]).first)] }
+labels = final.group_by(&pin_key).transform_values { |rows| rows.map { _1["town"] }.tally.max_by { |t, n| [n, t] }.first }
+
+rows = final.map do |f|
+  pin = labels.fetch(pin_key.(f))
+  was = f["old_map_city"].to_s
+  pin_change = if f["state"] == "Delhi" then (squash(was) == "delhi" ? "same" : "relabel")
+               elsif squash(was) == squash(pin) then "same"
+               elsif same_place?(was, pin) then "relabel"
+               else "move"
+               end
+  {
+    code: f["code"], name: ledger[f["code"]]["name"], state: f["state"], district: f["district"],
+    title_was: f["old_title"], title: f["title"], pin_was: was, pin:, pin_change:,
+    confidence: f["confidence"], evidence: second.dig(f["code"], "evidence").to_s
+  }
+end
+
+summary = {
+  institutes: rows.size,
+  pins: labels.size,
+  moved: rows.count { _1[:pin_change] == "move" },
+  relabelled: rows.count { _1[:pin_change] == "relabel" },
+  titles: rows.count { _1[:title] != _1[:title_was] },
+  uncertain: rows.count { _1[:confidence] != "high" }
+}
+
+template = File.read(File.expand_path("institute_review_page.html.erb", __dir__))
+html = ERB.new(template, trim_mode: "-").result_with_hash(rows: rows.to_json.gsub("</", "<\\/"), summary:)
+File.write("#{ROOT}/review.html", html)
+puts summary.to_json
