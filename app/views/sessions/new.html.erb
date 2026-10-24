@@ -3,7 +3,7 @@
   <span class="login-brand">NEET PG 2026</span>
   <h1>NEET PG Choice Planner</h1>
   <% if params[:sent] %>
-    <p>Check your email. If that address can sign in, a link is on its way. It works once and expires in <%= User::SIGN_IN_LINK_TTL.inspect %>.</p>
+    <p>Check your email for a sign-in link. It works once and expires in <%= User::SIGN_IN_LINK_TTL.inspect %>. Nothing after a couple of minutes? Check spam, or <%= link_to "ask again", new_session_path %>.</p>
     <% if session[:return_to_after_authenticating].to_s.include?(oauth_authorization_path) %>
       <p class="muted">Open the link in this browser to come back and connect your assistant.</p>
     <% end %>

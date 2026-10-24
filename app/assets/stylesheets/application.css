@@ -914,6 +914,23 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp-demo { margin: 12px 0 0; width: 90%; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #11131c; box-shadow: 0 30px 60px rgba(16, 20, 35, .35); transform: perspective(1400px) rotateY(-9deg) rotateX(3deg) rotate(.5deg); transform-origin: left center; }
 .lp-demo-video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #11131c; }
 .lp-section { display: flex; flex-direction: column; gap: 28px; }
+.lp-head { display: flex; flex-direction: column; gap: 12px; }
+.lp-proof { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.lp-proof a { color: inherit; text-underline-offset: 3px; }
+.lp-proof a:hover { color: var(--text); }
+.lp-compare-pin { display: flex; flex-direction: column; gap: 28px; }
+.lp-compare.pinned::after { content: ""; height: 90vh; }
+.lp-compare.pinned .lp-compare-pin { position: sticky; top: 24px; }
+.lp-compare-switch { align-self: flex-start; display: inline-flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; }
+.lp-compare-switch button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 600; transition: background .3s, color .3s; }
+.lp-compare-switch button:hover { color: var(--text); }
+.lp-compare[data-view="portal"] .lp-compare-switch .portal { background: var(--danger); color: var(--surface); }
+.lp-compare[data-view="planner"] .lp-compare-switch .planner { background: var(--accent); color: var(--surface); }
+.lp-card.lp-flip { display: grid; }
+.lp-face { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 10px; transition: opacity .35s, transform .35s, visibility .35s; }
+.lp-face.portal .lp-icon { background: color-mix(in srgb, var(--danger) 10%, var(--surface)); color: var(--danger); }
+.lp-flip[data-view="portal"] .lp-face.planner, .lp-flip:not([data-view="portal"]) .lp-face.portal { opacity: 0; visibility: hidden; transform: translateY(8px); }
+@media (prefers-reduced-motion: reduce) { .lp-face, .lp-compare-switch button { transition: none; } }
 .lp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .lp-grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 1100px) { .lp-grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
