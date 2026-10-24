@@ -3,6 +3,7 @@ require "zip"
 class ExtensionPackage
   SOURCE = Rails.root.join("extension")
   FOLDER = "choice-planner-filler"
+  CHROME_WEB_STORE_URL = "https://chromewebstore.google.com/detail/dknkamnnjakgmgggbeomoakajbkdennd"
 
   def self.files
     SOURCE.glob("**/*").select(&:file?).sort

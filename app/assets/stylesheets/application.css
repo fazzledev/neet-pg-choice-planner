@@ -867,7 +867,7 @@ button.primary, .button.primary, .r-add {
 .computer-needed .share-link { padding: 0; }
 .computer-needed .share-status { padding: 0; }
 .computer-needed .share-status:empty { display: none; }
-.computer-needed .download-anyway { margin: 0; font-size: 13px; }
+.computer-needed .store-anyway { margin: 0; font-size: 13px; }
 .install-lead { margin: 0; font-weight: 600; }
 .computer-needed .extension-actions { grid-template-columns: 1fr 1fr; }
 @media (hover: none) and (pointer: coarse) {
@@ -1043,3 +1043,6 @@ a.lp-brand { color: inherit; text-decoration: none; }
 .practice-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .practice-panel input[type=search] { width: 100%; }
 .practice-table .practice-empty { color: var(--muted); padding: 14px 8px; }
+.manual-install { font-size: 14px; }
+.manual-install summary { cursor: pointer; color: var(--muted); font-weight: 600; }
+.manual-install .install-steps { margin-top: 10px; }

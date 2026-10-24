@@ -17,20 +17,26 @@
         <%= link_to extension_link_whatsapp_url, class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/whatsapp-link") do %><%= icon("message-circle") %>WhatsApp<% end %>
         <%= link_to extension_link_email_url, class: "button block", data: click_event("extension-page/email-link") do %><%= icon("mail") %>Email<% end %>
       </div>
-      <p class="muted download-anyway">Already on a computer? <%= link_to "Download anyway", download_extension_path, data: click_event("extension-page/download-anyway") %></p>
+      <p class="muted store-anyway">Already on a computer? <%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %></p>
     </div>
     <div class="extension-actions no-touch">
-      <%= link_to download_extension_path, class: "button primary block", data: click_event("extension-page/download") do %><%= icon("download") %>Download<% end %>
+      <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "button primary block", target: "_blank", rel: "noopener", data: click_event("extension-page/add-to-chrome") do %><%= icon("puzzle") %>Add to Chrome<% end %>
       <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/source") do %><%= icon("github") %>Source<% end %>
     </div>
     <p class="touch-only install-lead">Then, on your computer:</p>
     <ol class="install-steps">
-      <li>Unzip the download into a folder. <code>manifest.json</code> sits directly inside it.</li>
-      <li>Open <code>chrome://extensions</code> <button type="button" class="button-link copy-btn" data-copy="chrome://extensions" aria-label="Copy chrome://extensions" title="Copy"><%= icon("copy") %><%= icon("check") %></button> in a new tab and turn on <strong>Developer mode</strong>.</li>
-      <li>Press <strong>Load unpacked</strong> and pick that folder, the one holding <code>manifest.json</code>.</li>
+      <li>Press <strong>Add to Chrome</strong>, then <strong>Add extension</strong> in the Chrome Web Store.</li>
       <li>Reload the planner. Your plan now syncs to the extension by itself.</li>
       <li>Sign in to MCC and open Choice Filling. The panel in the bottom-right corner shows <em>In sync</em> or the differences, with <strong>Plan → MCC</strong> and <strong>MCC → Plan</strong> whenever they differ. Each makes one side an exact copy of the other.</li>
     </ol>
+    <details class="manual-install">
+      <summary>Install without the Chrome Web Store</summary>
+      <ol class="install-steps">
+        <li><%= link_to "Download the zip", download_extension_path, data: click_event("extension-page/download") %> and unzip it into a folder. <code>manifest.json</code> sits directly inside it.</li>
+        <li>Open <code>chrome://extensions</code> <button type="button" class="button-link copy-btn" data-copy="chrome://extensions" aria-label="Copy chrome://extensions" title="Copy"><%= icon("copy") %><%= icon("check") %></button> in a new tab and turn on <strong>Developer mode</strong>.</li>
+        <li>Press <strong>Load unpacked</strong> and pick that folder. This copy doesn't update itself; download it again for new versions.</li>
+      </ol>
+    </details>
     <p class="muted">Want to try it before your MCC session? The <%= link_to "practice page", practice_path %> works like MCC's choice filling with this year's choices, and the extension runs there too.</p>
   </div>
 </div>

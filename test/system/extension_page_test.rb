@@ -1,9 +1,12 @@
 require "application_system_test_case"
 
 class ExtensionPageTest < ApplicationSystemTestCase
-  test "a computer gets the download" do
+  test "a computer gets the Chrome Web Store link, with the zip as a fallback" do
     visit extension_path
-    assert_link "Download"
+    assert_link "Add to Chrome", href: ExtensionPackage::CHROME_WEB_STORE_URL
+    assert_no_link "Download the zip"
+    find(".manual-install summary").click
+    assert_link "Download the zip", href: download_extension_path
     assert_no_text "Needs Chrome on a laptop or desktop"
     assert_no_text "Then, on your computer:"
   end
