@@ -13,7 +13,8 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
     assert_select ".link-copy input[value='#{extension_url}']"
     assert_select ".link-copy button[data-goatcounter-click='extension-page/copy-link']"
     assert_select "a[data-goatcounter-click='extension-page/source']"
-    assert_select "a[data-goatcounter-click='extension-page/download-anyway'][href='#{download_extension_path}']"
+    assert_select "a[data-goatcounter-click='extension-page/add-to-chrome'][href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']"
+    assert_select "a[data-goatcounter-click='extension-page/store-anyway'][href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']"
     assert_select "a[data-goatcounter-click='extension-page/whatsapp-link'][href='https://wa.me/?text=#{ERB::Util.url_encode("Install the MCC filler on my computer: #{extension_url}")}']"
     assert_select "a[data-goatcounter-click='extension-page/email-link'][href^='mailto:?subject=']"
   end
