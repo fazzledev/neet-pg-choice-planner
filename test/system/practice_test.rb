@@ -67,10 +67,13 @@ class PracticeTest < ApplicationSystemTestCase
   end
 
   def filled_order_once_it_matches(expected)
+    actual = nil
     page.document.synchronize do
-      filled_institute_codes.tap { |actual| raise Capybara::ExpectationNotMet unless actual == expected }
+      actual = filled_institute_codes
+      raise Capybara::ExpectationNotMet unless actual == expected
     end
+    actual
   rescue Capybara::ExpectationNotMet
-    filled_institute_codes
+    actual
   end
 end
