@@ -5,4 +5,19 @@
   const saveData = navigator.connection?.saveData
 
   if (video && roomy && !calm && !saveData) video.play().catch(() => {})
+
+  const rotating = document.querySelector(".lp-rotate")
+  const words = rotating?.dataset.words.split(" ") ?? []
+  let shown = 0
+
+  if (rotating && !calm) {
+    setInterval(() => {
+      rotating.classList.add("out")
+      setTimeout(() => {
+        shown = (shown + 1) % words.length
+        rotating.textContent = words[shown]
+        rotating.classList.remove("out")
+      }, 250)
+    }, 2200)
+  }
 }

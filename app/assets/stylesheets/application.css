@@ -915,6 +915,13 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp-demo { margin: 12px 0 0; width: 90%; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #11131c; box-shadow: 0 30px 60px rgba(16, 20, 35, .35); transform: perspective(1400px) rotateY(-9deg) rotateX(3deg) rotate(.5deg); transform-origin: left center; }
 .lp-demo-video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #11131c; }
 .lp-section { display: flex; flex-direction: column; gap: 28px; }
+.lp-head { display: flex; flex-direction: column; gap: 12px; }
+.lp-proof { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.lp-proof a { color: inherit; text-underline-offset: 3px; }
+.lp-proof a:hover { color: var(--text); }
+.lp-rotate { display: inline-block; color: var(--accent); transition: opacity .25s, transform .25s; }
+.lp-rotate.out { opacity: 0; transform: translateY(-.2em); }
+@media (prefers-reduced-motion: reduce) { .lp-rotate { transition: none; } }
 .lp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .lp-grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 1100px) { .lp-grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
