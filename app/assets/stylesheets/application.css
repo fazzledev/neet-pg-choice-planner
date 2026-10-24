@@ -1046,7 +1046,8 @@ a.lp-brand { color: inherit; text-decoration: none; }
 .store-badges > * + * { margin-top: 10px; }
 .store-badge { display: inline-block; line-height: 0; border-radius: 8px; }
 .store-badge img { height: 60px; width: auto; }
-.store-note { margin: 0; font-size: 14px; color: var(--muted); }
+.store-note { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 14px; background: var(--warn-bg); color: var(--warn-ink); font-size: 14px; }
+.store-note strong { font-size: 15px; }
 .manual-install { padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
 .manual-install > * + * { margin-top: 10px; }
 .manual-install h2 { margin: 0; font-size: 15px; }

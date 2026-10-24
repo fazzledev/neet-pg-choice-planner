@@ -29,6 +29,7 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
 
   test "Firefox is told its version is in review and still gets the Chrome badge" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0" }
+    assert_select ".store-note strong", text: "Firefox version coming soon"
     assert_select ".store-note", text: /in Mozilla's review/
     assert_select ".store-badges a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']"
     assert_select ".store-badges a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}']", count: 0
@@ -44,7 +45,8 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
 
   test "Safari is told which browsers it works in" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
-    assert_select ".store-note", text: "Works in Chrome, Edge or Brave on a computer."
+    assert_select ".store-note strong", text: "Needs Chrome, Edge or Brave"
+    assert_select ".store-note", text: /Open this page in one of them to install it\./
     assert_equal "User-Agent", response.headers["Vary"]
   end
 
