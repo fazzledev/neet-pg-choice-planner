@@ -1,12 +1,12 @@
-<% content_for :title, "Connect ChatGPT or Claude · NEET PG Choice Planner" %>
+<% content_for :title, "Connect your AI assistant · NEET PG Choice Planner" %>
 <% content_for :body_class, "login" %>
 <% content_for :javascript_entry, "copy" %>
 <div class="extension-page">
   <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
   <div class="login-card extension-card connect-card">
     <span class="login-brand">AI assistants</span>
-    <h1>Plan with ChatGPT or Claude</h1>
-    <p class="muted">Add the planner as a connector, and your assistant can search every choice, read DNB contacts, and add, reorder or note choices in your plan. It can't reach MCC. Filling, saving and locking stay with you.</p>
+    <h1>Plan with your AI assistant</h1>
+    <p class="muted">Add the planner as a connector in ChatGPT, Claude, Claude Code or any other app that supports MCP connectors with sign-in, and your assistant can search every choice, read DNB contacts, and add, reorder or note choices in your plan. It can't reach MCC. Filling, saving and locking stay with you.</p>
     <div class="connect-url">
       <code><%= @server_url %></code>
       <button type="button" class="button-link copy-btn" data-copy="<%= @server_url %>" aria-label="Copy the connector URL" title="Copy"><%= icon("copy") %><%= icon("check") %></button>
@@ -25,7 +25,12 @@
       <li>Paste the URL above, add it, then press <strong>Connect</strong>.</li>
       <li>Sign in with your email, then press <strong>Allow</strong>.</li>
     </ol>
-    <p class="muted">In Claude Code, run <code>claude mcp add --transport http neet-pg-planner <%= @server_url %></code>, then <code>/mcp</code> to sign in.</p>
+
+    <h2 class="ai-heading ai-app-claude"><%= icon("claude") %>Claude Code</h2>
+    <p class="muted">Run <code>claude mcp add --transport http neet-pg-planner <%= @server_url %></code>, then <code>/mcp</code> to sign in.</p>
+
+    <h2 class="ai-heading"><%= icon("sparkles") %>Other MCP apps</h2>
+    <p class="muted">Apps such as Cursor, VS Code and Gemini CLI can connect too, if they support remote MCP servers with sign-in (OAuth). Add a remote server with the URL above, over HTTP, then sign in with your email and press <strong>Allow</strong> when it opens the planner. The exact steps vary from app to app and version to version.</p>
 
     <p class="muted">Open the emailed sign-in link in the same browser that is connecting, so it comes back to the Allow page.</p>
 
