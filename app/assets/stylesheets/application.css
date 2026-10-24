@@ -925,8 +925,8 @@ body.landing { display: block; height: auto; min-height: 100%; }
 .lp-compare-switch { align-self: flex-start; display: inline-flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; }
 .lp-compare-switch button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 600; transition: background .3s, color .3s; }
 .lp-compare-switch button:hover { color: var(--text); }
-.lp-compare[data-view="portal"] .lp-compare-switch .portal { background: var(--danger); color: #fff; }
-.lp-compare[data-view="planner"] .lp-compare-switch .planner { background: var(--accent); color: #fff; }
+.lp-compare[data-view="portal"] .lp-compare-switch .portal { background: var(--danger); color: var(--surface); }
+.lp-compare[data-view="planner"] .lp-compare-switch .planner { background: var(--accent); color: var(--surface); }
 .lp-card.lp-flip { display: grid; }
 .lp-face { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 10px; transition: opacity .35s, transform .35s, visibility .35s; }
 .lp-face.portal .lp-icon { background: color-mix(in srgb, var(--danger) 10%, var(--surface)); color: var(--danger); }
