@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ExtensionDownloadTest < ActionDispatch::IntegrationTest
+  teardown { ExtensionPackage.firefox_listed = false }
+
   test "shows install steps without signing in" do
     get extension_path
     assert_response :success
@@ -30,6 +32,20 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
     assert_select ".store-note", text: /in Mozilla's review/
     assert_select ".store-badges a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']"
     assert_select ".store-badges a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}']", count: 0
+  end
+
+  test "Firefox gets the Firefox Add-ons badge once the add-on is listed" do
+    ExtensionPackage.firefox_listed = true
+    get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0" }
+    assert_select ".store-badges a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}'][data-goatcounter-click='extension-page/firefox-add-ons'] img[alt='Get the add-on for Firefox']"
+    assert_select ".store-badges a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']", count: 0
+    assert_select ".store-note", count: 0
+  end
+
+  test "Safari is told which browsers it works in" do
+    get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
+    assert_select ".store-note", text: "Works in Chrome, Edge or Brave on a computer."
+    assert_equal "User-Agent", response.headers["Vary"]
   end
 
   test "downloads the extension as a zip of its folder" do

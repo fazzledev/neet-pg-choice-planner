@@ -20,21 +20,23 @@
       <p class="muted store-anyway">Already on a computer? <%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %></p>
     </div>
     <div class="store-badges no-touch">
-      <% if @firefox && ExtensionPackage::FIREFOX_LISTED %>
+      <% if @firefox_badge %>
         <%= link_to ExtensionPackage::FIREFOX_ADD_ONS_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/firefox-add-ons") do %><%= image_tag "store-badges/firefox-add-ons.svg", alt: "Get the add-on for Firefox", height: 60 %><% end %>
       <% else %>
-        <% if @firefox %>
+        <% if @browser == :firefox %>
           <p class="store-note">The Firefox version is in Mozilla's review and will be here soon. Until then, install it in Chrome, Edge or Brave.</p>
+        <% elsif @browser == :other %>
+          <p class="store-note">Works in Chrome, Edge or Brave on a computer.</p>
         <% end %>
         <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 60 %><% end %>
       <% end %>
     </div>
     <p class="touch-only install-lead">Then, on your computer:</p>
     <ol class="install-steps">
-      <% if @firefox && ExtensionPackage::FIREFOX_LISTED %>
-        <li>Press <strong>Get the add-on</strong>, then <strong>Add to Firefox</strong> and <strong>Add</strong>.</li>
+      <% if @firefox_badge %>
+        <li>Press the Firefox Add-ons badge, then <strong>Add to Firefox</strong> and <strong>Add</strong>.</li>
       <% else %>
-        <li>Press <strong>Available in the Chrome Web Store</strong>, then <strong>Add to Chrome</strong> in the store.</li>
+        <li>Press the Chrome Web Store badge, then <strong>Add to Chrome</strong> in the store.</li>
       <% end %>
       <li>Reload the planner. Your plan now syncs to the extension by itself.</li>
       <li>Sign in to MCC and open Choice Filling. The panel in the bottom-right corner shows <em>In sync</em> or the differences, with <strong>Plan → MCC</strong> and <strong>MCC → Plan</strong> whenever they differ. Each makes one side an exact copy of the other.</li>
