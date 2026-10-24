@@ -79,14 +79,15 @@
 
   <section class="lp-section lp-split">
     <div>
-      <span class="lp-kicker">Chrome extension</span>
+      <span class="lp-kicker">Browser extension</span>
       <h2>Copy your plan to the portal</h2>
-<p>Plan in Choice Planner, then let the extension make the counselling portal match. It works in Chrome on a computer.</p>
+<p>Plan in Choice Planner, then let the extension make the counselling portal match. It works in Chrome, Edge, Brave and Opera on a computer, and Firefox is coming soon.</p>
       <ol class="lp-steps">
-        <li>Open the planner in Chrome. Your plan syncs to the extension by itself.</li>
+        <li>Open the planner in the same browser. Your plan syncs to the extension by itself.</li>
         <li>Sign in to the counselling portal yourself and open Choice Filling. The panel says <em>In sync</em> or how many choices differ.</li>
         <li>Press <strong>Plan → MCC</strong>. MCC becomes an exact copy of your plan: missing choices added, dropped ones removed, everything in your order of preference. Check it, then press Save and Continue and enter the OTP.</li>
       </ol>
+      <%= render "extensions/browser_support", compact: true, id_prefix: "lp-group" %>
       <p>Changed your list on the portal directly? <strong>MCC → Plan</strong> makes your plan a copy of MCC instead, and you can undo it.</p>
       <%= link_to extension_path, class: "button lp-big", data: click_event("landing/extension-install") do %><%= icon("puzzle") %>Install the extension<% end %>
     </div>

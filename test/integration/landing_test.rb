@@ -65,6 +65,14 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select "a[href='#{privacy_path}']"
   end
 
+  test "calls it a browser extension and shows which browsers it works in" do
+    get root_path
+    assert_select ".lp-kicker", text: "Browser extension"
+    assert_select ".lp-kicker", text: "Chrome extension", count: 0
+    assert_equal %w[Chrome Edge Brave Opera], css_select(".ext-groups.compact .ext-group-now li strong").map(&:text)
+    assert_equal %w[Firefox], css_select(".ext-groups.compact .ext-group-soon li strong").map(&:text)
+  end
+
   test "redirects the old domain to the new one, keeping the path" do
     host! "mcc.fazzle.dev"
     get "/plan?view=institute"
