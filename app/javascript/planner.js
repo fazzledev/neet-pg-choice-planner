@@ -500,9 +500,14 @@ function closingFor(c) {
   return mains.length ? Math.min(...mains) : null
 }
 
+const chanceCache = new Map()
+
 function chanceFor(c) {
-  const closing = closingFor(c)
-  return closing ? chanceOf(state.profile.rank, closing)[1] : "none"
+  if (!chanceCache.has(c.id)) {
+    const closing = closingFor(c)
+    chanceCache.set(c.id, closing ? chanceOf(state.profile.rank, closing)[1] : "none")
+  }
+  return chanceCache.get(c.id)
 }
 
 function bestChance(chances) {
@@ -617,8 +622,8 @@ function renderMapResults() {
   const plan = state.mapSubject === "plan"
   $(".pane.catalog").classList.toggle("map-plan", plan)
   for (const btn of document.querySelectorAll("#map-subject button")) btn.setAttribute("aria-checked", String(btn.dataset.subject === state.mapSubject))
-  $("#map-lens").checked = lensOn()
-  $("#map-lens").disabled = !state.profile.rank
+  $("#map-lens").disabled = !state.profile.rank || !state.cutoffs
+  $("#map-lens").checked = state.mapLens && !$("#map-lens").disabled
   $("#more").hidden = true
   $("#add-all").hidden = plan
   if (!plan) paintAddAll()
@@ -652,6 +657,7 @@ function renderMapDepth(outlook) {
   const input = $("#map-depth-input")
   input.max = state.picks.length
   input.value = outlook.depth
+  input.setAttribute("aria-valuetext", `choices #1 to #${outlook.depth}`)
   $("#map-depth-label").textContent = `Show choices #1 to #${outlook.depth}`
   const marker = $("#map-depth-marker")
   marker.hidden = !outlook.firstLikely
@@ -681,6 +687,8 @@ function renderMapCard(outlook, points) {
     content = cardNodes("neutral", "Your plan is empty", [["Add choices from the catalog, then come back to see where they are."]], { name: "show-all", label: "Show all seats" })
   } else if (!rank) {
     content = cardNodes("neutral", "Where would you most likely land?", [["Add your NEET PG rank and category. Each city is then coloured by your odds there, and your most likely choice is marked."]], { name: "add-rank", label: "Add your rank" })
+  } else if (!state.cutoffs) {
+    content = cardNodes("neutral", "Loading past closing ranks", [["Your odds appear here once they load."]])
   } else if (!lensOn()) {
     content = null
   } else if (state.mapSubject === "plan") {
@@ -711,7 +719,9 @@ function renderMapCard(outlook, points) {
   }
   card.hidden = !content
   card.className = `map-card ${tone}`
-  if (content) card.replaceChildren(...content)
+  const text = content ? content.map((node) => node.textContent).join("\n") : ""
+  if (content && card.dataset.text !== text) card.replaceChildren(...content)
+  card.dataset.text = text
 }
 
 function renderMapLegend(plan) {
@@ -719,7 +729,12 @@ function renderMapLegend(plan) {
   const lens = lensOn()
   legend.hidden = !lens
   if (!lens) return
-  const rows = [make("span", { className: "map-legend-title", textContent: `Odds at rank ${rankFormat.format(state.profile.rank)}` })]
+  const title = make("span", { className: "map-legend-title" })
+  const change = make("button", { type: "button", className: "button-link map-legend-change", textContent: "Change" })
+  change.dataset.action = "add-rank"
+  change.setAttribute("aria-label", "Change your rank or category")
+  title.append(`Odds at rank ${rankFormat.format(state.profile.rank)}`, change)
+  const rows = [title]
   for (const kind of ["reach", "borderline", "possible", "likely", "none"]) {
     const row = make("span", { className: "map-legend-row" })
     row.append(make("span", { className: `map-swatch chance-fill-${kind}` }), document.createTextNode(CHANCE_WORDS[kind]))
@@ -787,10 +802,10 @@ function setMapSubject(subject) {
   renderMapResults()
 }
 
-function mapCardAction(name) {
+function mapCardAction(name, opener) {
   if (name === "show-all") setMapSubject("all")
   else if (name === "add-rank") {
-    openSheet()
+    openSheet(opener)
     $("#my-rank").focus()
   } else if (name === "depth-all") {
     state.planDepth = null
@@ -833,7 +848,7 @@ const catalogViewKey = () => `planner:${config.counselling}:catalog-view`
 async function setCatalogView(view) {
   state.catalogView = view
   storage.set(catalogViewKey(), view)
-  if (phoneLayout() && $(".pane.catalog").classList.contains("active")) {
+  if ($(".pane.catalog").classList.contains("active")) {
     for (const btn of document.querySelectorAll(".tabs button")) btn.classList.toggle("active", btn.dataset.tab === (view === "map" ? "map" : "catalog"))
   }
   for (const btn of document.querySelectorAll("#catalog-view button")) btn.setAttribute("aria-checked", String(btn.dataset.view === view))
@@ -1590,7 +1605,10 @@ function renderChips() {
   box.hidden = !box.children.length
 }
 
-function openSheet() {
+let sheetOpener = null
+
+function openSheet(opener = $("#filters-open")) {
+  sheetOpener = opener
   for (const facet of state.facets) renderFacetOptions(facet.name)
   $("#sheet-backdrop").hidden = false
   $("#filter-sheet").hidden = false
@@ -1602,7 +1620,9 @@ function closeSheet() {
   $("#sheet-backdrop").hidden = true
   $("#filter-sheet").hidden = true
   document.body.style.overflow = ""
-  $("#filters-open").focus()
+  const target = sheetOpener?.isConnected && sheetOpener.offsetParent ? sheetOpener : $("#filters-open")
+  sheetOpener = null
+  target.focus()
 }
 
 const CONFIDENCE_TEXT = {
@@ -1831,10 +1851,12 @@ function bind() {
     state.planDepth = depth >= state.picks.length ? null : depth
     renderMapResults()
   })
-  $("#map-card").addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-action]")
-    if (btn) mapCardAction(btn.dataset.action)
-  })
+  for (const box of ["#map-card", "#map-legend"]) {
+    $(box).addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-action]")
+      if (btn) mapCardAction(btn.dataset.action, btn)
+    })
+  }
   $("#map-results").addEventListener("click", (e) => {
     const show = e.target.closest(".map-plan-show")
     if (!show) return
@@ -2067,6 +2089,7 @@ function paintProfile() {
 }
 
 function profileChanged() {
+  chanceCache.clear()
   storage.set(profileKey(), state.profile)
   paintProfile()
   repaintCutoffs()
@@ -2075,6 +2098,7 @@ function profileChanged() {
 async function loadCutoffs() {
   try {
     state.cutoffs = await api(config.cutoffsUrl)
+    chanceCache.clear()
     repaintCutoffs()
   } catch {}
 }

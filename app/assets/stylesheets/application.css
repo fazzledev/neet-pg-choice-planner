@@ -1187,7 +1187,8 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .map-card-muted { color: var(--muted); font-size: 13px; }
 .map-card-action { margin-top: 4px; min-height: 40px; }
 .map-legend { position: absolute; left: 12px; bottom: 28px; z-index: 1; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-card); font-size: 12px; }
-.map-legend-title { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.map-legend-change { min-height: 28px; padding: 0 4px; font-size: 12px; text-transform: none; letter-spacing: 0; }
+.map-legend-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .map-legend-row { display: flex; align-items: center; gap: 8px; }
 .map-legend-note { max-width: 190px; color: var(--faint); line-height: 1.35; }
 .map-swatch { width: 12px; height: 12px; flex: none; box-sizing: border-box; border-radius: 50%; }
