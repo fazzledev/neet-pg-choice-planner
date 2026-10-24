@@ -2,15 +2,16 @@ import * as L from "leaflet"
 
 const ATTRIBUTION = 'Boundaries: <a href="https://github.com/datameet/maps">DataMeet</a> (CC BY 4.0)'
 const MAX_ZOOM = 9
+const LABEL_SIZE = 11
 const BIG_CITIES = [
   ["Delhi", 28.61, 77.21],
-  ["Mumbai", 19.08, 72.88, "left"],
+  ["Mumbai", 19.08, 72.88],
   ["Kolkata", 22.57, 88.36],
-  ["Chennai", 13.08, 80.27, "right"],
-  ["Bengaluru", 12.97, 77.59, "left"],
+  ["Chennai", 13.08, 80.27],
+  ["Bengaluru", 12.97, 77.59],
   ["Hyderabad", 17.39, 78.49],
   ["Ahmedabad", 23.02, 72.57],
-  ["Pune", 18.52, 73.86, "right"],
+  ["Pune", 18.52, 73.86],
   ["Jaipur", 26.91, 75.79],
   ["Lucknow", 26.85, 80.95],
   ["Patna", 25.59, 85.14],
@@ -30,7 +31,6 @@ export function createMap(el, { onSelect, shape }) {
   const color = (name) => getComputedStyle(el).getPropertyValue(name).trim()
 
   map.createPane("land").style.zIndex = 250
-  map.createPane("labels").style.zIndex = 450
   const states = L.geoJSON(shape, { pane: "land", interactive: false, renderer: L.svg({ pane: "land", padding: 0.5 }) }).addTo(map)
   const india = states.getBounds()
   const paintStates = () => states.setStyle({ color: color("--border"), weight: 1, fillColor: color("--surface"), fillOpacity: 1 })
@@ -39,13 +39,49 @@ export function createMap(el, { onSelect, shape }) {
   map.setMinZoom(map.getZoom())
   map.setMaxBounds(india.pad(0.15))
 
-  for (const [name, lat, lng, side = "below"] of BIG_CITIES) {
-    L.marker([lat, lng], { pane: "labels", interactive: false, keyboard: false, icon: L.divIcon({ className: `map-city map-city-${side}`, html: `<span>${name}</span>`, iconSize: null }) }).addTo(map)
-  }
-
   const pins = L.layerGroup().addTo(map)
   let selected = null
   let last = []
+
+  const labels = L.DomUtil.create("div", "map-labels", el)
+  const measure = document.createElement("canvas").getContext("2d")
+
+  function textWidth(text) {
+    measure.font = `600 ${LABEL_SIZE}px ${getComputedStyle(el).getPropertyValue("--font-body")}`
+    return measure.measureText(text.toUpperCase()).width + text.length * LABEL_SIZE * 0.02 + 2
+  }
+
+  function placeLabels() {
+    const size = map.getSize()
+    const taken = []
+    const placed = new Set()
+    const nodes = []
+    const free = (box) => box.x1 >= 0 && box.y1 >= 0 && box.x2 <= size.x && box.y2 <= size.y && !taken.some((t) => box.x1 < t.x2 && box.x2 > t.x1 && box.y1 < t.y2 && box.y2 > t.y1)
+    const place = (name, lat, lng, gap, className) => {
+      const at = map.latLngToContainerPoint([lat, lng])
+      const width = textWidth(name)
+      const top = at.y - LABEL_SIZE / 2 - 1
+      for (const left of [at.x + gap, at.x - gap - width]) {
+        const box = { x1: left - 2, y1: top - 1, x2: left + width + 2, y2: top + LABEL_SIZE + 3 }
+        if (!free(box)) continue
+        taken.push(box)
+        placed.add(name.toLowerCase())
+        const node = document.createElement("span")
+        node.className = className
+        node.textContent = name
+        node.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`
+        nodes.push(node)
+        return
+      }
+    }
+    const ranked = [...last].sort((a, b) => (b.key === selected) - (a.key === selected) || b.institutes.size - a.institutes.size)
+    for (const point of ranked) place(point.city, point.lat, point.lng, point.radius + 4, "map-label")
+    for (const [name, lat, lng] of BIG_CITIES) if (!placed.has(name.toLowerCase())) place(name, lat, lng, 4, "map-label map-label-faint")
+    labels.replaceChildren(...nodes)
+  }
+
+  map.on("zoomstart", () => labels.replaceChildren())
+  map.on("zoomend moveend move resize", placeLabels)
 
   function draw() {
     pins.clearLayers()
@@ -62,6 +98,7 @@ export function createMap(el, { onSelect, shape }) {
       pin.on("click", () => onSelect(point.key))
       pins.addLayer(pin)
     }
+    placeLabels()
   }
 
   dark.addEventListener("change", () => {

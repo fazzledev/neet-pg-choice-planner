@@ -1163,10 +1163,9 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .map-canvas .leaflet-control-attribution { background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--muted); }
 .map-canvas .leaflet-control-attribution a { color: var(--accent); }
 .map-canvas.leaflet-container { background: var(--bg); }
-.map-city { pointer-events: none; }
-.map-city span { position: absolute; transform: translate(-50%, 8px); white-space: nowrap; color: var(--text); text-shadow: 0 0 3px var(--surface), 0 0 3px var(--surface), 0 0 3px var(--surface); font: 600 11px/1 var(--font-body); letter-spacing: .02em; text-transform: uppercase; }
-.map-city-left span { transform: translate(calc(-100% - 10px), -50%); }
-.map-city-right span { transform: translate(10px, -50%); }
+.map-labels { position: absolute; inset: 0; z-index: 450; overflow: hidden; pointer-events: none; }
+.map-label { position: absolute; top: 0; left: 0; white-space: nowrap; color: var(--text); text-shadow: 0 0 3px var(--surface), 0 0 3px var(--surface), 0 0 3px var(--surface); font: 600 11px/1 var(--font-body); letter-spacing: .02em; text-transform: uppercase; }
+.map-label-faint { color: var(--faint); font-weight: 500; }
 
 @media (max-width: 900px) {
   .catalog-map, .map-frame { min-height: 0; }

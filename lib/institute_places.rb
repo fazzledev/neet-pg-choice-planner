@@ -29,6 +29,7 @@ class InstitutePlaces
     "South Dinajpur" => "Balurghat", "North Dinajpur" => "Raiganj"
   }.freeze
   FAR_FROM_DISTRICT_KM = 100
+  TYPO_MIN_LENGTH = 8
   SETTLEMENT_RANK = 13
   LADAKH_DISTRICTS = %w[Leh Kargil].freeze
   CITY_STATES = %w[Delhi Chandigarh Puducherry].freeze
@@ -77,6 +78,7 @@ class InstitutePlaces
     wanted = spelling(city)
     states.each do |state|
       district = districts[state]&.find { spelling(_1) == wanted } || places.dig(state, wanted)
+      district ||= districts[state]&.find { wanted.length >= TYPO_MIN_LENGTH && DidYouMean::Levenshtein.distance(spelling(_1), wanted) <= 2 }
       return [state, district] if district
     end
     nil
