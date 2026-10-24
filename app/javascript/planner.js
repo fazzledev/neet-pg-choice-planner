@@ -88,6 +88,7 @@ const config = root && {
   catalogUrl: root.dataset.catalogUrl,
   locationsUrl: root.dataset.locationsUrl,
   mapCssUrl: root.dataset.mapCssUrl,
+  mapShapeUrl: root.dataset.mapShapeUrl,
   cutoffsUrl: root.dataset.cutoffsUrl,
   spriteUrl: root.dataset.iconsUrl,
   listUrl: root.dataset.listUrl,
@@ -473,11 +474,6 @@ function paintAddAll() {
   addAll.textContent = `Add all ${addable.toLocaleString()}`
 }
 
-const MAP_PLACEMENT = {
-  pincode: "Placed at the pincode area, not the exact building.",
-  locality: "Placed at the locality, not the exact building.",
-  town: "Placed at the town centre, not the exact building.",
-}
 let catalogMap = null
 let catalogMapLoading = null
 
@@ -494,9 +490,9 @@ function mapPoints() {
       unplaced.add(c.inst.code)
       continue
     }
-    const [lat, lng, precision] = place
+    const [lat, lng, city] = place
     const key = `${lat},${lng}`
-    if (!points.has(key)) points.set(key, { key, lat, lng, precision, institutes: new Map(), choices: 0, picked: false })
+    if (!points.has(key)) points.set(key, { key, lat, lng, city, institutes: new Map(), choices: 0, picked: false })
     const point = points.get(key)
     if (!point.institutes.has(c.inst.code)) point.institutes.set(c.inst.code, [])
     point.institutes.get(c.inst.code).push(c)
@@ -504,10 +500,8 @@ function mapPoints() {
     if (state.pickIndex.has(c.id)) point.picked = true
   }
   for (const point of points.values()) {
-    const first = point.institutes.values().next().value[0]
-    const where = point.institutes.size === 1 ? first.inst.short : plural(point.institutes.size, "institute")
-    point.label = `${where} · ${plural(point.choices, "choice")}`
-    point.radius = 5 + Math.min(9, Math.sqrt(point.choices))
+    point.label = `${point.city} · ${plural(point.institutes.size, "institute")} · ${plural(point.choices, "choice")}`
+    point.radius = Math.min(14, 3 + 1.4 * Math.sqrt(point.institutes.size))
   }
   return { points, unplaced: unplaced.size }
 }
@@ -530,7 +524,7 @@ function renderMapResults() {
   catalogMap.show([...points.values()], { fit: state.refitMap })
   catalogMap.select(state.mapPoint)
   state.refitMap = false
-  const hint = state.filtered.length === 0 ? "No choices match these filters." : "Filled pins have a choice in your plan. Tap a pin to see its choices."
+  const hint = state.filtered.length === 0 ? "No choices match these filters." : "Each pin is a city. Filled pins have a choice in your plan. Tap a pin to see its institutes."
   $("#map-hint").textContent = unplaced ? `${hint} ${plural(unplaced, "institute")} could not be placed on the map; switch to List to see them.` : hint
   renderMapPanel()
 }
@@ -542,8 +536,8 @@ function renderMapPanel() {
   if (!groups.length) return
   const point = state.mapPoints.get(state.mapPoint)
   const picked = groups.flatMap((g) => g.items).filter((c) => state.pickIndex.has(c.id)).length
-  $("#map-panel-title").textContent = groups.length === 1 ? "1 institute here" : `${groups.length} institutes here`
-  $("#map-panel-note").textContent = [`${plural(point.choices, "choice")}${picked ? ` · ${picked} in your plan` : ""}`, MAP_PLACEMENT[point.precision]].filter(Boolean).join(". ")
+  $("#map-panel-title").textContent = point.city
+  $("#map-panel-note").textContent = `${plural(groups.length, "institute")} · ${plural(point.choices, "choice")}${picked ? ` · ${picked} in your plan` : ""}`
   $("#map-results").replaceChildren(...groups.map((g) => groupCard(g, "institute")))
 }
 
@@ -564,9 +558,9 @@ function loadCatalogMap() {
       css.onerror = resolve
     })
     document.head.append(css)
-    const [{ createMap }, locations] = await Promise.all([import("catalog_map"), api(config.locationsUrl), cssReady])
+    const [{ createMap }, locations, shape] = await Promise.all([import("catalog_map"), api(config.locationsUrl), api(config.mapShapeUrl), cssReady])
     state.locations = locations
-    catalogMap = createMap($("#map-canvas"), { onSelect: selectMapPoint })
+    catalogMap = createMap($("#map-canvas"), { onSelect: selectMapPoint, shape })
   })().catch((err) => {
     catalogMapLoading = null
     $("#map-hint").textContent = `Could not load the map (${err.message}). Check your connection and reload the page.`

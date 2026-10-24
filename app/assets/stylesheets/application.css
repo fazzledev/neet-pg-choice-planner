@@ -1162,6 +1162,11 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .map-canvas .leaflet-bar a { background: var(--surface); color: var(--text); border-bottom-color: var(--border); }
 .map-canvas .leaflet-control-attribution { background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--muted); }
 .map-canvas .leaflet-control-attribution a { color: var(--accent); }
+.map-canvas.leaflet-container { background: var(--bg); }
+.map-city { pointer-events: none; }
+.map-city span { position: absolute; transform: translate(-50%, 8px); white-space: nowrap; color: var(--text); text-shadow: 0 0 3px var(--surface), 0 0 3px var(--surface), 0 0 3px var(--surface); font: 600 11px/1 var(--font-body); letter-spacing: .02em; text-transform: uppercase; }
+.map-city-left span { transform: translate(calc(-100% - 10px), -50%); }
+.map-city-right span { transform: translate(10px, -50%); }
 
 @media (max-width: 900px) {
   .catalog-map, .map-frame { min-height: 0; }
@@ -1170,7 +1175,4 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
   .map-panel { position: static; order: 2; width: auto; max-height: none; overflow: visible; padding: 0; background: none; box-shadow: none; scroll-margin-top: 12px; }
   .segmented-small button { padding: 0 9px; }
   .seg-label { display: none; }
-}
-@media (prefers-color-scheme: dark) {
-  .map-canvas .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.9); }
 }
