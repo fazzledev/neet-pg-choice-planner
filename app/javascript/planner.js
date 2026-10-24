@@ -551,6 +551,7 @@ function selectMapPoint(key) {
   state.mapPoint = key
   track("map/opened-pin")
   renderMapResults()
+  catalogMap.select(key, { pan: true })
   if (matchMedia("(max-width: 900px)").matches) $("#map-panel").scrollIntoView({ behavior: "smooth", block: "start" })
 }
 
@@ -568,7 +569,7 @@ function loadCatalogMap() {
     catalogMap = createMap($("#map-canvas"), { onSelect: selectMapPoint })
   })().catch((err) => {
     catalogMapLoading = null
-    $("#map-hint").textContent = `Could not load the map (${err.message}). Check your connection and pick Map again.`
+    $("#map-hint").textContent = `Could not load the map (${err.message}). Check your connection and reload the page.`
     throw err
   })
   return catalogMapLoading
@@ -1413,6 +1414,7 @@ function closeContact() {
 function showTab(name) {
   for (const btn of document.querySelectorAll(".tabs button")) btn.classList.toggle("active", btn.dataset.tab === name)
   for (const pane of document.querySelectorAll(".pane")) pane.classList.toggle("active", pane.dataset.pane === name)
+  if (name === "catalog" && state.catalogView === "map") catalogMap?.resize()
 }
 
 function bind() {

@@ -11,7 +11,7 @@ namespace :planner do
     puts "#{contacts.size} institute contacts"
   end
 
-  desc "Find map coordinates for institutes still missing from data/institute_locations.json"
+  desc "Look up map coordinates for institutes not yet in data/institute_locations.json"
   task geocode: :environment do
     $stdout.sync = true
     counselling = Counselling.find_by!(active: true)

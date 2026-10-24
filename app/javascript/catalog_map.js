@@ -43,11 +43,11 @@ export function createMap(el, { onSelect }) {
       if (points.length) map.fitBounds(L.latLngBounds(points.map((p) => [p.lat, p.lng])).pad(0.15), { maxZoom: 11 })
       else map.fitBounds(INDIA)
     },
-    select(key) {
+    select(key, { pan = false } = {}) {
       selected = key
       draw()
       const point = last.find((p) => p.key === key)
-      if (point && !map.getBounds().pad(-0.1).contains([point.lat, point.lng])) map.panTo([point.lat, point.lng])
+      if (pan && point && !map.getBounds().pad(-0.1).contains([point.lat, point.lng])) map.panTo([point.lat, point.lng])
     },
     resize() {
       map.invalidateSize()

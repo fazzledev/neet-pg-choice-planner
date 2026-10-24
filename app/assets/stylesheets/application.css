@@ -1134,8 +1134,8 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .segmented-small button { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: 9px; }
 .segmented-small .icon { width: 16px; height: 16px; }
 
-.catalog-map { position: relative; flex: 1 0 auto; display: flex; flex-direction: column; gap: 8px; min-height: 480px; }
-.catalog-map[hidden] { display: none; }
+.catalog-map { flex: 1 0 auto; display: flex; flex-direction: column; gap: 8px; min-height: 480px; }
+.map-frame { position: relative; flex: 1; display: flex; flex-direction: column; min-height: 440px; }
 .map-canvas { flex: 1; min-height: 440px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; isolation: isolate; background: var(--surface-2); font: inherit; }
 .map-hint { margin: 0; color: var(--muted); font-size: 13px; }
 .map-panel {
@@ -1147,14 +1147,13 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
   flex-direction: column;
   gap: 10px;
   width: min(400px, calc(100% - 24px));
-  max-height: calc(100% - 64px);
+  max-height: calc(100% - 48px);
   overflow: auto;
   padding: 14px;
   border-radius: var(--radius);
   background: var(--bg);
   box-shadow: var(--shadow-pop);
 }
-.map-panel[hidden] { display: none; }
 .map-panel-head { display: flex; align-items: flex-start; gap: 8px; }
 .map-panel-text { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .map-results { grid-template-columns: 1fr; gap: 10px; }
@@ -1165,7 +1164,8 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .map-canvas .leaflet-control-attribution a { color: var(--accent); }
 
 @media (max-width: 900px) {
-  .catalog-map { min-height: 0; }
+  .catalog-map, .map-frame { min-height: 0; }
+  .map-frame { display: contents; }
   .map-canvas { flex: none; height: max(320px, calc(100dvh - 380px)); min-height: 0; }
   .map-panel { position: static; order: 2; width: auto; max-height: none; overflow: visible; padding: 0; background: none; box-shadow: none; scroll-margin-top: 12px; }
   .segmented-small button { padding: 0 9px; }
