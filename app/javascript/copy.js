@@ -1,7 +1,15 @@
 for (const button of document.querySelectorAll("[data-copy]")) {
+  const status = button.dataset.copyStatus && document.querySelector(button.dataset.copyStatus)
+  const field = button.closest("div")?.querySelector("input[readonly]")
   button.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(button.dataset.copy)
-    button.dataset.copied = "1"
-    setTimeout(() => delete button.dataset.copied, 1500)
+    try {
+      await navigator.clipboard.writeText(button.dataset.copy)
+      button.dataset.copied = "1"
+      if (status) status.textContent = "Copied. Paste it into your assistant."
+      setTimeout(() => delete button.dataset.copied, 1500)
+    } catch {
+      field?.select()
+      if (status) status.textContent = "Couldn't copy. The link is selected: copy it with Ctrl+C or a long press."
+    }
   })
 }

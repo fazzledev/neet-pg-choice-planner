@@ -23,8 +23,9 @@
         <h2 id="link-title">Your connector link</h2>
         <div class="conn-link-row">
           <input type="text" readonly value="<%= @server_url %>" aria-label="Connector link">
-          <button type="button" class="primary conn-copy" data-copy="<%= @server_url %>"><span class="conn-copy-idle">Copy</span><span class="conn-copy-done"><%= icon("check") %>Copied</span></button>
+          <button type="button" class="primary conn-copy" data-copy="<%= @server_url %>" data-copy-status=".conn-copy-status"><span class="conn-copy-idle">Copy</span><span class="conn-copy-done"><%= icon("check") %>Copied</span></button>
         </div>
+        <p class="conn-copy-status" role="status"></p>
         <p class="muted">Paste it into your assistant's connector settings. Steps below.</p>
       </section>
     </div>
@@ -87,7 +88,7 @@
           <% brand = assistant_brand(grant) %>
           <li class="ai-app-<%= brand %>">
             <%= icon(ConnectionsHelper::ASSISTANT_ICONS.fetch(brand)) %>
-            <span><strong><%= grant.oauth_client.client_name %></strong><span class="muted"><%= grant.oauth_client.redirect_label(grant.redirect_uri) %> · connected <%= time_ago_in_words(grant.created_at) %> ago<% if grant.last_used_at %>, used <%= time_ago_in_words(grant.last_used_at) %> ago<% end %></span></span>
+            <span><strong><%= grant.oauth_client.client_name %></strong><span class="muted">connected <%= time_ago_in_words(grant.created_at) %> ago<% if grant.last_used_at %>, used <%= time_ago_in_words(grant.last_used_at) %> ago<% end %></span></span>
             <%= button_to "Disconnect", connection_path(grant), method: :delete, class: "button" %>
           </li>
         <% end %>

@@ -9,6 +9,7 @@ class ConnectPageTest < ApplicationSystemTestCase
     page.driver.browser.execute_cdp("Browser.grantPermissions", permissions: ["clipboardReadWrite", "clipboardSanitizedWrite"])
     click_on "Copy"
     assert_selector ".conn-copy[data-copied]", text: "Copied"
+    assert_selector "[role=status]", text: "Copied. Paste it into your assistant."
   end
 
   test "lists the assistants and the other-app steps without developer tools" do

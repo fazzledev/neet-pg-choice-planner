@@ -12,7 +12,7 @@ class IconsTest < ActiveSupport::TestCase
     ids = sprite.remove_namespaces!.xpath("//symbol").map { _1["id"] }
     used = Rails.root.glob("app/views/**/*.erb").flat_map { _1.read.scan(/icon\("([a-z0-9-]+)"/).flatten }.uniq
     assert_includes used, "claude"
-    assert_empty used - ids
+    assert_empty (used + ConnectionsHelper::ASSISTANT_ICONS.values) - ids
   end
 
   test "every speciality has an icon" do
