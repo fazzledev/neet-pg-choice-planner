@@ -11,6 +11,10 @@ class Counselling < ApplicationRecord
     find_by(active: true) || order(:created_at).last
   end
 
+  def locations_json(places = InstituteLocation.all)
+    places.slice(*institutes.pluck(:code)).to_json
+  end
+
   def catalog_json
     {
       institute_types: institutes.distinct.pluck(:type_code, :type_name).to_h,

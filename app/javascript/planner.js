@@ -86,6 +86,9 @@ const root = document.getElementById("planner")
 const config = root && {
   counselling: root.dataset.counselling,
   catalogUrl: root.dataset.catalogUrl,
+  locationsUrl: root.dataset.locationsUrl,
+  mapCssUrl: root.dataset.mapCssUrl,
+  mapShapeUrl: root.dataset.mapShapeUrl,
   cutoffsUrl: root.dataset.cutoffsUrl,
   spriteUrl: root.dataset.iconsUrl,
   listUrl: root.dataset.listUrl,
@@ -111,6 +114,11 @@ const state = {
   selected: Object.fromEntries(FACET_NAMES.map((n) => [n, new Set()])),
   openPick: null,
   groupBy: "none",
+  catalogView: "list",
+  locations: null,
+  mapPoint: null,
+  mapPoints: new Map(),
+  refitMap: false,
   orderView: "ranked",
   expanded: new Set(),
 }
@@ -328,6 +336,7 @@ function applyFilters(resetPaging = true) {
   const f = filters()
   state.filtered = state.choices.filter((c) => matches(c, f))
   if (resetPaging) state.shown = PAGE_SIZE
+  if (resetPaging) state.refitMap = true
   renderResults()
   refreshFilterUI()
 }
@@ -381,20 +390,19 @@ function groupRow(c, mode) {
   return li
 }
 
-function groupsOf(choices) {
-  const key = state.groupBy === "institute" ? (c) => c.inst.code : (c) => c.speciality
+function groupsOf(choices, by = state.groupBy) {
+  const key = by === "institute" ? (c) => c.inst.code : (c) => c.speciality
   const groups = new Map()
   for (const c of choices) {
     const k = key(c)
     if (!groups.has(k)) groups.set(k, [])
     groups.get(k).push(c)
   }
-  const label = (items) => (state.groupBy === "institute" ? items[0].inst.short : items[0].speciality)
+  const label = (items) => (by === "institute" ? items[0].inst.short : items[0].speciality)
   return [...groups.entries()].map(([k, items]) => ({ key: k, items, label: label(items) })).sort((a, b) => a.label.localeCompare(b.label))
 }
 
-function groupCard(group) {
-  const mode = state.groupBy
+function groupCard(group, mode = state.groupBy) {
   const first = group.items[0]
   const li = make("li", { className: "group" })
   li.dataset.group = group.key
@@ -439,6 +447,10 @@ function groupCard(group) {
 }
 
 function renderResults() {
+  if (state.catalogView === "map") {
+    renderMapResults()
+    return
+  }
   const frag = document.createDocumentFragment()
   const grouped = state.groupBy !== "none"
   const groups = grouped ? groupsOf(state.filtered) : null
@@ -453,10 +465,134 @@ function renderResults() {
     ? `${groups.length.toLocaleString()} ${state.groupBy === "institute" ? "institutes" : "specialities"} · ${total.toLocaleString()} choices`
     : `${total.toLocaleString()} of ${state.choices.length.toLocaleString()} choices`
   $("#more").hidden = grouped ? Math.ceil(state.shown / PAGE_SIZE) * GROUP_PAGE >= groups.length : state.shown >= total
+  paintAddAll()
+}
+
+function paintAddAll() {
   const addable = state.filtered.filter((c) => !state.pickIndex.has(c.id)).length
   const addAll = $("#add-all")
   addAll.hidden = addable === 0 || addable === state.choices.length
   addAll.textContent = `Add all ${addable.toLocaleString()}`
+}
+
+let catalogMap = null
+let catalogMapLoading = null
+
+function plural(n, one, many = `${one}s`) {
+  return `${n.toLocaleString()} ${n === 1 ? one : many}`
+}
+
+function mapPoints() {
+  const points = new Map()
+  const unplaced = new Set()
+  for (const c of state.filtered) {
+    const place = state.locations[c.inst.code]
+    if (!place) {
+      unplaced.add(c.inst.code)
+      continue
+    }
+    const [lat, lng, city] = place
+    const key = `${lat},${lng}`
+    if (!points.has(key)) points.set(key, { key, lat, lng, city, institutes: new Map(), choices: 0, picked: false })
+    const point = points.get(key)
+    if (!point.institutes.has(c.inst.code)) point.institutes.set(c.inst.code, [])
+    point.institutes.get(c.inst.code).push(c)
+    point.choices += 1
+    if (state.pickIndex.has(c.id)) point.picked = true
+  }
+  for (const point of points.values()) {
+    point.label = `${point.city} · ${plural(point.institutes.size, "institute")} · ${plural(point.choices, "choice")}`
+    point.radius = Math.min(14, 3 + 1.4 * Math.sqrt(point.institutes.size))
+  }
+  return { points, unplaced: unplaced.size }
+}
+
+function mapPanelGroups() {
+  const point = state.mapPoints?.get(state.mapPoint)
+  if (!point) return []
+  return [...point.institutes.values()].map((items) => ({ key: items[0].inst.code, items, label: items[0].inst.short })).sort((a, b) => a.label.localeCompare(b.label))
+}
+
+function renderMapResults() {
+  const institutes = new Set(state.filtered.map((c) => c.inst.code)).size
+  $("#result-count").textContent = `${plural(institutes, "institute")} · ${plural(state.filtered.length, "choice")}`
+  $("#more").hidden = true
+  paintAddAll()
+  if (!catalogMap) return
+  const { points, unplaced } = mapPoints()
+  state.mapPoints = points
+  if (!points.has(state.mapPoint)) state.mapPoint = null
+  catalogMap.show([...points.values()], { fit: state.refitMap, selected: state.mapPoint })
+  state.refitMap = false
+  const hint = state.filtered.length === 0 ? "No choices match these filters." : "Each pin is a city. Filled pins have a choice in your plan. Tap a pin to see its institutes."
+  $("#map-hint").textContent = unplaced ? `${hint} ${plural(unplaced, "institute")} could not be placed on the map; switch to List to see them.` : hint
+  renderMapPanel()
+}
+
+function renderMapPanel() {
+  const groups = mapPanelGroups()
+  const panel = $("#map-panel")
+  panel.hidden = groups.length === 0
+  if (!groups.length) return
+  const point = state.mapPoints.get(state.mapPoint)
+  const picked = groups.flatMap((g) => g.items).filter((c) => state.pickIndex.has(c.id)).length
+  $("#map-panel-title").textContent = point.city
+  $("#map-panel-note").textContent = `${plural(groups.length, "institute")} · ${plural(point.choices, "choice")}${picked ? ` · ${picked} in your plan` : ""}`
+  $("#map-results").replaceChildren(...groups.map((g) => groupCard(g, "institute")))
+}
+
+function selectMapPoint(key) {
+  state.mapPoint = key
+  track("map/opened-pin")
+  renderMapResults()
+  catalogMap.reveal(key)
+  if (matchMedia("(max-width: 900px)").matches) $("#map-panel").scrollIntoView({ behavior: "smooth", block: "start" })
+}
+
+function loadCatalogMap() {
+  catalogMapLoading ||= (async () => {
+    $("#map-hint").textContent = "Loading the map…"
+    const css = make("link", { rel: "stylesheet", href: config.mapCssUrl })
+    const cssReady = new Promise((resolve) => {
+      css.onload = resolve
+      css.onerror = resolve
+    })
+    document.head.append(css)
+    const [{ createMap }, locations, shape] = await Promise.all([import("catalog_map"), api(config.locationsUrl), api(config.mapShapeUrl), cssReady])
+    state.locations = locations
+    catalogMap = createMap($("#map-canvas"), { onSelect: selectMapPoint, shape })
+  })().catch((err) => {
+    catalogMapLoading = null
+    $("#map-hint").textContent = `Could not load the map (${err.message}). Check your connection and reload the page.`
+    throw err
+  })
+  return catalogMapLoading
+}
+
+const catalogViewKey = () => `planner:${config.counselling}:catalog-view`
+
+async function setCatalogView(view) {
+  state.catalogView = view
+  storage.set(catalogViewKey(), view)
+  for (const btn of document.querySelectorAll("#catalog-view button")) btn.setAttribute("aria-checked", String(btn.dataset.view === view))
+  const map = view === "map"
+  $("#results").hidden = map
+  $("#catalog-map").hidden = !map
+  if (!map) {
+    renderResults()
+    return
+  }
+  state.refitMap = true
+  renderResults()
+  try {
+    await loadCatalogMap()
+  } catch {
+    return
+  }
+  if (state.catalogView !== "map") return
+  catalogMap.resize()
+  state.refitMap = true
+  renderMapResults()
 }
 
 function paintResult(li, id) {
@@ -469,7 +605,7 @@ function paintResult(li, id) {
 }
 
 function repaintVisibleResults() {
-  if (state.groupBy !== "none") {
+  if (state.groupBy !== "none" || state.catalogView === "map") {
     renderResults()
     return
   }
@@ -1271,6 +1407,7 @@ function closeContact() {
 function showTab(name) {
   for (const btn of document.querySelectorAll(".tabs button")) btn.classList.toggle("active", btn.dataset.tab === name)
   for (const pane of document.querySelectorAll(".pane")) pane.classList.toggle("active", pane.dataset.pane === name)
+  if (name === "catalog" && state.catalogView === "map") catalogMap?.resize()
 }
 
 function bind() {
@@ -1368,7 +1505,7 @@ function bind() {
     addChoices(ids)
   })
 
-  for (const list of ["#results", "#picks"]) {
+  for (const list of ["#results", "#picks", "#map-results"]) {
     $(list).addEventListener("click", (e) => {
       const btn = e.target.closest(".contact-btn")
       if (!btn) return
@@ -1379,15 +1516,15 @@ function bind() {
   }
   $("#contact-close").addEventListener("click", closeContact)
 
-  $("#results").addEventListener("click", (e) => {
+  const bindResultClicks = (list, groupsFor, rerender) => list.addEventListener("click", (e) => {
     const group = e.target.closest("li.group")
     if (group && e.target.closest(".g-more")) {
       state.expanded.has(group.dataset.group) ? state.expanded.delete(group.dataset.group) : state.expanded.add(group.dataset.group)
-      renderResults()
+      rerender()
       return
     }
     if (group && e.target.closest(".g-addall")) {
-      const items = groupsOf(state.filtered).find((g) => g.key === group.dataset.group)?.items || []
+      const items = groupsFor().find((g) => g.key === group.dataset.group)?.items || []
       addChoices(items.map((c) => c.id))
       return
     }
@@ -1400,6 +1537,16 @@ function bind() {
     } else {
       addChoices([id])
     }
+  })
+  bindResultClicks($("#results"), () => groupsOf(state.filtered), renderResults)
+  bindResultClicks($("#map-results"), mapPanelGroups, renderMapPanel)
+  $("#catalog-view").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-view]")
+    if (btn && btn.dataset.view !== state.catalogView) setCatalogView(btn.dataset.view)
+  })
+  $("#map-panel-close").addEventListener("click", () => {
+    state.mapPoint = null
+    renderMapResults()
   })
 
   const picks = $("#picks")
@@ -1652,6 +1799,7 @@ async function boot() {
     savedView = localStorage.getItem(`planner:${config.counselling}:order-view`) || "ranked"
   } catch {}
   setOrderView(["ranked", "institute", "speciality"].includes(savedView) ? savedView : "ranked")
+  if (storage.get(catalogViewKey()) === "map") setCatalogView("map")
   loadCutoffs()
 }
 

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source_url="https://raw.githubusercontent.com/datameet/maps/master/States"
+work="tmp/india-map"
+out="app/assets/maps/india-states.geojson"
+
+mkdir -p "$work"
+for ext in shp shx dbf prj; do
+  [[ -f "$work/Admin2.$ext" ]] || curl -sfL "$source_url/Admin2.$ext" -o "$work/Admin2.$ext"
+done
+
+npx -y mapshaper "$work/Admin2.shp" \
+  -simplify 1.5% keep-shapes \
+  -rename-fields name=ST_NM \
+  -filter-fields name \
+  -o "$out" format=geojson precision=0.001
+
+ls -l "$out"
