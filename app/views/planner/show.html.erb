@@ -43,7 +43,7 @@
           </div>
         </details>
       <% else %>
-        <%= link_to new_session_path, class: "button button-ghost" do %><%= icon("log-in") %><span>Sign in to sync</span><% end %>
+        <%= link_to new_session_path, class: "button button-ghost", aria: { label: "Sign in to sync" } do %><%= icon("log-in") %><span>Sign in to sync</span><% end %>
       <% end %>
     </div>
   </header>
