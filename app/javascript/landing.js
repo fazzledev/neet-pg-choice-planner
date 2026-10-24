@@ -6,10 +6,18 @@
 
   if (video && roomy && !calm && !saveData) video.play().catch(() => {})
 
-  const words = [...document.querySelectorAll(".lp-rotate > span")]
+  const rotating = document.querySelector(".lp-rotate")
   let shown = 0
 
-  if (words.length > 1 && !calm) {
+  if (rotating && !calm) {
+    for (const word of rotating.dataset.more.split(" ")) {
+      const span = document.createElement("span")
+      span.setAttribute("aria-hidden", "true")
+      span.textContent = word
+      rotating.append(span)
+    }
+    const words = [...rotating.children]
+
     setInterval(() => {
       words[shown].classList.remove("on")
       shown = (shown + 1) % words.length
