@@ -45,20 +45,26 @@ class InstitutePlaces
   def locate(institutes)
     areas = institutes.to_h { [_1[:code], area_for(_1)] }
     labels = areas.values.compact.group_by { _1[:key] }.transform_values { |list| label_for(list) }
-    areas.each_with_object({}) do |(code, area), found|
-      next found[code] = nil unless area
+    found = areas.transform_values do |area|
+      next unless area
 
       label, state = labels.fetch(area[:key])
       district = area[:district] && tidy(area[:district])
       place = coordinates(label, state, area[:district])
       label, place = district, coordinates(district, state, area[:district]) if place.nil? && district && district != label
-      found[code] = place && [*place, label]
+      place && [*place, label]
     end
+    one_label_per_place(found)
   ensure
     save
   end
 
   private
+
+  def one_label_per_place(found)
+    labels = found.values.compact.group_by { _1.first(2) }.transform_values { |list| list.map(&:last).tally.max_by { |label, count| [count, label] }.first }
+    found.transform_values { |place| place && [*place.first(2), labels.fetch(place.first(2))] }
+  end
 
   def area_for(inst)
     text = "#{inst[:name]} #{inst[:address]}"
@@ -109,7 +115,7 @@ class InstitutePlaces
     hits = search(q: query, featureType: "settlement")
     hits = search(q: query) if hits.empty?
     hits = hits.sort_by.with_index { |h, i| [h["place_rank"].to_i >= SETTLEMENT_RANK ? 0 : 1, i] }
-    centre = district_centres[district]
+    centre = district_centres[[state, district]]
     away = ->(h) { distance(centre, [h["lat"].to_f, h["lon"].to_f]) }
     hit = centre.nil? || hits.empty? || away.(hits.first) <= FAR_FROM_DISTRICT_KM ? hits.first : hits.min_by(&away)
     @cache[query] = hit && [hit["lat"].to_f.round(4), hit["lon"].to_f.round(4)]
@@ -158,6 +164,7 @@ class InstitutePlaces
 
   def tidy(name)
     name = name.sub(/\s*\([^)]*\)\z/, "").squish
+    name = name.split.map(&:capitalize).join(" ") if name == name.downcase
     DISTRICT_SPELLINGS.fetch(name, name)
   end
 
@@ -179,7 +186,7 @@ class InstitutePlaces
   end
 
   def district_centres
-    @district_centres ||= rows.group_by { _1[3] }.transform_values do |list|
+    @district_centres ||= rows.group_by { [_1[2], _1[3]] }.transform_values do |list|
       [list.map { _1[4] }.sort[list.size / 2], list.map { _1[5] }.sort[list.size / 2]]
     end
   end

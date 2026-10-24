@@ -117,6 +117,7 @@ const state = {
   catalogView: "list",
   locations: null,
   mapPoint: null,
+  mapPoints: new Map(),
   refitMap: false,
   orderView: "ranked",
   expanded: new Set(),
@@ -521,8 +522,7 @@ function renderMapResults() {
   const { points, unplaced } = mapPoints()
   state.mapPoints = points
   if (!points.has(state.mapPoint)) state.mapPoint = null
-  catalogMap.show([...points.values()], { fit: state.refitMap })
-  catalogMap.select(state.mapPoint)
+  catalogMap.show([...points.values()], { fit: state.refitMap, selected: state.mapPoint })
   state.refitMap = false
   const hint = state.filtered.length === 0 ? "No choices match these filters." : "Each pin is a city. Filled pins have a choice in your plan. Tap a pin to see its institutes."
   $("#map-hint").textContent = unplaced ? `${hint} ${plural(unplaced, "institute")} could not be placed on the map; switch to List to see them.` : hint
@@ -545,7 +545,7 @@ function selectMapPoint(key) {
   state.mapPoint = key
   track("map/opened-pin")
   renderMapResults()
-  catalogMap.select(key, { pan: true })
+  catalogMap.reveal(key)
   if (matchMedia("(max-width: 900px)").matches) $("#map-panel").scrollIntoView({ behavior: "smooth", block: "start" })
 }
 
@@ -578,7 +578,6 @@ async function setCatalogView(view) {
   const map = view === "map"
   $("#results").hidden = map
   $("#catalog-map").hidden = !map
-  $(".pane.catalog").classList.toggle("map-mode", map)
   if (!map) {
     renderResults()
     return

@@ -18,8 +18,8 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
 
   test "the catalog map gets coordinates for this counselling's institutes only" do
     code = @counselling.institutes.first.code
-    places = { code => [19.0, 72.8, "address"], "999999" => [10.0, 76.0, "town"] }
-    assert_equal({ code => [19.0, 72.8, "address"] }, JSON.parse(@counselling.locations_json(places)))
+    places = { code => [19.0, 72.8, "Mumbai"], "999999" => [10.0, 76.0, "Kochi"] }
+    assert_equal({ code => [19.0, 72.8, "Mumbai"] }, JSON.parse(@counselling.locations_json(places)))
     get locations_catalog_path(@counselling)
     assert_response :success
     assert_kind_of Hash, response.parsed_body

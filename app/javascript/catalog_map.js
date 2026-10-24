@@ -1,6 +1,6 @@
 import * as L from "leaflet"
 
-const ATTRIBUTION = 'Boundaries: <a href="https://github.com/datameet/maps">DataMeet</a> (CC BY 4.0)'
+const ATTRIBUTION = 'Boundaries: <a href="https://github.com/datameet/maps">DataMeet</a> (CC BY 4.0) · Places: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.geonames.org">GeoNames</a>'
 const MAX_ZOOM = 9
 const LABEL_SIZE = 11
 const BIG_CITIES = [
@@ -26,7 +26,7 @@ const BIG_CITIES = [
 
 export function createMap(el, { onSelect, shape }) {
   const map = L.map(el, { preferCanvas: true, zoomSnap: 0.25, maxZoom: MAX_ZOOM, attributionControl: false })
-  L.control.attribution({ prefix: false }).addAttribution(ATTRIBUTION).addTo(map)
+  L.control.attribution({ prefix: '<a href="https://leafletjs.com">Leaflet</a>' }).addAttribution(ATTRIBUTION).addTo(map)
   const dark = matchMedia("(prefers-color-scheme: dark)")
   const color = (name) => getComputedStyle(el).getPropertyValue(name).trim()
 
@@ -35,9 +35,11 @@ export function createMap(el, { onSelect, shape }) {
   const india = states.getBounds()
   const paintStates = () => states.setStyle({ color: color("--border"), weight: 1, fillColor: color("--surface"), fillOpacity: 1 })
   paintStates()
+  const fitIndia = () => map.setMinZoom(map.getBoundsZoom(india))
   map.fitBounds(india)
-  map.setMinZoom(map.getZoom())
+  fitIndia()
   map.setMaxBounds(india.pad(0.15))
+  map.on("resize", fitIndia)
 
   const pins = L.layerGroup().addTo(map)
   let selected = null
@@ -45,10 +47,23 @@ export function createMap(el, { onSelect, shape }) {
 
   const labels = L.DomUtil.create("div", "map-labels", el)
   const measure = document.createElement("canvas").getContext("2d")
+  const widths = new Map()
+  document.fonts?.addEventListener("loadingdone", () => {
+    widths.clear()
+    placeLabels()
+  })
 
   function textWidth(text) {
-    measure.font = `600 ${LABEL_SIZE}px ${getComputedStyle(el).getPropertyValue("--font-body")}`
-    return measure.measureText(text.toUpperCase()).width + text.length * LABEL_SIZE * 0.02 + 2
+    if (!widths.has(text)) {
+      measure.font = `600 ${LABEL_SIZE}px ${getComputedStyle(el).getPropertyValue("--font-body")}`
+      widths.set(text, measure.measureText(text.toUpperCase()).width + text.length * LABEL_SIZE * 0.02 + 2)
+    }
+    return widths.get(text)
+  }
+
+  function nearPin(lat, lng) {
+    const at = map.latLngToContainerPoint([lat, lng])
+    return last.some((p) => at.distanceTo(map.latLngToContainerPoint([p.lat, p.lng])) < p.radius + 8)
   }
 
   function placeLabels() {
@@ -76,12 +91,23 @@ export function createMap(el, { onSelect, shape }) {
     }
     const ranked = [...last].sort((a, b) => (b.key === selected) - (a.key === selected) || b.institutes.size - a.institutes.size)
     for (const point of ranked) place(point.city, point.lat, point.lng, point.radius + 4, "map-label")
-    for (const [name, lat, lng] of BIG_CITIES) if (!placed.has(name.toLowerCase())) place(name, lat, lng, 4, "map-label map-label-faint")
+    const named = last.map((p) => p.city.toLowerCase())
+    for (const [name, lat, lng] of BIG_CITIES) {
+      if (!placed.has(name.toLowerCase()) && !named.some((city) => city.includes(name.toLowerCase())) && !nearPin(lat, lng)) place(name, lat, lng, 4, "map-label map-label-faint")
+    }
     labels.replaceChildren(...nodes)
   }
 
+  let frame = null
+  const placeSoon = () => {
+    frame ??= requestAnimationFrame(() => {
+      frame = null
+      placeLabels()
+    })
+  }
   map.on("zoomstart", () => labels.replaceChildren())
-  map.on("zoomend moveend move resize", placeLabels)
+  map.on("zoomend moveend resize", placeLabels)
+  map.on("move", placeSoon)
 
   function draw() {
     pins.clearLayers()
@@ -107,22 +133,21 @@ export function createMap(el, { onSelect, shape }) {
   })
 
   return {
-    show(points, { fit = false } = {}) {
+    show(points, { fit = false, selected: key = null } = {}) {
       last = points
+      selected = key
       draw()
       if (!fit) return
       if (points.length) map.fitBounds(L.latLngBounds(points.map((p) => [p.lat, p.lng])).pad(0.2), { maxZoom: 7 })
       else map.fitBounds(india)
     },
-    select(key, { pan = false } = {}) {
-      selected = key
-      draw()
+    reveal(key) {
       const point = last.find((p) => p.key === key)
-      if (pan && point && !map.getBounds().pad(-0.1).contains([point.lat, point.lng])) map.panTo([point.lat, point.lng])
+      if (point && !map.getBounds().pad(-0.1).contains([point.lat, point.lng])) map.panTo([point.lat, point.lng])
     },
     resize() {
       map.invalidateSize()
-      map.setMinZoom(map.getBoundsZoom(india))
+      fitIndia()
     },
   }
 }
