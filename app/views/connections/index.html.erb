@@ -70,9 +70,17 @@
   <section aria-labelledby="ask-title">
     <h2 id="ask-title">Try asking</h2>
     <ul class="conn-asks">
-      <li>“Find MD Radiodiagnosis seats in government colleges in Karnataka and add them after my top five.”</li>
-      <li>“Move every DNB choice below my MD and MS choices.”</li>
-      <li>“Who is the DNB coordinator for the hospitals in my plan in Kerala?”</li>
+      <% ConnectionsHelper::EXAMPLE_QUESTIONS.each_with_index do |question, index| %>
+        <li>
+          <span>“<%= question %>”</span>
+          <div class="conn-ask-actions">
+            <%= link_to ask_chatgpt_url(question), class: "button ai-app-chatgpt", target: "_blank", rel: "noopener", data: click_event("connect/ask-chatgpt") do %><%= icon("openai") %>Ask ChatGPT<% end %>
+            <%= link_to ask_claude_url(question), class: "button ai-app-claude", target: "_blank", rel: "noopener", data: click_event("connect/ask-claude") do %><%= icon("claude") %>Ask Claude<% end %>
+            <button type="button" class="button conn-ask-copy" data-copy="<%= ask_prompt(question) %>" data-copy-status="#ask-status-<%= index %>" aria-label="Copy this question"><%= icon("copy") %>Copy</button>
+          </div>
+          <p class="conn-copy-status" id="ask-status-<%= index %>" role="status"></p>
+        </li>
+      <% end %>
     </ul>
   </section>
 
