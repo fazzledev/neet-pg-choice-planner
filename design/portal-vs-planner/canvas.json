@@ -1,0 +1,17 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-24T12:00:00Z" },
+  "title": "Portal vs planner section",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1280, "h": 1060, "title": "A · Cards with a before line" },
+    "Table.dc.html": { "x": 1360, "y": 0, "w": 1280, "h": 1060, "title": "B · Two-column comparison" },
+    "Split.dc.html": { "x": 2720, "y": 0, "w": 1280, "h": 1060, "title": "C · Without / with panels" }
+  },
+  "order": ["Main.dc.html", "Table.dc.html", "Split.dc.html"],
+  "notes": {
+    "heading": { "x": 0, "y": -300, "text": "Features section: before / after options", "kind": "title1", "maxW": 4000 }
+  },
+  "designSystems": []
+}
