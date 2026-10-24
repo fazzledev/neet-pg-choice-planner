@@ -11,7 +11,7 @@ module Mcp
 
     INSTRUCTIONS = <<~TEXT.squish.freeze
       NEET PG Choice Planner holds the student's ranked plan of counselling choices. A choice is one institute, course and quota.
-      Position 1 is the first preference. This is only a plan: the student copies it to the MCC portal with the planner's Chrome extension,
+      Position 1 is the first preference. This is only a plan: the student copies it to the MCC portal with the planner's browser extension,
       so nothing here fills, saves or locks choices on MCC. Use list_filters for exact filter values, search_choices to find choice_ids,
       and get_plan before reordering. Ask the student before removing choices or replacing the whole plan. Every change is kept in the
       planner's history and can be restored there. This server has no cutoffs, ranks, fees or seat counts; don't invent them.
