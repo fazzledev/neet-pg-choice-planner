@@ -9,7 +9,7 @@ for (const button of document.querySelectorAll("[data-copy]")) {
       setTimeout(() => delete button.dataset.copied, 1500)
     } catch {
       field?.select()
-      if (status) status.textContent = "Couldn't copy. The link is selected: copy it with Ctrl+C or a long press."
+      if (status) status.textContent = "Couldn't copy. The link is selected, so copy it by hand."
     }
   })
 }
