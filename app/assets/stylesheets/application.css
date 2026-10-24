@@ -297,7 +297,7 @@ a { color: var(--accent); }
   min-height: 0;
 }
 
-.pane { display: flex; flex-direction: column; min-height: 0; overflow: auto; padding: 20px 28px 32px; gap: 14px; }
+.pane { display: flex; flex-direction: column; min-height: 0; overflow: auto; scrollbar-gutter: stable; padding: 20px 28px 32px; gap: 14px; }
 .pane.order { background: var(--surface); border-left: 1px solid var(--border); padding: 20px 24px 32px; }
 
 .searchbar { display: flex; gap: 10px; flex: none; }
