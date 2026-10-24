@@ -1,63 +1,157 @@
-<% content_for :body_class, "login" %>
+<% content_for :title, "MCC Filler extension · NEET PG Choice Planner" %>
+<% content_for :body_class, "ext-body" %>
 <% content_for :javascript_entry, "copy" %>
-<div class="extension-page">
-  <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
-  <div class="login-card extension-card">
-    <span class="login-brand">Browser extension · v<%= @version %></span>
-    <h1>MCC Filler</h1>
-    <p class="muted">Makes the MCC choice-filling list match your planner in one click, or brings MCC's list into the planner. You sign in to MCC yourself, save with the OTP yourself, and it never locks.</p>
-    <div class="computer-needed touch-only">
-      <p><%= icon("laptop") %><span><strong>Needs Chrome on a laptop or desktop.</strong> Phones and tablets can't run Chrome extensions. Send this page to yourself and open it on your computer.</span></p>
-      <div class="share-link link-copy">
-        <input type="text" readonly value="<%= extension_url %>" aria-label="Link to this page">
-        <%= tag.button "Copy", type: "button", class: "primary share-copy", data: click_event("extension-page/copy-link") %>
-      </div>
-      <p class="share-status" role="status"></p>
-      <div class="extension-actions">
-        <%= link_to extension_link_whatsapp_url, class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/whatsapp-link") do %><%= icon("message-circle") %>WhatsApp<% end %>
-        <%= link_to extension_link_email_url, class: "button block", data: click_event("extension-page/email-link") do %><%= icon("mail") %>Email<% end %>
-      </div>
-      <p class="muted store-anyway">Already on a computer? <%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %></p>
-    </div>
-    <div class="store-badges no-touch">
-      <% if @firefox_badge %>
-        <%= link_to ExtensionPackage::FIREFOX_ADD_ONS_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/firefox-add-ons") do %><%= image_tag "store-badges/firefox-add-ons.svg", alt: "Get the add-on for Firefox", height: 60 %><% end %>
-      <% else %>
-        <% if @browser == :firefox %>
-          <div class="store-note" role="note"><strong>Firefox version coming soon</strong><span>It's in Mozilla's review. Until then, install it in Chrome, Edge or Brave.</span></div>
-        <% elsif @browser == :other %>
-          <div class="store-note" role="note"><strong>Needs Chrome, Edge or Brave</strong><span>Open this page in one of them to install it.</span></div>
-        <% end %>
-        <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 60 %><% end %>
-      <% end %>
-    </div>
-    <p class="touch-only install-lead">Then, on your computer:</p>
-    <ol class="install-steps">
-      <% if @firefox_badge %>
-        <li>Press the Firefox Add-ons badge, then <strong>Add to Firefox</strong> and <strong>Add</strong>.</li>
-      <% else %>
-        <li>Press the Chrome Web Store badge, then <strong>Add to Chrome</strong> in the store.</li>
-      <% end %>
-      <li>Reload the planner. Your plan now syncs to the extension by itself.</li>
-      <li>Sign in to MCC and open Choice Filling. The panel in the bottom-right corner shows <em>In sync</em> or the differences, with <strong>Plan → MCC</strong> and <strong>MCC → Plan</strong> whenever they differ. Each makes one side an exact copy of the other.</li>
-    </ol>
-    <section class="manual-install no-touch">
-      <h2>Install by hand</h2>
-      <p class="muted">For Chrome without the store, or to read the code. A hand-installed copy doesn't update itself.</p>
-      <div class="extension-actions">
-        <%= link_to download_extension_path, class: "button block", data: click_event("extension-page/download") do %><%= icon("download") %>Download<% end %>
-        <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/source") do %><%= icon("github") %>Source<% end %>
-      </div>
-      <details>
-        <summary>How to install the download</summary>
-        <ol class="install-steps">
-          <li>Unzip the download into a folder. <code>manifest.json</code> sits directly inside it.</li>
-          <li>Open <code>chrome://extensions</code> <button type="button" class="button-link copy-btn" data-copy="chrome://extensions" aria-label="Copy chrome://extensions" title="Copy"><%= icon("copy") %><%= icon("check") %></button> in a new tab and turn on <strong>Developer mode</strong>.</li>
-          <li>Press <strong>Load unpacked</strong> and pick that folder. Download it again for new versions.</li>
-        </ol>
-      </details>
-    </section>
-    <p class="muted">Want to try it before your MCC session? The <%= link_to "practice page", practice_path %> works like MCC's choice filling with this year's choices, and the extension runs there too.</p>
+<header class="ext-top">
+  <div class="ext-wrap ext-top-row">
+    <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
+    <span class="ext-brand">Choice Planner</span>
   </div>
-</div>
+</header>
+
+<main class="ext-wrap ext-main">
+  <section class="ext-hero">
+    <div class="ext-intro">
+      <div class="ext-eyebrow">
+        <%= image_tag "/icon.svg", alt: "", width: 56, height: 56 %>
+        <span>Browser extension · free · open source</span>
+      </div>
+      <h1>Your plan, on MCC, in one click.</h1>
+      <p class="ext-lede">MCC Filler copies your ranked list from the planner into MCC's choice-filling page, or brings MCC's list back. You sign in, save with the OTP and lock by yourself.</p>
+
+      <div class="ext-install no-touch">
+        <% if @firefox_badge %>
+          <%= link_to ExtensionPackage::FIREFOX_ADD_ONS_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/firefox-add-ons") do %><%= image_tag "store-badges/firefox-add-ons.svg", alt: "Get the add-on for Firefox", height: 64 %><% end %>
+          <span class="ext-badge-meta">v<%= @version %> · updates itself from Firefox Add-ons</span>
+        <% elsif @browser == :firefox %>
+          <div class="store-note" role="note">
+            <%= image_tag "store-badges/firefox-add-ons.svg", alt: "", height: 48 %>
+            <span><strong>Coming to Firefox soon</strong>The Firefox version is almost ready. Its button will appear right here.</span>
+          </div>
+          <div class="ext-alt">
+            <span>Have Chrome, Edge or Brave too?</span>
+            <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 44 %><% end %>
+          </div>
+        <% elsif @browser == :other %>
+          <div class="store-note" role="note">
+            <span><strong>Needs Chrome, Edge, Brave or Opera</strong>This browser can't run the extension. Open this page in one of them to install it.</span>
+          </div>
+          <div class="ext-alt">
+            <span>Already have one of them?</span>
+            <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 44 %><% end %>
+          </div>
+        <% else %>
+          <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 64 %><% end %>
+          <span class="ext-badge-meta">v<%= @version %> · also for Edge, Brave and Opera<br>Updates itself from the store</span>
+        <% end %>
+      </div>
+
+      <section class="computer-needed touch-only" aria-labelledby="send-title">
+        <p><%= icon("laptop") %><span><strong id="send-title">Send this page to your computer</strong> Install it there in one click. Phones can't run it yet.</span></p>
+        <div class="share-link link-copy">
+          <input type="text" readonly value="<%= extension_url %>" aria-label="Link to this page">
+          <%= tag.button "Copy", type: "button", class: "primary share-copy", data: click_event("extension-page/copy-link") %>
+        </div>
+        <p class="share-status" role="status"></p>
+        <div class="extension-actions">
+          <%= link_to extension_link_whatsapp_url, class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/whatsapp-link") do %><%= icon("message-circle") %>WhatsApp<% end %>
+          <%= link_to extension_link_email_url, class: "button block", data: click_event("extension-page/email-link") do %><%= icon("mail") %>Email<% end %>
+        </div>
+        <p class="muted store-anyway">Already on a computer? <%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %></p>
+      </section>
+
+      <ul class="ext-trust">
+        <li><%= icon("check") %>Never sees your MCC password, security pin or OTP</li>
+        <li><%= icon("check") %>Never presses Lock or final submit</li>
+        <li><%= icon("check") %>Makes no network requests of its own</li>
+      </ul>
+    </div>
+
+    <figure class="ext-shot no-touch" role="img" aria-label="The MCC Filler panel on MCC's choice-filling page, showing 9 differences and the Plan to MCC button">
+      <div class="ext-shot-bar"><span></span><span></span><span></span><span class="ext-shot-url">mcc.admissions.nic.in · Choice Filling</span></div>
+      <div class="ext-shot-page">
+        <span>Filled choices</span>
+        <i></i><i></i><i></i><i class="short"></i>
+        <span>Available choices</span>
+        <i class="shorter"></i>
+      </div>
+      <div class="ext-shot-panel">
+        <strong>NEET PG Choice Planner</strong>
+        <span class="ext-shot-muted">Your plan: 42 choices, synced just now.</span>
+        <span class="ext-shot-diff">9 differences</span>
+        <span class="ext-shot-actions"><span class="primary">Plan → MCC</span><span>MCC → Plan</span></span>
+      </div>
+    </figure>
+  </section>
+
+  <section class="ext-browsers" aria-labelledby="browsers-title">
+    <h2 id="browsers-title">Which browsers it works in</h2>
+    <div class="ext-groups<%= " two-groups" if ExtensionPackage.firefox_listed %>">
+      <section class="ext-group ext-group-now" aria-labelledby="group-now">
+        <h3 id="group-now"><%= icon("check") %>Available now</h3>
+        <ul>
+          <% [["chrome", "Chrome"], ["edge", "Edge"], ["brave", "Brave"], ["opera", "Opera"], *(ExtensionPackage.firefox_listed ? [["firefox", "Firefox"]] : [])].each do |logo, name| %>
+            <li><%= image_tag "browsers/#{logo}.svg", alt: "", width: 28, height: 28 %><span><strong><%= name %></strong></span></li>
+          <% end %>
+        </ul>
+      </section>
+      <% unless ExtensionPackage.firefox_listed %>
+        <section class="ext-group ext-group-soon" aria-labelledby="group-soon">
+          <h3 id="group-soon"><%= icon("history") %>Coming soon</h3>
+          <ul>
+            <li><%= image_tag "browsers/firefox.svg", alt: "", width: 28, height: 28 %><span><strong>Firefox</strong>Computer and Android</span></li>
+          </ul>
+        </section>
+      <% end %>
+      <section class="ext-group ext-group-no" aria-labelledby="group-no">
+        <h3 id="group-no"><%= icon("x") %>Not supported</h3>
+        <ul>
+          <li><%= image_tag "browsers/safari.svg", alt: "", width: 28, height: 28 %><span><strong>Safari</strong>Mac and iPhone</span></li>
+          <li><%= image_tag "browsers/chrome.svg", alt: "", width: 28, height: 28 %><span><strong>Chrome on phones</strong>Android and iPhone</span></li>
+        </ul>
+      </section>
+    </div>
+  </section>
+
+  <section class="ext-steps" aria-labelledby="steps-title">
+    <h2 id="steps-title">Ready in three steps</h2>
+    <p class="touch-only install-lead">On your computer:</p>
+    <ol>
+      <li>
+        <span class="ext-step-no">1</span>
+        <% if @firefox_badge %>
+          <strong>Add it to Firefox</strong><span>Press the Firefox Add-ons badge, then Add to Firefox and Add.</span>
+        <% else %>
+          <strong>Add it to your browser</strong><span>Press the Chrome Web Store badge, then Add to Chrome. Works the same in Edge, Brave and Opera.</span>
+        <% end %>
+      </li>
+      <li><span class="ext-step-no">2</span><strong>Open your plan</strong><span>Reload the planner. Your list syncs to the extension by itself.</span></li>
+      <li><span class="ext-step-no">3</span><strong>Fill MCC</strong><span>On MCC's Choice Filling, press Plan → MCC, check the list, then save with the OTP.</span></li>
+    </ol>
+  </section>
+
+  <section class="ext-practice">
+    <%= icon("history") %>
+    <span><strong>Try it before your MCC session</strong>The practice page works like MCC's choice filling with this year's choices. Nothing there reaches MCC.</span>
+    <%= link_to "Open the practice page", practice_path, class: "button primary" %>
+  </section>
+
+  <section class="manual-install no-touch" aria-labelledby="manual-title">
+    <div>
+      <h2 id="manual-title">Install by hand</h2>
+      <p class="muted">For Chrome without the store, or to read the code. A hand-installed copy doesn't update itself.</p>
+    </div>
+    <div class="extension-actions">
+      <%= link_to download_extension_path, class: "button", data: click_event("extension-page/download") do %><%= icon("download") %>Download zip<% end %>
+      <%= link_to "https://github.com/fazzledev/neet-pg-choice-planner/tree/main/extension", class: "button", target: "_blank", rel: "noopener", data: click_event("extension-page/source") do %><%= icon("github") %>Source on GitHub<% end %>
+    </div>
+    <details>
+      <summary>How to install the download</summary>
+      <ol class="install-steps">
+        <li>Unzip the download into a folder. <code>manifest.json</code> sits directly inside it.</li>
+        <li>Open <code>chrome://extensions</code> <button type="button" class="button-link copy-btn" data-copy="chrome://extensions" aria-label="Copy chrome://extensions" title="Copy"><%= icon("copy") %><%= icon("check") %></button> in a new tab and turn on <strong>Developer mode</strong>.</li>
+        <li>Press <strong>Load unpacked</strong> and pick that folder. Download it again for new versions.</li>
+      </ol>
+    </details>
+  </section>
+</main>
 <%= javascript_include_tag "link_copy", defer: true %>
