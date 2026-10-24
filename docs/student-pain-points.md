@@ -29,7 +29,7 @@ Not confirmed in sources I could read: complaints about the CAPTCHA, about Up/Do
 - **Site down, can't review choices (1, 2):** the offline-capable planner keeps the full ranked list outside MCC, so a student can review and edit it while the portal is down and then enter it in one go.
 - **Lost or unsaved choices (3):** the plan lives in the planner with history and restore snapshots, and syncs across devices through the email sign-in link. A portal timeout no longer wipes the student's work.
 - **Long lists (8):** search and multi-select filters (speciality, course, state, institute type, quota), grouping by institute or speciality, and drag-and-drop ranking replace scrolling and clicking Up/Down through hundreds of rows.
-- **Moving the plan onto MCC (3, 8):** the Chrome extension shows the difference between the planned order and the portal's filled list, and adds missing choices one click at a time. It never locks; the student signs in and saves with OTP themselves.
+- **Moving the plan onto MCC (3, 8):** the browser extension shows the difference between the planned order and the portal's filled list, and adds missing choices one click at a time. It never locks; the student signs in and saves with OTP themselves.
 - **Ranking help (9):** notes on each choice let students record workload, toxicity and stipend findings next to the institute while they research.
 - **Print and backup (10):** CSV export gives an offline record of the intended list, separate from the portal's own PDF.
 - **Phone access (11):** the plan syncs to a phone, so a travelling student can still check and reorder it. Entry and locking on MCC still need the portal.

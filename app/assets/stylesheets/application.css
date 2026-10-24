@@ -1087,7 +1087,7 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .ext-shot-actions .primary { background: #3d3bf3; border-color: #3d3bf3; }
 .ext-groups { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
 .ext-groups.two-groups { grid-template-columns: 2fr 1fr; }
-.ext-groups.compact, .ext-groups.compact.two-groups { grid-template-columns: 1fr; gap: 8px; }
+.ext-groups.compact, .ext-groups.compact.two-groups { grid-template-columns: 1fr; gap: 8px; align-self: stretch; }
 .ext-groups.compact .ext-group { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 14px; }
 .ext-groups.compact h3 { flex: 0 0 130px; }
 .ext-groups.compact ul { flex: 1 1 260px; display: flex; flex-wrap: wrap; gap: 8px 16px; }
