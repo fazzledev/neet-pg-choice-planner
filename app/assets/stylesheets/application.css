@@ -1125,6 +1125,6 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
   .ext-install, .manual-install { display: flex; }
 }
 @media (max-width: 760px) {
-  .ext-groups { grid-template-columns: 1fr; }
+  .ext-groups, .ext-groups.two-groups { grid-template-columns: 1fr; }
   .ext-main { gap: 36px; padding-top: 28px; }
 }
