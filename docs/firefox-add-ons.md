@@ -4,7 +4,7 @@ What to enter on addons.mozilla.org (AMO) for the MCC Filler extension. The Chro
 
 ## Status
 
-Submitted on 2026-10-22 as version 1.3.1 and awaiting Mozilla's review. Developer profile "Fazzle Dev" (homepage fazzle.dev, sign-in with two-step authentication). Once Mozilla approves it, set `cattr_accessor :firefox_listed, default: true` in `app/models/extension_package.rb`: `/extension` and the landing page then show the Firefox Add-ons badge and list Firefox as available.
+Submitted on 2026-10-22 as version 1.3.1 and awaiting Mozilla's review. Developer profile "Fazzle Dev" (homepage fazzle.dev, sign-in with two-step authentication). Once Mozilla approves it, set `cattr_accessor :firefox_listed, default: true` in `app/models/extension_package.rb`: `/extension` and the landing page then show the Firefox Add-ons badge and list Firefox as available. In the same change, update the tests that assume it is still false (the "coming soon" cases in `test/integration/extension_download_test.rb` and `test/integration/landing_test.rb`) and the teardowns that reset it to `false`.
 
 ## How it works in Firefox
 
@@ -96,6 +96,9 @@ No login needed to test. The real MCC page (mcc.admissions.nic.in) requires a NE
 
 The extension never presses lock or final-submit controls (see FORBIDDEN_CONTROL in portal-adapter.js) and makes no network requests. The code is plain JavaScript, not minified or bundled; the package is a zip of the extension/ folder of https://github.com/fazzledev/neet-pg-choice-planner (built by bin/build-extension, tag extension-v1.3.1).
 ```
+
+For the next version, change `extension-v1.3.1` to the new tag. The package is the `extension/` folder minus its README.
+
 
 **Images** (the listing's Edit Product Page → Images, after submission; AMO doesn't take the listing icon from the package):
 - Add-on icon: `extension/icons/icon-128.png`.
