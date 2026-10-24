@@ -3,6 +3,7 @@ class ExtensionsController < ApplicationController
 
   def show
     @version = ExtensionPackage.version
+    @firefox = request.user_agent.to_s.include?("Firefox/")
   end
 
   def download
