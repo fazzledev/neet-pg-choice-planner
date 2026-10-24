@@ -1,8 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><%= content_for(:title) || "NEET PG Choice Planner" %></title>
+    <% page_title = content_for(:title) || "NEET PG Choice Planner" %>
+    <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <% page_description = content_for(:description) || "Free NEET PG counselling planner. Search every MCC choice, see past closing ranks, rank your list, and copy it to the MCC portal in a few clicks." %>
+    <meta name="description" content="<%= page_description %>">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="NEET PG Choice Planner">
+    <meta property="og:title" content="<%= page_title %>">
+    <meta property="og:description" content="<%= page_description %>">
+    <meta property="og:url" content="<%= request.base_url + request.path %>">
+    <meta property="og:image" content="<%= image_url("planner-demo-poster.jpg") %>">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="720">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="NEET PG Choice Planner">
     <meta name="mobile-web-app-capable" content="yes">

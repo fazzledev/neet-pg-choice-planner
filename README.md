@@ -11,7 +11,7 @@ Plan your NEET PG counselling choices calmly, then copy them to the MCC portal i
 - **Rank** by dragging or typing a position, gather a college's seats together, and keep a note on every choice.
 - **Works offline.** Your plan saves in the browser as you go. Signing in with an emailed link syncs it across devices, with a history you can restore from.
 - **DNB coordinator contacts** for shortlisted DNB hospitals, next to their seats.
-- **Chrome extension** for the MCC choice-filling page (below).
+- **Browser extension** for the MCC choice-filling page (below): Chrome, Edge, Brave and Opera, with Firefox in review.
 - **ChatGPT and Claude connector**: an MCP server at `/mcp` lets an assistant search choices, read DNB contacts and edit the plan after the student signs in and allows it. Setup steps are at `/connect`.
 
 ## The extension

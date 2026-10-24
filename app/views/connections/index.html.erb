@@ -1,55 +1,113 @@
-<% content_for :title, "Connect ChatGPT or Claude · NEET PG Choice Planner" %>
-<% content_for :body_class, "login" %>
+<% content_for :title, "Connect your AI assistant · NEET PG Choice Planner" %>
+<% content_for :body_class, "ext-body" %>
 <% content_for :javascript_entry, "copy" %>
-<div class="extension-page">
-  <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
-  <div class="login-card extension-card connect-card">
-    <span class="login-brand">AI assistants</span>
-    <h1>Plan with ChatGPT or Claude</h1>
-    <p class="muted">Add the planner as a connector, and your assistant can search every choice, read DNB contacts, and add, reorder or note choices in your plan. It can't reach MCC. Filling, saving and locking stay with you.</p>
-    <div class="connect-url">
-      <code><%= @server_url %></code>
-      <button type="button" class="button-link copy-btn" data-copy="<%= @server_url %>" aria-label="Copy the connector URL" title="Copy"><%= icon("copy") %><%= icon("check") %></button>
+<header class="ext-top">
+  <div class="ext-wrap ext-top-row">
+    <%= link_to planner_path, class: "page-back" do %><%= icon("arrow-left") %>Planner<% end %>
+    <span class="ext-brand">Choice Planner</span>
+  </div>
+</header>
+
+<main class="ext-wrap ext-main">
+  <section class="ext-hero">
+    <div class="ext-intro">
+      <span class="ext-eyebrow conn-eyebrow"><%= icon("sparkles") %>AI assistants</span>
+      <h1>Plan with your AI assistant.</h1>
+      <p class="ext-lede">Ask in your own words. Your assistant searches every choice, reads DNB contacts, and adds, reorders or notes choices in your plan.</p>
+      <ul class="ai-apps" aria-label="Works with">
+        <li class="ai-app-chatgpt"><%= icon("openai") %>ChatGPT</li>
+        <li class="ai-app-claude"><%= icon("claude") %>Claude</li>
+        <li class="ai-app-more">and other assistant apps</li>
+      </ul>
+      <section class="conn-link" aria-labelledby="link-title">
+        <h2 id="link-title">Your connector link</h2>
+        <div class="conn-link-row">
+          <input type="text" readonly value="<%= @server_url %>" aria-label="Connector link">
+          <button type="button" class="primary conn-copy" data-copy="<%= @server_url %>" data-copy-status=".conn-copy-status"><span class="conn-copy-idle">Copy</span><span class="conn-copy-done"><%= icon("check") %>Copied</span></button>
+        </div>
+        <p class="conn-copy-status" role="status"></p>
+        <p class="muted">Paste it into your assistant's connector settings. Steps below.</p>
+      </section>
     </div>
 
-    <h2>ChatGPT</h2>
-    <ol class="install-steps">
-      <li>Open <strong>Settings → Apps</strong>. Under <strong>Advanced settings</strong>, turn on <strong>Developer mode</strong> if ChatGPT asks for it.</li>
-      <li>Press <strong>Create app</strong>, paste the URL above, pick <strong>OAuth</strong> for authentication and create it.</li>
-      <li>Sign in with your email when ChatGPT opens the planner, then press <strong>Allow</strong>.</li>
-    </ol>
+    <figure class="conn-chat" role="img" aria-label="An assistant adding choices to the plan through the planner">
+      <p class="conn-chat-you">Add MD Radiodiagnosis seats in government colleges in Karnataka after my top five.</p>
+      <div class="conn-chat-tools">
+        <span><%= icon("sparkles") %>NEET PG Choice Planner · Search choices</span>
+        <span><%= icon("sparkles") %>NEET PG Choice Planner · Add to plan</span>
+      </div>
+      <p class="conn-chat-reply ai-app-claude"><%= icon("claude") %><span>Done. I found 4 MD Radiodiagnosis seats in Karnataka government colleges and added them at #6 to #9, starting with Bangalore Medical College. Want them ordered by city instead?</span></p>
+    </figure>
+  </section>
 
-    <h2>Claude</h2>
-    <ol class="install-steps">
-      <li>Open <strong>Settings → Connectors</strong> and press <strong>Add custom connector</strong>.</li>
-      <li>Paste the URL above, add it, then press <strong>Connect</strong>.</li>
-      <li>Sign in with your email, then press <strong>Allow</strong>.</li>
-    </ol>
-    <p class="muted">In Claude Code, run <code>claude mcp add --transport http neet-pg-planner <%= @server_url %></code>, then <code>/mcp</code> to sign in.</p>
+  <section aria-labelledby="setup-title">
+    <h2 id="setup-title">Set it up in a minute</h2>
+    <div class="conn-setup">
+      <section class="conn-card" aria-labelledby="setup-chatgpt">
+        <h3 id="setup-chatgpt" class="ai-heading ai-app-chatgpt"><%= icon("openai") %>ChatGPT</h3>
+        <ol>
+          <li>Open <strong>Settings → Apps</strong>. Turn on <strong>Developer mode</strong> under Advanced settings if asked.</li>
+          <li>Press <strong>Create app</strong>, paste your connector link, pick <strong>OAuth</strong>, and create it.</li>
+          <li>Sign in with your email when ChatGPT opens the planner, then press <strong>Allow</strong>.</li>
+        </ol>
+      </section>
+      <section class="conn-card" aria-labelledby="setup-claude">
+        <h3 id="setup-claude" class="ai-heading ai-app-claude"><%= icon("claude") %>Claude</h3>
+        <ol>
+          <li>Open <strong>Settings → Connectors</strong> and press <strong>Add custom connector</strong>.</li>
+          <li>Paste your connector link, add it, then press <strong>Connect</strong>.</li>
+          <li>Sign in with your email, then press <strong>Allow</strong>.</li>
+        </ol>
+      </section>
+      <section class="conn-card" aria-labelledby="setup-other">
+        <h3 id="setup-other" class="ai-heading"><%= icon("sparkles") %>Other assistant apps</h3>
+        <p>Any assistant app that lets you add a custom connector with sign-in works too. Add your connector link, then sign in with your email and press <strong>Allow</strong>. Steps vary from app to app.</p>
+      </section>
+    </div>
+    <p class="conn-tip"><strong>Tip:</strong> open the emailed sign-in link in the same browser that is connecting, so it comes back to the Allow page.</p>
+    <p class="conn-tip"><strong>Planned without an account?</strong> Your assistant works on the plan saved to your account. First open the planner while signed in, in the browser you planned in, and choose that plan if asked, so it moves to your account.</p>
+  </section>
 
-    <p class="muted">Open the emailed sign-in link in the same browser that is connecting, so it comes back to the Allow page.</p>
-
-    <h2>Try asking</h2>
-    <ul class="connect-examples">
-      <li>“Find MD Radiodiagnosis seats in government colleges in Karnataka and add them after my top five.”</li>
-      <li>“Move every DNB choice below my MD and MS choices.”</li>
-      <li>“Who is the DNB coordinator for the hospitals in my plan in Kerala?”</li>
+  <section aria-labelledby="ask-title">
+    <h2 id="ask-title">Try asking</h2>
+    <p class="conn-asks-lead">Connect your assistant first, then try one of these.</p>
+    <ul class="conn-asks">
+      <% ConnectionsHelper::EXAMPLE_QUESTIONS.each_with_index do |question, index| %>
+        <li>
+          <span>“<%= question %>”</span>
+          <div class="conn-ask-actions">
+            <%= link_to ask_chatgpt_url(question), class: "button ai-app-chatgpt", target: "_blank", rel: "noopener", "aria-label": "Ask ChatGPT: #{question}", data: click_event("connect/ask-chatgpt") do %><%= icon("openai") %>Ask ChatGPT<% end %>
+            <%= link_to ask_claude_url(question), class: "button ai-app-claude", target: "_blank", rel: "noopener", "aria-label": "Ask Claude: #{question}", data: click_event("connect/ask-claude") do %><%= icon("claude") %>Ask Claude<% end %>
+            <button type="button" class="button conn-ask-copy" data-copy="<%= ask_prompt(question) %>" data-copy-status="#ask-status-<%= index %>" aria-label="Copy this question"><%= icon("copy") %>Copy</button>
+          </div>
+          <p class="conn-copy-status" id="ask-status-<%= index %>" role="status"></p>
+        </li>
+      <% end %>
     </ul>
+  </section>
 
-    <h2>Connected</h2>
+  <section class="conn-card conn-connected" aria-labelledby="connected-title">
+    <h2 id="connected-title">Connected to your plan</h2>
     <% if !authenticated? %>
       <p class="muted"><%= link_to "Sign in", new_session_path %> to see which assistants can reach your plan.</p>
     <% elsif @grants.empty? %>
-      <p class="muted">Nothing is connected to your plan.</p>
+      <p class="muted">Nothing is connected to your plan yet.</p>
     <% else %>
       <ul class="connections">
         <% @grants.each do |grant| %>
-          <li>
-            <span><strong><%= grant.oauth_client.client_name %></strong> <span class="muted">· <%= grant.oauth_client.redirect_label(grant.redirect_uri) %> · connected <%= time_ago_in_words(grant.created_at) %> ago<% if grant.last_used_at %>, used <%= time_ago_in_words(grant.last_used_at) %> ago<% end %></span></span>
+          <% brand = assistant_brand(grant) %>
+          <li class="ai-app-<%= brand %>">
+            <%= icon(ConnectionsHelper::ASSISTANT_ICONS.fetch(brand)) %>
+            <span><strong><%= grant.oauth_client.client_name %></strong><span class="muted">connected <%= time_ago_in_words(grant.created_at) %> ago<% if grant.last_used_at %>, used <%= time_ago_in_words(grant.last_used_at) %> ago<% end %></span></span>
             <%= button_to "Disconnect", connection_path(grant), method: :delete, class: "button" %>
           </li>
         <% end %>
       </ul>
     <% end %>
-  </div>
-</div>
+  </section>
+
+  <section class="conn-safe">
+    <%= icon("shield-check") %>
+    <span><strong>It can't reach MCC.</strong> Your assistant only changes your plan here. Filling, saving and locking on MCC stay with you, and History lets you undo any change.</span>
+  </section>
+</main>

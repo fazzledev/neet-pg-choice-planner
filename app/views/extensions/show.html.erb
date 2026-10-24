@@ -85,31 +85,7 @@
 
   <section class="ext-browsers" aria-labelledby="browsers-title">
     <h2 id="browsers-title">Which browsers it works in</h2>
-    <div class="ext-groups<%= " two-groups" if ExtensionPackage.firefox_listed %>">
-      <section class="ext-group ext-group-now" aria-labelledby="group-now">
-        <h3 id="group-now"><%= icon("check") %>Available now</h3>
-        <ul>
-          <% [["chrome", "Chrome"], ["edge", "Edge"], ["brave", "Brave"], ["opera", "Opera"], *(ExtensionPackage.firefox_listed ? [["firefox", "Firefox"]] : [])].each do |logo, name| %>
-            <li><%= image_tag "browsers/#{logo}.svg", alt: "", width: 28, height: 28 %><span><strong><%= name %></strong></span></li>
-          <% end %>
-        </ul>
-      </section>
-      <% unless ExtensionPackage.firefox_listed %>
-        <section class="ext-group ext-group-soon" aria-labelledby="group-soon">
-          <h3 id="group-soon"><%= icon("history") %>Coming soon</h3>
-          <ul>
-            <li><%= image_tag "browsers/firefox.svg", alt: "", width: 28, height: 28 %><span><strong>Firefox</strong>Computer and Android</span></li>
-          </ul>
-        </section>
-      <% end %>
-      <section class="ext-group ext-group-no" aria-labelledby="group-no">
-        <h3 id="group-no"><%= icon("x") %>Not supported</h3>
-        <ul>
-          <li><%= image_tag "browsers/safari.svg", alt: "", width: 28, height: 28 %><span><strong>Safari</strong>Mac and iPhone</span></li>
-          <li><%= image_tag "browsers/chrome.svg", alt: "", width: 28, height: 28 %><span><strong>Chrome on phones</strong>Android and iPhone</span></li>
-        </ul>
-      </section>
-    </div>
+    <%= render "extensions/browser_support" %>
   </section>
 
   <section class="ext-steps" aria-labelledby="steps-title">
@@ -138,7 +114,7 @@
   <section class="manual-install no-touch" aria-labelledby="manual-title">
     <div>
       <h2 id="manual-title">Install by hand</h2>
-      <p class="muted">For Chrome without the store, or to read the code. A hand-installed copy doesn't update itself.</p>
+      <p class="muted">For Chrome, Edge or Brave without the store, or to read the code. A hand-installed copy doesn't update itself.</p>
     </div>
     <div class="extension-actions">
       <%= link_to download_extension_path, class: "button", data: click_event("extension-page/download") do %><%= icon("download") %>Download zip<% end %>

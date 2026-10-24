@@ -6,6 +6,8 @@ Rails.application.configure do
   config.middleware.use Rack::Deflater
   config.force_ssl = true
   config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
+  config.hosts = %w[neet-pg-choice-planner.fazzle.dev neet-pg-choices.fazzle.dev mcc.fazzle.dev]
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   config.eager_load = true
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true

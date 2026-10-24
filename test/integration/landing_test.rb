@@ -17,6 +17,21 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select "link[rel=modulepreload]", count: 0
   end
 
+  test "compares the portal with the planner and shows the planner without scripts" do
+    get root_path
+    assert_select ".lp-compare[data-view=planner]" do
+      assert_select "h2", text: /choices\. None of the pain\./
+      assert_select "button[data-show=planner][aria-pressed=true]"
+      assert_select "button[data-show=portal][aria-pressed=false]"
+      assert_select ".lp-flip", count: PagesHelper::PORTAL_VS_PLANNER.size do |cards|
+        cards.each do |card|
+          assert_select card, ".lp-face.portal", count: 1
+          assert_select card, ".lp-face.planner", count: 1
+        end
+      end
+    end
+  end
+
   test "offers a share button that shares the site" do
     get root_path
     assert_select ".lp-cta details.share-menu[data-share-url='#{root_url}']" do
@@ -63,6 +78,24 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_match "hey@fazzle.dev", response.body
     get root_path
     assert_select "a[href='#{privacy_path}']"
+  end
+
+  test "calls it a browser extension and shows which browsers it works in" do
+    get root_path
+    assert_select ".lp-kicker", text: "Browser extension"
+    assert_select ".lp-kicker", text: "Chrome extension", count: 0
+    assert_equal %w[Chrome Edge Brave Opera], css_select(".ext-groups.compact .ext-group-now li strong").map(&:text)
+    assert_equal %w[Firefox], css_select(".ext-groups.compact .ext-group-soon li strong").map(&:text)
+  end
+
+  test "the landing extension section moves Firefox to available once it is listed" do
+    ExtensionPackage.firefox_listed = true
+    get root_path
+    assert_match "It works in Chrome, Edge, Brave, Opera and Firefox on a computer.", response.body
+    assert_includes css_select(".ext-groups.compact .ext-group-now li strong").map(&:text), "Firefox"
+    assert_select ".ext-groups.compact .ext-group-soon", count: 0
+  ensure
+    ExtensionPackage.firefox_listed = false
   end
 
   test "redirects the old domain to the new one, keeping the path" do
