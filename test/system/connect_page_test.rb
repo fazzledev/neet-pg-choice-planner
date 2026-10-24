@@ -26,11 +26,17 @@ class ConnectPageTest < ApplicationSystemTestCase
   test "each example opens ChatGPT or Claude with the question filled in, or copies it" do
     visit connect_path
     question = ConnectionsHelper::EXAMPLE_QUESTIONS.first
-    prompt = ERB::Util.url_encode("Using NEET PG Choice Planner: #{question}")
     within(first(".conn-asks li")) do
       assert_text question
-      assert_link "Ask ChatGPT", href: "https://chatgpt.com/?q=#{prompt}"
-      assert_link "Ask Claude", href: "https://claude.ai/new?q=#{prompt}"
+      chatgpt = find_link("Ask ChatGPT")[:href]
+      claude = find_link("Ask Claude")[:href]
+      assert chatgpt.start_with?("https://chatgpt.com/?q=")
+      assert claude.start_with?("https://claude.ai/new?q=")
+      [chatgpt, claude].each do |href|
+        prompt = URI.decode_www_form_component(href.split("q=", 2).last)
+        assert_includes prompt, "Using the NEET PG Choice Planner connector: #{question}"
+        assert_match %r{don't guess\. Tell me how to connect it from http\S+/connect\.\z}, prompt
+      end
       page.driver.browser.execute_cdp("Browser.grantPermissions", permissions: ["clipboardReadWrite", "clipboardSanitizedWrite"])
       click_on "Copy"
       assert_selector "[role=status]", text: "Copied. Paste it into your assistant."
