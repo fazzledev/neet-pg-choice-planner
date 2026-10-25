@@ -19,7 +19,7 @@ class SignInTest < ApplicationSystemTestCase
       click_on "Sign in"
 
       assert_current_path planner_path
-      assert_no_selector "#local-banner"
+      assert_no_link "Sign in to sync"
       assert_selector "form#sign-out", visible: :all
     end
   end

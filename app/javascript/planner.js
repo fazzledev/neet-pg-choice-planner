@@ -1103,13 +1103,20 @@ function flash(id) {
 function setStatus(text, error = false) {
   const el = $("#save-status")
   el.textContent = text
+  el.title = text
   el.style.color = error ? "var(--danger)" : ""
   root.classList.toggle("busy", /…$/.test(text))
   root.classList.toggle("sync-error", error)
 }
 
+function savedWhen(date) {
+  const now = new Date()
+  if (date.toDateString() === now.toDateString()) return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  return date.toLocaleDateString([], { day: "numeric", month: "short", ...(date.getFullYear() === now.getFullYear() ? {} : { year: "numeric" }) })
+}
+
 function timeNow() {
-  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  return savedWhen(new Date())
 }
 
 function writeCache() {
@@ -1126,7 +1133,7 @@ function scheduleSave() {
   writeCache()
   if (!synced()) {
     state.saveLabel = null
-    setStatus(`Saved on this device ${timeNow()}`)
+    setStatus(`On this device only · ${timeNow()}`)
     return
   }
   if (state.conflict) return
@@ -1297,7 +1304,7 @@ function loadDevice() {
   const device = storage.get(deviceKey())
   setPicks(device?.picks || [])
   if (state.picks.length) track("opened-saved-plan")
-  setStatus(device?.savedAt ? `Saved on this device ${new Date(device.savedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}` : "Saves on this device as you go")
+  setStatus(device?.savedAt ? `On this device only · ${savedWhen(new Date(device.savedAt))}` : "On this device only, saves as you go")
 }
 
 function exportCsv() {
@@ -1992,7 +1999,7 @@ $("#picks-review").addEventListener("change", (e) => {
       if (streamSource.hasAttribute("connected")) catchUp({ force: true })
     }).observe(streamSource, { attributes: true, attributeFilter: ["connected"] })
   }
-  window.addEventListener("offline", () => setStatus("Offline — changes are saved on this device"))
+  window.addEventListener("offline", () => setStatus(synced() ? "Offline — changes are saved on this device" : "Offline — on this device only"))
   window.addEventListener("beforeunload", (e) => {
     if (synced() && (state.saving || (state.dirty && navigator.onLine))) e.preventDefault()
   })

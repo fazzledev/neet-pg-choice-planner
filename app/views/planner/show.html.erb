@@ -43,15 +43,13 @@
           </div>
         </details>
       <% else %>
-        <%= link_to new_session_path, class: "button button-ghost" do %><%= icon("log-in") %><span>Sign in to sync</span><% end %>
+        <%= link_to new_session_path, class: "button button-ghost", aria: { label: "Sign in to sync" } do %><%= icon("log-in") %><span>Sign in to sync</span><% end %>
       <% end %>
     </div>
   </header>
 
   <% if @list && @list.user_id != current_user.id %>
     <p class="banner">Viewing <strong><%= @list.user.display_name %></strong>'s order. Changes save to their list.</p>
-  <% elsif !@list %>
-    <p class="banner" id="local-banner">Saved on this device only. <%= link_to "Sign in", new_session_path %> to keep it safe and use it on other devices.</p>
   <% end %>
   <div id="adopt" class="banner warn" hidden>
     <span id="adopt-text"></span>

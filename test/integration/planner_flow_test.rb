@@ -10,7 +10,8 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
   test "anyone can open the planner and the catalog without signing in" do
     get planner_path
     assert_response :success
-    assert_select "#local-banner"
+    assert_select "#local-banner", count: 0
+    assert_select ".topbar a[href='#{new_session_path}']", text: "Sign in to sync"
     get catalog_path(@counselling)
     assert_response :success
     assert_equal 34, response.parsed_body["choices"].size
