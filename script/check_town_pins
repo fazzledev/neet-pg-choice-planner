@@ -40,7 +40,7 @@ failures = pins.filter_map do |pin|
   address = found["address"] || {}
   text = squash([found["display_name"], *address.values].join(" "))
   wanted = (pin[:towns] + pin[:districts] + [pin[:label]]).flat_map { TownNames.group(_1) || [_1] }.map { squash(_1) }.reject(&:empty?)
-  state_ok = squash(address["state"]).include?(squash(pin[:state])) || squash(pin[:state]).include?(squash(address["state"])) || pin[:state] == "Delhi"
+  state_ok = pin[:state] == "Delhi" || (address["state"] && (squash(address["state"]).include?(squash(pin[:state])) || squash(pin[:state]).include?(squash(address["state"]))))
   next if state_ok && wanted.any? { text.include?(_1) }
 
   pin.merge(osm_says: found["display_name"], state_ok:)
