@@ -376,7 +376,6 @@ function instDetails(inst) {
 function resultItem(c) {
   const li = $("#result-tpl").content.firstElementChild.cloneNode(true)
   li.dataset.id = c.id
-  li.dataset.details = ""
   const title = li.querySelector(".r-inst")
   title.replaceChildren(make("span", { textContent: c.inst.short }), infoToggle(c.inst))
   title.after(instDetails(c.inst))
@@ -442,7 +441,6 @@ function groupCard(group, mode = state.groupBy) {
   const picked = group.items.filter((c) => state.pickIndex.has(c.id)).length
   const count = `${group.items.length} ${mode === "institute" ? (group.items.length === 1 ? "program" : "programs") : group.items.length === 1 ? "institute" : "institutes"}${picked ? ` · ${picked} in your plan` : ""}`
   if (mode === "institute") {
-    head.dataset.details = ""
     const titleRow = make("span", { className: "g-title-row" })
     titleRow.append(make("span", { className: "g-title", textContent: group.label }), infoToggle(first.inst))
     const meta = make("span", { className: "g-meta" })
@@ -932,7 +930,6 @@ function renderPicks() {
     li.querySelector(".p-pos").value = i + 1
     li.querySelector(".p-note-preview").textContent = p.note
     li.querySelector(".p-inst").textContent = c.inst.short
-    li.querySelector(".p-card").dataset.details = ""
     paintInfoToggle(li.querySelector(".info-btn"), c.inst)
     li.querySelector(".p-head").after(instDetails(c.inst))
     const meta = li.querySelector(".p-meta")

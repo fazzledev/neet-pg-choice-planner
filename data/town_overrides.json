@@ -6,6 +6,13 @@
     ],
     "source": "Wikipedia, Ahmednagar city; the lookup returned a point 17 km west"
   },
+  "Anakapalli|Anakapalli|Andhra Pradesh": {
+    "at": [
+      17.6913,
+      83.0039
+    ],
+    "source": "Wikipedia, Anakapalli; the lookup returned a point near Srikakulam"
+  },
   "Ananthapur|Anantapur|Andhra Pradesh": {
     "at": [
       14.6819,
@@ -27,13 +34,6 @@
     ],
     "source": "Wikipedia, Arrah (Bhojpur district headquarters, where Sadar Hospital is); the lookup returned Dumraon in Buxar"
   },
-  "Chandigarh|SAS Nagar (Mohali)|Punjab": {
-    "at": [
-      30.799,
-      76.743
-    ],
-    "source": "Wikipedia, Mullanpur Garibdass (New Chandigarh); the lookup returned a point 6 km toward Chandigarh"
-  },
   "Chikkaballapur|Chikkaballapur|Karnataka": {
     "at": [
       13.4355,
@@ -54,5 +54,12 @@
       77.321
     ],
     "source": "Wikipedia, Nanded; the lookup returned a point near Wardha"
+  },
+  "New Chandigarh|SAS Nagar (Mohali)|Punjab": {
+    "at": [
+      30.799,
+      76.743
+    ],
+    "source": "Wikipedia, Mullanpur Garibdass (New Chandigarh); the lookup returned a point 6 km toward Chandigarh"
   }
 }

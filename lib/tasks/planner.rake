@@ -11,7 +11,7 @@ namespace :planner do
     puts "#{contacts.size} institute contacts"
   end
 
-  desc "Write map pins and card titles from the verified institute review (data/institute_review/final.jsonl)"
+  desc "Write map pins from the verified institute review (data/institute_review/final.jsonl)"
   task place_institutes: :environment do
     $stdout.sync = true
     review = Rails.root.join("data/institute_review")

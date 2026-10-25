@@ -6,7 +6,6 @@ ROOT = File.expand_path("../data/institute_review", __dir__)
 
 def read_jsonl(path) = File.readlines(path).map { JSON.parse(_1) }
 def mentions?(text, word) = !word.to_s.strip.empty? && text.match?(/(?<![A-Za-z])#{Regexp.escape(word.strip)}(?![A-Za-z])/i)
-def rename_group(town) = TownNames.group(town)
 
 ledger = read_jsonl("#{ROOT}/ledger.jsonl").to_h { [_1["code"], _1] }
 decisions = JSON.parse(File.read("#{ROOT}/decisions.json"))
@@ -16,7 +15,7 @@ missing = ledger.keys - second.keys
 abort "second pass missing #{missing.size} codes: #{missing.first(10).join(', ')}" if missing.any?
 
 def record_spelling(town, record)
-  group = rename_group(town) or return town
+  group = TownNames.group(town) or return town
   present = group.select { mentions?(record, _1) }
   present.one? ? present.first : town
 end
@@ -27,8 +26,9 @@ final = ledger.map do |code, row|
   record = "#{row["name"]} #{row["address"]}"
   current = row["map_city"]
   town = if state == "Delhi" then "Delhi"
+         elsif decisions.dig(code, "town") then decisions.dig(code, "town")
          elsif mentions?(record, current) || TownNames.same_place?(current, verdict["town"]) then current
-         else decisions.dig(code, "town") || record_spelling(verdict["town"], record)
+         else record_spelling(verdict["town"], record)
          end
   { code:, town:, district: verdict["district"], state:, old_map_city: current, kept: town == current, confidence: verdict["confidence"] }
 end

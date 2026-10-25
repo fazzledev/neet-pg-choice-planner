@@ -152,7 +152,7 @@
 {"code":"700486","town":"Kadapa","district":"YSR Kadapa","state":"Andhra Pradesh","old_map_city":"Kadapa","kept":true,"confidence":"high"}
 {"code":"700487","town":"Ongole","district":"Prakasam","state":"Andhra Pradesh","old_map_city":"Ongole","kept":true,"confidence":"high"}
 {"code":"700490","town":"Pondicherry","district":"Puducherry","state":"Puducherry","old_map_city":"Pondicherry","kept":true,"confidence":"high"}
-{"code":"700491","town":"Mewati","district":"Nuh","state":"Haryana","old_map_city":"Mewati","kept":true,"confidence":"high"}
+{"code":"700491","town":"Nalhar","district":"Nuh","state":"Haryana","old_map_city":"Mewati","kept":false,"confidence":"high"}
 {"code":"700495","town":"Delhi","district":"Old Delhi","state":"Delhi","old_map_city":"Central Delhi","kept":false,"confidence":"medium"}
 {"code":"700499","town":"Tirupati","district":"Tirupati","state":"Andhra Pradesh","old_map_city":"Tirupati","kept":true,"confidence":"high"}
 {"code":"700501","town":"Mumbai","district":"Mumbai City","state":"Maharashtra","old_map_city":"Mumbai","kept":true,"confidence":"high"}
@@ -200,12 +200,12 @@
 {"code":"700561","town":"Vijayawada","district":"NTR","state":"Andhra Pradesh","old_map_city":"Vijayawada","kept":true,"confidence":"high"}
 {"code":"700562","town":"Guntur","district":"Guntur","state":"Andhra Pradesh","old_map_city":"Guntur","kept":true,"confidence":"high"}
 {"code":"700563","town":"Warangal","district":"Hanamkonda","state":"Telangana","old_map_city":"Warangal","kept":true,"confidence":"medium"}
-{"code":"700565","town":"Kurnool","district":"Nandyal","state":"Andhra Pradesh","old_map_city":"Kurnool","kept":true,"confidence":"high"}
+{"code":"700565","town":"Nandyal","district":"Nandyal","state":"Andhra Pradesh","old_map_city":"Kurnool","kept":false,"confidence":"high"}
 {"code":"700568","town":"Visakhapatnam","district":"Visakhapatnam","state":"Andhra Pradesh","old_map_city":"Visakhapatnam","kept":true,"confidence":"high"}
-{"code":"700570","town":"Ananthapur","district":"Sri Sathya Sai","state":"Andhra Pradesh","old_map_city":"Ananthapur","kept":true,"confidence":"high"}
+{"code":"700570","town":"Puttaparthi","district":"Sri Sathya Sai","state":"Andhra Pradesh","old_map_city":"Ananthapur","kept":false,"confidence":"high"}
 {"code":"700571","town":"Kakinada","district":"Kakinada","state":"Andhra Pradesh","old_map_city":"Kakinada","kept":true,"confidence":"high"}
 {"code":"700572","town":"Visakhapatnam","district":"Visakhapatnam","state":"Andhra Pradesh","old_map_city":"Visakhapatnam","kept":true,"confidence":"high"}
-{"code":"700573","town":"Visakhapatnam","district":"Anakapalli","state":"Andhra Pradesh","old_map_city":"Visakhapatnam","kept":true,"confidence":"high"}
+{"code":"700573","town":"Anakapalli","district":"Anakapalli","state":"Andhra Pradesh","old_map_city":"Visakhapatnam","kept":false,"confidence":"high"}
 {"code":"700574","town":"Nellore","district":"Nellore","state":"Andhra Pradesh","old_map_city":"Nellore","kept":true,"confidence":"high"}
 {"code":"700576","town":"Visakhapatnam","district":"Visakhapatnam","state":"Andhra Pradesh","old_map_city":"Visakhapatnam","kept":true,"confidence":"high"}
 {"code":"700577","town":"Guntur","district":"Guntur","state":"Andhra Pradesh","old_map_city":"Guntur","kept":true,"confidence":"high"}
@@ -571,7 +571,7 @@
 {"code":"701026","town":"Ludhiana","district":"Ludhiana","state":"Punjab","old_map_city":"Ludhiana","kept":true,"confidence":"high"}
 {"code":"701027","town":"Bathinda","district":"Bathinda","state":"Punjab","old_map_city":"Bathinda","kept":true,"confidence":"high"}
 {"code":"701028","town":"Mohali","district":"SAS Nagar (Mohali)","state":"Punjab","old_map_city":"Mohali","kept":true,"confidence":"high"}
-{"code":"701029","town":"G T Road","district":"Ludhiana","state":"Punjab","old_map_city":"G T Road","kept":true,"confidence":"high"}
+{"code":"701029","town":"Ludhiana","district":"Ludhiana","state":"Punjab","old_map_city":"G T Road","kept":false,"confidence":"high"}
 {"code":"701030","town":"Jalandhar","district":"Jalandhar","state":"Punjab","old_map_city":"Jalandhar","kept":true,"confidence":"high"}
 {"code":"701032","town":"Ludhiana","district":"Ludhiana","state":"Punjab","old_map_city":"Ludhiana","kept":true,"confidence":"high"}
 {"code":"701033","town":"Mohali","district":"SAS Nagar (Mohali)","state":"Punjab","old_map_city":"Mohali","kept":true,"confidence":"high"}
@@ -602,7 +602,7 @@
 {"code":"701060","town":"Barmer","district":"Barmer","state":"Rajasthan","old_map_city":"Barmer","kept":true,"confidence":"high"}
 {"code":"701061","town":"Sawai Madhopur","district":"Sawai Madhopur","state":"Rajasthan","old_map_city":"Sawai Madhopur","kept":true,"confidence":"high"}
 {"code":"701062","town":"Nagaur","district":"Nagaur","state":"Rajasthan","old_map_city":"Nagaur","kept":true,"confidence":"high"}
-{"code":"701063","town":"Ajmer","district":"Beawar","state":"Rajasthan","old_map_city":"Ajmer","kept":true,"confidence":"high"}
+{"code":"701063","town":"Beawar","district":"Beawar","state":"Rajasthan","old_map_city":"Ajmer","kept":false,"confidence":"high"}
 {"code":"701064","town":"Jhunjhunu","district":"Jhunjhunu","state":"Rajasthan","old_map_city":"Jhunjhunu","kept":true,"confidence":"high"}
 {"code":"701065","town":"Bhilwara","district":"Bhilwara","state":"Rajasthan","old_map_city":"Bhilwara","kept":true,"confidence":"high"}
 {"code":"701067","town":"Hanumangarh","district":"Hanumangarh","state":"Rajasthan","old_map_city":"Hanumangarh","kept":true,"confidence":"high"}
@@ -755,7 +755,7 @@
 {"code":"701257","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"high"}
 {"code":"701258","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"high"}
 {"code":"701259","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"medium"}
-{"code":"701260","town":"Bardhaman","district":"Paschim Bardhaman","state":"West Bengal","old_map_city":"Bardhaman","kept":true,"confidence":"high"}
+{"code":"701260","town":"Durgapur","district":"Paschim Bardhaman","state":"West Bengal","old_map_city":"Bardhaman","kept":false,"confidence":"high"}
 {"code":"701261","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"high"}
 {"code":"701262","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"high"}
 {"code":"701263","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"medium"}
@@ -770,7 +770,7 @@
 {"code":"701272","town":"Nadia","district":"Nadia","state":"West Bengal","old_map_city":"Nadia","kept":true,"confidence":"high"}
 {"code":"701273","town":"Purulia","district":"Purulia","state":"West Bengal","old_map_city":"Purulia","kept":true,"confidence":"high"}
 {"code":"701274","town":"Howrah","district":"Howrah","state":"West Bengal","old_map_city":"Howrah","kept":true,"confidence":"high"}
-{"code":"701275","town":"Bardhaman","district":"Paschim Bardhaman","state":"West Bengal","old_map_city":"Bardhaman","kept":true,"confidence":"high"}
+{"code":"701275","town":"Asansol","district":"Paschim Bardhaman","state":"West Bengal","old_map_city":"Bardhaman","kept":false,"confidence":"high"}
 {"code":"701276","town":"Kolkata","district":"North 24 Parganas","state":"West Bengal","old_map_city":"Habra","kept":false,"confidence":"medium"}
 {"code":"701277","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"high"}
 {"code":"701278","town":"Jalpaiguri","district":"Jalpaiguri","state":"West Bengal","old_map_city":"Jalpaiguri","kept":true,"confidence":"high"}
@@ -1064,7 +1064,7 @@
 {"code":"701685","town":"Sikar","district":"Sikar","state":"Rajasthan","old_map_city":"Sikar","kept":true,"confidence":"high"}
 {"code":"701687","town":"Jaipur","district":"Jaipur","state":"Rajasthan","old_map_city":"Jaipur","kept":true,"confidence":"high"}
 {"code":"701688","town":"Salem","district":"Salem","state":"Tamil Nadu","old_map_city":"Salem","kept":true,"confidence":"high"}
-{"code":"701690","town":"Nagapattinam","district":"Mayiladuthurai","state":"Tamil Nadu","old_map_city":"Nagapattinam","kept":true,"confidence":"high"}
+{"code":"701690","town":"Mayiladuthurai","district":"Mayiladuthurai","state":"Tamil Nadu","old_map_city":"Nagapattinam","kept":false,"confidence":"high"}
 {"code":"701692","town":"Hyderabad","district":"Hyderabad","state":"Telangana","old_map_city":"Hyderabad","kept":true,"confidence":"high"}
 {"code":"701693","town":"Nalgonda","district":"Nalgonda","state":"Telangana","old_map_city":"Nalgonda","kept":true,"confidence":"high"}
 {"code":"701694","town":"Kannauj","district":"Kannauj","state":"Uttar Pradesh","old_map_city":"Kannauj","kept":true,"confidence":"high"}
@@ -1106,7 +1106,7 @@
 {"code":"901684","town":"Hardoi","district":"Hardoi","state":"Uttar Pradesh","old_map_city":"Hardoi","kept":true,"confidence":"high"}
 {"code":"901685","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"high"}
 {"code":"901686","town":"Rajnandgaon","district":"Rajnandgaon","state":"Chhattisgarh","old_map_city":"Rajnandgaon","kept":true,"confidence":"high"}
-{"code":"901687","town":"Bardhaman","district":"Paschim Bardhaman","state":"West Bengal","old_map_city":"Bardhaman","kept":true,"confidence":"high"}
+{"code":"901687","town":"Asansol","district":"Paschim Bardhaman","state":"West Bengal","old_map_city":"Bardhaman","kept":false,"confidence":"high"}
 {"code":"901688","town":"Delhi","district":"South West Delhi","state":"Delhi","old_map_city":"Dwarka","kept":false,"confidence":"high"}
 {"code":"901689","town":"Lucknow","district":"Lucknow","state":"Uttar Pradesh","old_map_city":"Lucknow","kept":true,"confidence":"high"}
 {"code":"901690","town":"Gurdaspur","district":"Gurdaspur","state":"Punjab","old_map_city":"Gurdaspur","kept":true,"confidence":"high"}
@@ -1222,7 +1222,7 @@
 {"code":"902672","town":"Visakhapatnam","district":"Visakhapatnam","state":"Andhra Pradesh","old_map_city":"Visakhapatnam","kept":true,"confidence":"high"}
 {"code":"902673","town":"Tirupati","district":"Tirupati","state":"Andhra Pradesh","old_map_city":"Tirupati","kept":true,"confidence":"medium"}
 {"code":"902675","town":"Piduguralla","district":"Palnadu","state":"Andhra Pradesh","old_map_city":"Guntur","kept":false,"confidence":"high"}
-{"code":"902677","town":"Guntur","district":"Palnadu","state":"Andhra Pradesh","old_map_city":"Guntur","kept":true,"confidence":"high"}
+{"code":"902677","town":"Narasaraopet","district":"Palnadu","state":"Andhra Pradesh","old_map_city":"Guntur","kept":false,"confidence":"high"}
 {"code":"902678","town":"Cachar","district":"Cachar","state":"Assam","old_map_city":"Cachar","kept":true,"confidence":"high"}
 {"code":"902679","town":"Patna","district":"Patna","state":"Bihar","old_map_city":"Patna","kept":true,"confidence":"high"}
 {"code":"902680","town":"Patna","district":"Patna","state":"Bihar","old_map_city":"Patna","kept":true,"confidence":"high"}
@@ -1373,7 +1373,7 @@
 {"code":"903348","town":"Kargil","district":"Kargil","state":"Ladakh","old_map_city":"Kargil","kept":true,"confidence":"high"}
 {"code":"903354","town":"Kolkata","district":"Kolkata","state":"West Bengal","old_map_city":"Kolkata","kept":true,"confidence":"medium"}
 {"code":"903366","town":"Silvassa","district":"Dadra and Nagar Haveli","state":"Dadra and Nagar Haveli and Daman and Diu","old_map_city":"Silvassa","kept":true,"confidence":"medium"}
-{"code":"903367","town":"Mumbai","district":"Thane","state":"Maharashtra","old_map_city":"Mumbai","kept":true,"confidence":"high"}
+{"code":"903367","town":"Navi Mumbai","district":"Thane","state":"Maharashtra","old_map_city":"Mumbai","kept":false,"confidence":"high"}
 {"code":"903369","town":"Mohali","district":"SAS Nagar (Mohali)","state":"Punjab","old_map_city":"Rupnagar","kept":false,"confidence":"high"}
 {"code":"904185","town":"Pondicherry","district":"Puducherry","state":"Puducherry","old_map_city":"Pondicherry","kept":true,"confidence":"high"}
 {"code":"904186","town":"Gorakhpur","district":"Gorakhpur","state":"Uttar Pradesh","old_map_city":"Gorakhpur","kept":true,"confidence":"high"}
@@ -1529,7 +1529,7 @@
 {"code":"904546","town":"Hyderabad","district":"Medchal-Malkajgiri","state":"Telangana","old_map_city":"Hyderabad","kept":true,"confidence":"high"}
 {"code":"904547","town":"Moradabad","district":"Moradabad","state":"Uttar Pradesh","old_map_city":"Moradabad","kept":true,"confidence":"high"}
 {"code":"904554","town":"Kannur","district":"Kannur","state":"Kerala","old_map_city":"Kannur","kept":true,"confidence":"medium"}
-{"code":"904555","town":"Chandigarh","district":"SAS Nagar (Mohali)","state":"Punjab","old_map_city":"Chandigarh","kept":true,"confidence":"high"}
+{"code":"904555","town":"New Chandigarh","district":"SAS Nagar (Mohali)","state":"Punjab","old_map_city":"Chandigarh","kept":false,"confidence":"high"}
 {"code":"904557","town":"Korba","district":"Korba","state":"Chhattisgarh","old_map_city":"Korba","kept":true,"confidence":"high"}
 {"code":"904558","town":"Haveri","district":"Haveri","state":"Karnataka","old_map_city":"Haveri","kept":true,"confidence":"high"}
 {"code":"904559","town":"Machilipatnam","district":"Krishna","state":"Andhra Pradesh","old_map_city":"Vijayawada","kept":false,"confidence":"high"}
@@ -1549,7 +1549,7 @@
 {"code":"904579","town":"Rajamahendravaram","district":"East Godavari","state":"Andhra Pradesh","old_map_city":"Kakinada","kept":false,"confidence":"high"}
 {"code":"904581","town":"Delhi","district":"New Delhi","state":"Delhi","old_map_city":"New Delhi","kept":false,"confidence":"medium"}
 {"code":"904583","town":"Mirzapur","district":"Mirzapur","state":"Uttar Pradesh","old_map_city":"Mirzapur","kept":true,"confidence":"high"}
-{"code":"904584","town":"Andaman","district":"South Andaman","state":"Andaman and Nicobar Islands","old_map_city":"Andaman","kept":true,"confidence":"high"}
+{"code":"904584","town":"Port Blair","district":"South Andaman","state":"Andaman and Nicobar Islands","old_map_city":"Andaman","kept":false,"confidence":"high"}
 {"code":"904585","town":"Lakhimpur","district":"Lakhimpur","state":"Assam","old_map_city":"Lakhimpur","kept":true,"confidence":"high"}
 {"code":"904586","town":"Pratapgarh","district":"Pratapgarh","state":"Uttar Pradesh","old_map_city":"Pratapgarh","kept":true,"confidence":"high"}
 {"code":"904587","town":"Almora","district":"Almora","state":"Uttarakhand","old_map_city":"Almora","kept":true,"confidence":"medium"}
@@ -1686,7 +1686,7 @@
 {"code":"905665","town":"Ranchi","district":"Ranchi","state":"Jharkhand","old_map_city":"Ranchi","kept":true,"confidence":"high"}
 {"code":"905666","town":"Jodhpur","district":"Jodhpur","state":"Rajasthan","old_map_city":"Jodhpur","kept":true,"confidence":"high"}
 {"code":"905667","town":"Hyderabad","district":"Medchal-Malkajgiri","state":"Telangana","old_map_city":"Hyderabad","kept":true,"confidence":"high"}
-{"code":"905669","town":"Alwar","district":"Kotputli-Behror","state":"Rajasthan","old_map_city":"Alwar","kept":true,"confidence":"high"}
+{"code":"905669","town":"Neemrana","district":"Kotputli-Behror","state":"Rajasthan","old_map_city":"Alwar","kept":false,"confidence":"high"}
 {"code":"905670","town":"Shivamogga","district":"Shivamogga","state":"Karnataka","old_map_city":"Shivamogga","kept":true,"confidence":"high"}
 {"code":"905671","town":"Vadodara","district":"Vadodara","state":"Gujarat","old_map_city":"Vadodara","kept":true,"confidence":"high"}
 {"code":"905672","town":"Kurukshetra","district":"Kurukshetra","state":"Haryana","old_map_city":"Kurukshetra","kept":true,"confidence":"high"}
