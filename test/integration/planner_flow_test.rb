@@ -27,6 +27,12 @@ class PlannerFlowTest < ActionDispatch::IntegrationTest
     get planner_path
     assert_select "#planner[data-locations-url='#{locations_catalog_path(@counselling)}']"
     assert_select "#catalog-view button[data-view=map]", text: "Map"
+    assert_select ".tabs button[data-tab=map]", text: "Map"
+    assert_select "#map-subject button[data-subject=plan]", text: "My plan"
+    assert_select "#map-subject button[data-subject=all]", text: "All seats"
+    assert_select "label.map-lens input#map-lens[type=checkbox]"
+    assert_select "#map-depth input#map-depth-input[type=range]"
+    assert_select "#map-card[aria-live=polite]"
   end
 
   test "the planner's top bar can share the site" do

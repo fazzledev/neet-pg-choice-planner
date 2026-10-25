@@ -92,8 +92,9 @@ export function createMap(el, { onSelect, shape }) {
         return
       }
     }
-    const ranked = [...last].sort((a, b) => (b.key === selected) - (a.key === selected) || b.institutes.size - a.institutes.size)
-    for (const point of ranked) place(point.city, point.lat, point.lng, point.radius + 4, "map-label")
+    const weight = (p) => p.priority ?? p.institutes.size
+    const ranked = [...last].sort((a, b) => (b.key === selected) - (a.key === selected) || weight(b) - weight(a))
+    for (const point of ranked) place(point.name ?? point.city, point.lat, point.lng, point.radius + (point.ring ? 11 : 4), "map-label")
     const named = last.map((p) => p.city.toLowerCase())
     for (const [name, lat, lng] of BIG_CITIES) {
       if (!placed.has(name.toLowerCase()) && !named.some((city) => city.includes(name.toLowerCase())) && !nearPin(lat, lng)) place(name, lat, lng, 4, "map-label map-label-faint")
@@ -116,12 +117,18 @@ export function createMap(el, { onSelect, shape }) {
     pins.clearLayers()
     for (const point of [...last].sort((a, b) => (a.key === selected) - (b.key === selected))) {
       const on = point.key === selected
+      const fill = point.fill === undefined ? (point.picked ? "--accent" : "--accent-soft") : point.fill
+      const opacity = point.opacity ?? 1
+      if (point.ring) {
+        pins.addLayer(L.circleMarker([point.lat, point.lng], { radius: point.radius + 7, color: color("--text"), weight: 2, fill: false, interactive: false }))
+      }
       const pin = L.circleMarker([point.lat, point.lng], {
         radius: point.radius + (on ? 3 : 0),
-        color: on ? color("--text") : color("--accent"),
-        weight: on ? 3 : 1,
-        fillColor: point.picked ? color("--accent") : color("--accent-soft"),
-        fillOpacity: 0.95,
+        color: on ? color("--text") : color(point.stroke ?? "--accent"),
+        weight: on ? 3 : fill ? 1 : 2,
+        opacity,
+        fillColor: fill ? color(fill) : "transparent",
+        fillOpacity: fill ? 0.95 * opacity : 0,
       })
       pin.bindTooltip(point.label, { direction: "top", offset: [0, -point.radius] })
       pin.on("click", () => onSelect(point.key))
