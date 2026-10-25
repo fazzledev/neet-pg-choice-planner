@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+require "json"
+require_relative "../lib/town_names"
+
+ROOT = File.expand_path("../data/institute_review", __dir__)
+
+def read_jsonl(path) = File.readlines(path).map { JSON.parse(_1) }
+def mentions?(text, word) = !word.to_s.strip.empty? && text.match?(/(?<![A-Za-z])#{Regexp.escape(word.strip)}(?![A-Za-z])/i)
+
+ledger = read_jsonl("#{ROOT}/ledger.jsonl").to_h { [_1["code"], _1] }
+decisions = JSON.parse(File.read("#{ROOT}/decisions.json"))
+second = Dir["#{ROOT}/second_pass/{results,results_rest}/*.jsonl"].flat_map { read_jsonl(_1) }.to_h { [_1["code"], _1] }
+
+missing = ledger.keys - second.keys
+abort "second pass missing #{missing.size} codes: #{missing.first(10).join(', ')}" if missing.any?
+
+def record_spelling(town, record)
+  group = TownNames.group(town) or return town
+  present = group.select { mentions?(record, _1) }
+  present.one? ? present.first : town
+end
+
+final = ledger.map do |code, row|
+  verdict = second.fetch(code)
+  state = verdict["state"]
+  record = "#{row["name"]} #{row["address"]}"
+  current = row["map_city"]
+  town = if state == "Delhi" then "Delhi"
+         elsif decisions.dig(code, "town") then decisions.dig(code, "town")
+         elsif mentions?(record, current) || TownNames.same_place?(current, verdict["town"]) then current
+         else record_spelling(verdict["town"], record)
+         end
+  { code:, town:, district: verdict["district"], state:, old_map_city: current, kept: town == current, confidence: verdict["confidence"] }
+end
+
+File.write("#{ROOT}/final.jsonl", final.map { _1.to_json }.join("\n") + "\n")
+moved = final.reject { _1[:kept] || _1[:state] == "Delhi" }
+report = {
+  institutes: final.size,
+  pins_kept: final.count { _1[:kept] },
+  pins_moved: moved.size,
+  moved_not_high_confidence: moved.reject { _1[:confidence] == "high" }.map { _1.slice(:code, :old_map_city, :town, :confidence) }
+}
+File.write("#{ROOT}/merge_report.json", JSON.pretty_generate(report) + "\n")
+puts report.transform_values { _1.is_a?(Array) ? _1.size : _1 }.to_json

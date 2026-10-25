@@ -1,0 +1,103 @@
+{
+  "institutes": 1709,
+  "pins_kept": 1434,
+  "pins_moved": 190,
+  "moved_not_high_confidence": [
+    {
+      "code": "700555",
+      "old_map_city": "Hyderabad",
+      "town": "Secunderabad",
+      "confidence": "medium"
+    },
+    {
+      "code": "700889",
+      "old_map_city": "Ernakulam",
+      "town": "Cochin",
+      "confidence": "medium"
+    },
+    {
+      "code": "701115",
+      "old_map_city": "Chengalpattu",
+      "town": "Tambaram",
+      "confidence": "medium"
+    },
+    {
+      "code": "701156",
+      "old_map_city": "Tiruvallur",
+      "town": "Chennai",
+      "confidence": "medium"
+    },
+    {
+      "code": "701276",
+      "old_map_city": "Habra",
+      "town": "Kolkata",
+      "confidence": "medium"
+    },
+    {
+      "code": "701361",
+      "old_map_city": "Gandhinagar",
+      "town": "Ahmedabad",
+      "confidence": "medium"
+    },
+    {
+      "code": "701427",
+      "old_map_city": "Habra",
+      "town": "Kolkata",
+      "confidence": "medium"
+    },
+    {
+      "code": "901705",
+      "old_map_city": "Chengalpattu",
+      "town": "Tambaram",
+      "confidence": "medium"
+    },
+    {
+      "code": "901851",
+      "old_map_city": "Sonapur",
+      "town": "Birmaharajpur",
+      "confidence": "medium"
+    },
+    {
+      "code": "902752",
+      "old_map_city": "Chengalpattu",
+      "town": "Chennai",
+      "confidence": "medium"
+    },
+    {
+      "code": "904200",
+      "old_map_city": "South 24 Parganas",
+      "town": "Baruipur",
+      "confidence": "medium"
+    },
+    {
+      "code": "904267",
+      "old_map_city": "Chengalpattu",
+      "town": "Chennai",
+      "confidence": "medium"
+    },
+    {
+      "code": "904289",
+      "old_map_city": "Tiruvallur",
+      "town": "Chennai",
+      "confidence": "medium"
+    },
+    {
+      "code": "904339",
+      "old_map_city": "Chengalpattu",
+      "town": "Chennai",
+      "confidence": "medium"
+    },
+    {
+      "code": "904562",
+      "old_map_city": "Kolar",
+      "town": "Chikkaballapur",
+      "confidence": "medium"
+    },
+    {
+      "code": "905679",
+      "old_map_city": "Kakinada",
+      "town": "Rajahmundry",
+      "confidence": "medium"
+    }
+  ]
+}

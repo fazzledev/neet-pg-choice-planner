@@ -1,6 +1,6 @@
 import * as L from "leaflet"
 
-const ATTRIBUTION = 'Boundaries: <a href="https://github.com/datameet/maps">DataMeet</a> (CC BY 4.0) · Places: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.geonames.org">GeoNames</a>'
+const ATTRIBUTION = 'Boundaries: <a href="https://github.com/datameet/maps">DataMeet</a> (CC BY 4.0) · Places: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 const MAX_ZOOM = 9
 const LABEL_SIZE = 11
 const BIG_CITIES = [
