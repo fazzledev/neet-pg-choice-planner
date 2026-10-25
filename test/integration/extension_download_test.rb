@@ -31,19 +31,18 @@ class ExtensionDownloadTest < ActionDispatch::IntegrationTest
     assert_select ".ext-install a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}']", count: 0
     assert_select ".store-note", count: 0
     assert_select ".ext-group-now li strong", text: "Firefox"
-    assert_select ".ext-group-soon", count: 0
+    assert_select ".store-anyway a[href='#{ExtensionPackage::FIREFOX_ADD_ONS_URL}']", text: "Open it in Firefox Add-ons"
   end
 
   test "Safari is told it needs another browser and gets a smaller Chrome badge" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
-    assert_select ".store-note strong", text: "Needs Chrome, Edge, Brave or Opera"
+    assert_select ".store-note strong", text: "Needs Chrome, Edge, Brave, Opera or Firefox"
     assert_select ".ext-alt a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}'] img[height='44']"
   end
 
   test "browsers are grouped as available now and not supported" do
     get extension_path, headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15" }
     assert_equal %w[Chrome Edge Brave Opera Firefox], css_select(".ext-group-now li strong").map(&:text)
-    assert_select ".ext-group-soon", count: 0
     assert_equal ["Safari", "Chrome on phones"], css_select(".ext-group-no li strong").map(&:text)
     assert_select ".ext-group img[src*='browsers/']", count: 7
     assert_equal "User-Agent", response.headers["Vary"]

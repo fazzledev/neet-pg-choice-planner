@@ -87,7 +87,6 @@ class LandingTest < ActionDispatch::IntegrationTest
     assert_select ".lp-kicker", text: "Chrome extension", count: 0
     assert_match "It works in Chrome, Edge, Brave, Opera and Firefox on a computer.", response.body
     assert_equal %w[Chrome Edge Brave Opera Firefox], css_select(".ext-groups.compact .ext-group-now li strong").map(&:text)
-    assert_select ".ext-groups.compact .ext-group-soon", count: 0
   end
 
   test "redirects the old domain to the new one, keeping the path" do

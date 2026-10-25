@@ -24,7 +24,7 @@
           <span class="ext-badge-meta">v<%= @version %> · updates itself from Firefox Add-ons</span>
         <% elsif @browser == :other %>
           <div class="store-note" role="note">
-            <span><strong>Needs Chrome, Edge, Brave or Opera</strong>This browser can't run the extension. Open this page in one of them to install it.</span>
+            <span><strong>Needs Chrome, Edge, Brave, Opera or Firefox</strong>This browser can't run the extension. Open this page in one of them to install it.</span>
           </div>
           <div class="ext-alt">
             <span>Already have one of them?</span>
@@ -47,7 +47,7 @@
           <%= link_to extension_link_whatsapp_url, class: "button block", target: "_blank", rel: "noopener", data: click_event("extension-page/whatsapp-link") do %><%= icon("message-circle") %>WhatsApp<% end %>
           <%= link_to extension_link_email_url, class: "button block", data: click_event("extension-page/email-link") do %><%= icon("mail") %>Email<% end %>
         </div>
-        <p class="muted store-anyway">Already on a computer? <%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %></p>
+        <p class="muted store-anyway">Already on a computer? <% if @firefox_badge %><%= link_to "Open it in Firefox Add-ons", ExtensionPackage::FIREFOX_ADD_ONS_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %><% else %><%= link_to "Open it in the Chrome Web Store", ExtensionPackage::CHROME_WEB_STORE_URL, target: "_blank", rel: "noopener", data: click_event("extension-page/store-anyway") %><% end %></p>
       </section>
 
       <ul class="ext-trust">
