@@ -1,9 +1,9 @@
 require "application_system_test_case"
 
 class ExtensionPageTest < ApplicationSystemTestCase
-  test "a computer gets the store badge first, then Download and Source to install by hand" do
+  test "a computer gets Add to Chrome first, then Download and Source to install by hand" do
     visit extension_path
-    assert_selector ".ext-install a[href='#{ExtensionPackage::CHROME_WEB_STORE_URL}'] img[alt='Available in the Chrome Web Store']"
+    assert_link "Add to Chrome", href: ExtensionPackage::CHROME_WEB_STORE_URL
     assert_text "Which browsers it works in"
     within ".manual-install" do
       assert_text "Install by hand"

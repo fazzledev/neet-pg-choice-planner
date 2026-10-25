@@ -20,7 +20,7 @@
 
       <div class="ext-install no-touch">
         <% if @firefox_badge %>
-          <%= link_to ExtensionPackage::FIREFOX_ADD_ONS_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/firefox-add-ons") do %><%= image_tag "store-badges/firefox-add-ons.svg", alt: "Get the add-on for Firefox", height: 64 %><% end %>
+          <%= link_to ExtensionPackage::FIREFOX_ADD_ONS_URL, class: "button primary lp-big", target: "_blank", rel: "noopener", data: click_event("extension-page/firefox-add-ons") do %><%= icon("puzzle") %>Add to Firefox<% end %>
           <span class="ext-badge-meta">v<%= @version %> · updates itself from Firefox Add-ons</span>
         <% elsif @browser == :other %>
           <div class="store-note" role="note">
@@ -28,10 +28,10 @@
           </div>
           <div class="ext-alt">
             <span>Already have one of them?</span>
-            <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 44 %><% end %>
+            <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "button", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= icon("puzzle") %>Add to Chrome<% end %>
           </div>
         <% else %>
-          <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 64 %><% end %>
+          <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "button primary lp-big", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= icon("puzzle") %>Add to Chrome<% end %>
           <span class="ext-badge-meta">v<%= @version %> · also for Edge, Brave and Opera<br>Updates itself from the store</span>
         <% end %>
       </div>
@@ -86,9 +86,9 @@
       <li>
         <span class="ext-step-no">1</span>
         <% if @firefox_badge %>
-          <strong>Add it to Firefox</strong><span>Press the Firefox Add-ons badge, then Add to Firefox and Add.</span>
+          <strong>Add it to Firefox</strong><span>Press Add to Firefox above, then Add to Firefox and Add on the store page.</span>
         <% else %>
-          <strong>Add it to your browser</strong><span>Press the Chrome Web Store badge, then Add to Chrome. Works the same in Edge, Brave and Opera.</span>
+          <strong>Add it to your browser</strong><span>Press Add to Chrome above, then Add to Chrome on the store page. Works the same in Edge, Brave and Opera.</span>
         <% end %>
       </li>
       <li><span class="ext-step-no">2</span><strong>Open your plan</strong><span>Reload the planner. Your list syncs to the extension by itself.</span></li>

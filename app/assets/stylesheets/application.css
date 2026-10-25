@@ -1073,8 +1073,6 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .ext-intro h1 { margin: 0; font: 700 clamp(36px, 6vw, 56px)/1.02 var(--font-display); letter-spacing: -.03em; }
 .ext-lede { margin: 0; max-width: 520px; font-size: 18px; line-height: 1.5; color: var(--muted); }
 .ext-install { flex-wrap: wrap; align-items: center; gap: 14px 16px; }
-.store-badge { display: inline-block; line-height: 0; border-radius: 10px; }
-.store-badge img { width: auto; }
 .ext-badge-meta { font-size: 14px; line-height: 1.4; color: var(--muted); }
 .store-note { flex: 1 1 100%; display: flex; align-items: center; gap: 16px; padding: 16px 18px; border-radius: 16px; background: var(--warn-bg); color: var(--warn-ink); font-size: 14px; line-height: 1.45; }
 .store-note strong { display: block; font-size: 16px; }
@@ -1129,7 +1127,7 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .ext-steps .install-lead { margin: -6px 0 12px; }
 .ext-practice { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; padding: 22px 24px; border-radius: 20px; background: var(--accent-soft); }
 .ext-practice > .icon { width: 26px; height: 26px; color: var(--accent); }
-.ext-practice .button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-ink); }
+.ext-practice .button.primary, .ext-install .button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-ink); }
 .ext-practice > span { flex: 1 1 300px; font-size: 15px; color: var(--muted); }
 .ext-practice strong { display: block; font-size: 17px; color: var(--text); }
 .manual-install { flex-wrap: wrap; align-items: flex-start; gap: 16px 24px; padding-top: 28px; border-top: 1px solid var(--border); font-size: 15px; }
