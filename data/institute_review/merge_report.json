@@ -1,12 +1,17 @@
 {
   "institutes": 1709,
   "towns": 595,
-  "titles_changed": 668,
+  "titles_changed": 408,
   "long_titles": [
     {
-      "code": "700529",
-      "length": 71,
-      "title": "Govt. Medical College (formerly Academy of Medical Sciences), Pariyaram"
+      "code": "700357",
+      "length": 82,
+      "title": "Atal Bihari Vajpayee Institute of Medical Sciences and Dr. RML Hospital, New Delhi"
+    },
+    {
+      "code": "700517",
+      "length": 76,
+      "title": "Rajiv Gandhi Medical College and Chhatrapati Shivaji Maharaj Hospital, Thane"
     },
     {
       "code": "700531",
@@ -24,6 +29,11 @@
       "title": "Late Shri Baliram Kashyap Memorial NDMC Govt. Medical College, Jagdalpur"
     },
     {
+      "code": "700539",
+      "length": 70,
+      "title": "SDS Tuberculosis Research Centre and Rajiv Gandhi Institute, Bangalore"
+    },
+    {
       "code": "700540",
       "length": 75,
       "title": "H.B.T. Medical College & Dr. R.N. Cooper Municipal General Hospital, Mumbai"
@@ -35,8 +45,8 @@
     },
     {
       "code": "700637",
-      "length": 79,
-      "title": "Kalra Hospital and Shri Ram Cardiothoracic and Neuro-Sciences Centre, New Delhi"
+      "length": 81,
+      "title": "Kalra Hospital and Shri Ram Cardiothoracic and Neuro-Sciences Centre, Kirti Nagar"
     },
     {
       "code": "700682",
@@ -44,19 +54,9 @@
       "title": "K.G. Patel Children Hospital and Jayodia Research Institute, Baroda"
     },
     {
-      "code": "700709",
-      "length": 75,
-      "title": "The Gujarat Research and Medical Institute (Rajasthan Hospitals), Ahmedabad"
-    },
-    {
-      "code": "700766",
-      "length": 69,
-      "title": "Medanta Abdur Razzaque Ansari Memorial Weavers Hospital, Irba, Ranchi"
-    },
-    {
-      "code": "700776",
+      "code": "700748",
       "length": 71,
-      "title": "HealthCare Global (formerly Bangalore Institute of Oncology), Bangalore"
+      "title": "Shri Lal Bahadur Shastri Government Medical College and Hospital, Mandi"
     },
     {
       "code": "700873",
@@ -64,9 +64,19 @@
       "title": "Pushpagiri Institute of Medical Sciences and Research Centre, Tiruvalla"
     },
     {
+      "code": "700889",
+      "length": 74,
+      "title": "Polakulath Narayanan Renai Medicity Multi Super Specialty Hospital, Cochin"
+    },
+    {
       "code": "700952",
       "length": 66,
       "title": "P.D. Hinduja National Hospital and Medical Research Centre, Mumbai"
+    },
+    {
+      "code": "700970",
+      "length": 74,
+      "title": "Kokilaben Dhirubhai Ambani Hospital and Medical Research Institute, Mumbai"
     },
     {
       "code": "700983",
@@ -79,6 +89,11 @@
       "title": "Indira Gandhi Govt. General Hospital and PG Institute, Pondicherry"
     },
     {
+      "code": "701041",
+      "length": 76,
+      "title": "Santokbha Durlabhji Memorial Hospital Cum Medical Research Institute, Jaipur"
+    },
+    {
       "code": "701076",
       "length": 71,
       "title": "Government Medical College and Associated Group of Hospitals, Dungarpur"
@@ -89,9 +104,24 @@
       "title": "ESIC Medical College Hospital and Super Specialty Hospital, Hyderabad"
     },
     {
+      "code": "701244",
+      "length": 79,
+      "title": "Autonomous State Medical college Society and S.N.M District Hospital, Firozabad"
+    },
+    {
       "code": "701257",
       "length": 70,
       "title": "Saroj Gupta Cancer Centre Welfare Home and Research Institute, Kolkata"
+    },
+    {
+      "code": "701297",
+      "length": 70,
+      "title": "Prafulla Chandra Sen Government Medical College and Hospital, Arambagh"
+    },
+    {
+      "code": "701339",
+      "length": 77,
+      "title": "Maharishi Vashistha Autonomous State Medical College and Opec Hospital, Basti"
     },
     {
       "code": "701496",
@@ -124,9 +154,19 @@
       "title": "Bharat Ratna Late Shri Atal Bihari Vajpayee Memorial Medical College, Rajnandgaon"
     },
     {
+      "code": "901775",
+      "length": 75,
+      "title": "Shree Krishna Hospital associated with Paramukhswami Medical College, Anand"
+    },
+    {
       "code": "902769",
       "length": 66,
       "title": "Yatharth Wellness Super Specialty Hospital and Heart Center, Noida"
+    },
+    {
+      "code": "902771",
+      "length": 74,
+      "title": "SWAMI KALYAN DEV DISTRICT HOSPITAL MUZAFFARNAGAR, Laddhawala Muzaffarnagar"
     },
     {
       "code": "902774",
@@ -139,16 +179,6 @@
       "title": "Shrimant Rajmata Vijayaraje Scindia Government Medical College, Shivpuri"
     },
     {
-      "code": "902850",
-      "length": 83,
-      "title": "Shaheed Nirmal Mahto Medical College (formerly Patliputra Medical College), Dhanbad"
-    },
-    {
-      "code": "903280",
-      "length": 83,
-      "title": "Dr. Ramesh Cardiac and Multispeciality Hospital (formerly Citi Cardiac), Vijayawada"
-    },
-    {
       "code": "903282",
       "length": 72,
       "title": "DR RAMANARAJUS VISIONTREE SUPERSPECIALITY EYE CARE CENTER, Visakhapatnam"
@@ -159,19 +189,14 @@
       "title": "Safdarjung Hospital and Vardhman Mahavir Medical College, New Delhi"
     },
     {
-      "code": "903366",
-      "length": 94,
-      "title": "NAMO Medical Education and Research Institute (formerly Shri Vinoba Bhave Institute), Silvassa"
-    },
-    {
       "code": "904194",
       "length": 67,
       "title": "Amrita Institute of Medical Sciences and Research Centre, Faridabad"
     },
     {
       "code": "904223",
-      "length": 67,
-      "title": "CRITICARE ASIA MULTISPECIALITY HOSPITAL AND RESEARCH CENTRE, Mumbai"
+      "length": 73,
+      "title": "CRITICARE ASIA MULTISPECIALITY HOSPITAL AND RESEARCH CENTRE, Kurla (West)"
     },
     {
       "code": "904239",
@@ -179,19 +204,34 @@
       "title": "Ganesh Das Government Maternal and Child Health Hospital, Shillong"
     },
     {
-      "code": "904254",
-      "length": 67,
-      "title": "H.B.P. PRABHAKAR MALHARRAO KUTE MEMORIAL HOSPITAL, Pimpri-Chinchwad"
+      "code": "904243",
+      "length": 66,
+      "title": "GMERS Medical College and General Hospital, Rajpipla Dist: Narmada"
     },
     {
-      "code": "904275",
-      "length": 77,
-      "title": "GMERS Medical College and Hospital (formerly M G G General Hospital), Navsari"
+      "code": "904279",
+      "length": 73,
+      "title": "MANAYAWAR KANSHI RAM DISTRCIT COMBINED HOSPITAL AND TRAUMA CENTRE, Kanpur"
+    },
+    {
+      "code": "904342",
+      "length": 69,
+      "title": "Swami Ramanand Teerth Rural Government And Medical College, Ambajogai"
     },
     {
       "code": "904571",
       "length": 78,
       "title": "Amar Shaheed Jodha Singh Ataiya Thakur Dariyao Singh Medical College, Fatehpur"
+    },
+    {
+      "code": "905583",
+      "length": 68,
+      "title": "Gleneagles Hospitals - Super Specialty and Transplant Centre, Mumbai"
+    },
+    {
+      "code": "905588",
+      "length": 70,
+      "title": "Jayadev Memorial Rashtrotthana Hospital and Research Centre, Bengaluru"
     }
   ],
   "not_high_confidence": [
@@ -199,7 +239,7 @@
       "code": "700107",
       "confidence": "medium",
       "town": "Darbhanga",
-      "title": "Darbhanga Medical College, Darbhanga"
+      "title": "Darbhanga Medical College, Lehriasarai"
     },
     {
       "code": "700117",
@@ -259,13 +299,13 @@
       "code": "700342",
       "confidence": "medium",
       "town": "Faridkot",
-      "title": "Guru Gobind Singh Medical College, Faridkot"
+      "title": "Guru Govind Singh Medical College, Faridkot"
     },
     {
       "code": "700357",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "ABVIMS & Dr. RML Hospital, New Delhi"
+      "title": "Atal Bihari Vajpayee Institute of Medical Sciences and Dr. RML Hospital, New Delhi"
     },
     {
       "code": "700358",
@@ -295,13 +335,13 @@
       "code": "700517",
       "confidence": "medium",
       "town": "Thane",
-      "title": "Rajiv Gandhi Medical College, Thane"
+      "title": "Rajiv Gandhi Medical College and Chhatrapati Shivaji Maharaj Hospital, Thane"
     },
     {
       "code": "700529",
       "confidence": "medium",
       "town": "Pariyaram",
-      "title": "Govt. Medical College (formerly Academy of Medical Sciences), Pariyaram"
+      "title": "Govt. Medical College, Kannur"
     },
     {
       "code": "700538",
@@ -313,7 +353,7 @@
       "code": "700539",
       "confidence": "medium",
       "town": "Bangalore",
-      "title": "SDS TRC & Rajiv Gandhi Institute of Chest Diseases, Bangalore"
+      "title": "SDS Tuberculosis Research Centre and Rajiv Gandhi Institute, Bangalore"
     },
     {
       "code": "700543",
@@ -336,8 +376,8 @@
     {
       "code": "700563",
       "confidence": "medium",
-      "town": "Hanamkonda",
-      "title": "Rohini Medicare, Hanamkonda"
+      "town": "Warangal",
+      "title": "Rohini Medicare, Warangal"
     },
     {
       "code": "700599",
@@ -349,25 +389,25 @@
       "code": "700612",
       "confidence": "medium",
       "town": "Raipur",
-      "title": "Bhattar Hospital (Balgopal Children Hospital), Raipur"
+      "title": "Bhattar Hospital, Raipur"
     },
     {
       "code": "700613",
       "confidence": "medium",
       "town": "Ganiyari",
-      "title": "Jan Swasthya Sahyog, Ganiyari, Bilaspur"
+      "title": "Jan Swasthya Sahyog, Bilaspur"
     },
     {
       "code": "700624",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Batra Hospital and Medical Research Centre, New Delhi"
+      "title": "Batra Hospital and Medical Research Centre, M.B. Road"
     },
     {
       "code": "700627",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Dharamshila Narayana Superspeciality Hospital, Delhi"
+      "title": "Dharamshila Narayana Superspeciality Hospital, Vasundara Enclave"
     },
     {
       "code": "700629",
@@ -403,7 +443,7 @@
       "code": "700637",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Kalra Hospital and Shri Ram Cardiothoracic and Neuro-Sciences Centre, New Delhi"
+      "title": "Kalra Hospital and Shri Ram Cardiothoracic and Neuro-Sciences Centre, Kirti Nagar"
     },
     {
       "code": "700638",
@@ -439,13 +479,13 @@
       "code": "700648",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Pushpawati Singhania Hospital, Sheikh Sarai, New Delhi"
+      "title": "Pushpawati Singhania Hospital, Sheikh Sarai Ph-II"
     },
     {
       "code": "700649",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Rajan Babu Institute of Pulmonary Medicine & TB, Delhi"
+      "title": "Rajan Babu Institute, Kingsway Camp"
     },
     {
       "code": "700651",
@@ -457,7 +497,7 @@
       "code": "700652",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Sant Parmanand Hospital, Civil Lines, Delhi"
+      "title": "Sant Parmanand Hospital, Civil Lines"
     },
     {
       "code": "700654",
@@ -469,7 +509,7 @@
       "code": "700655",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Shroff Eye Centre, Kailash Colony, New Delhi"
+      "title": "Shroff Eye Centre, Kailash Colony"
     },
     {
       "code": "700657",
@@ -487,7 +527,7 @@
       "code": "700659",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Venu Eye Institute, Sheikh Sarai, Delhi"
+      "title": "Venu Eye Institute, Sheikh Sarai"
     },
     {
       "code": "700661",
@@ -505,37 +545,37 @@
       "code": "700668",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Swami Dayanand Hospital, Shahdara, Delhi"
+      "title": "Swami Dayanand Hospital, Shahdara"
     },
     {
       "code": "700671",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Dr. Shroff's Charity Eye Hospital, Daryaganj, Delhi"
+      "title": "Dr. Shroff's Charity Eye Hospital, Daryaganj"
     },
     {
       "code": "700672",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Shri Dada Dev Matri Avum Shishu Chikitsalaya, New Delhi"
+      "title": "Shri Dada Dev Matri Avum Shishu Chikitsalaya, Dabri"
     },
     {
       "code": "700709",
       "confidence": "medium",
       "town": "Ahmedabad",
-      "title": "The Gujarat Research and Medical Institute (Rajasthan Hospitals), Ahmedabad"
+      "title": "The Gujarat Research and Medical Institute, Ahmedabad"
     },
     {
       "code": "700715",
       "confidence": "medium",
       "town": "Dharpur",
-      "title": "GMERS Medical College and Hospital, Dharpur, Patan"
+      "title": "GMERS Medical College and Hospital, Patan"
     },
     {
       "code": "700748",
       "confidence": "medium",
       "town": "Ner Chowk",
-      "title": "Shri Lal Bahadur Shastri Government Medical College, Ner Chowk"
+      "title": "Shri Lal Bahadur Shastri Government Medical College and Hospital, Mandi"
     },
     {
       "code": "700762",
@@ -547,13 +587,13 @@
       "code": "700766",
       "confidence": "medium",
       "town": "Irba",
-      "title": "Medanta Abdur Razzaque Ansari Memorial Weavers Hospital, Irba, Ranchi"
+      "title": "Medanta Abdur Razzaque Ansari Memorial Weavers Hospital, Ranchi"
     },
     {
       "code": "700776",
       "confidence": "medium",
       "town": "Bangalore",
-      "title": "HealthCare Global (formerly Bangalore Institute of Oncology), Bangalore"
+      "title": "HealthCare Global Specialty Hospital, Bangalore"
     },
     {
       "code": "700791",
@@ -571,7 +611,7 @@
       "code": "700795",
       "confidence": "medium",
       "town": "Bangalore",
-      "title": "Sagar Hospital, Jayanagar, Bangalore"
+      "title": "Sagar Hospital, Bangalore"
     },
     {
       "code": "700797",
@@ -583,43 +623,43 @@
       "code": "700848",
       "confidence": "medium",
       "town": "Kozhippara",
-      "title": "Ahalia Foundation Eye Hospital, Kozhippara"
+      "title": "Ahalia Foundation Eye Hospital, Palakkad"
     },
     {
       "code": "700858",
       "confidence": "medium",
       "town": "Vaikom",
-      "title": "Indo American Hospital Brain and Spine Centre, Vaikom"
+      "title": "Indo American Hospital, Near Vaikom"
     },
     {
       "code": "700861",
       "confidence": "medium",
       "town": "Maradu",
-      "title": "Lakeshore Hospital and Research Centre Ltd., Maradu"
+      "title": "Lakeshore Hospital and Research Centre Ltd., Ernakulam"
     },
     {
       "code": "700889",
       "confidence": "medium",
       "town": "Cochin",
-      "title": "Renai Medicity Multi Super Specialty Hospital, Cochin"
+      "title": "Polakulath Narayanan Renai Medicity Multi Super Specialty Hospital, Cochin"
     },
     {
       "code": "700891",
       "confidence": "medium",
       "town": "Ettumanoor",
-      "title": "Caritas Hospital, Ettumanoor"
+      "title": "Caritas Hospital, Kottayam"
     },
     {
       "code": "700970",
       "confidence": "medium",
       "town": "Mumbai",
-      "title": "Kokilaben Dhirubhai Ambani Hospital, Mumbai"
+      "title": "Kokilaben Dhirubhai Ambani Hospital and Medical Research Institute, Mumbai"
     },
     {
       "code": "700977",
       "confidence": "medium",
       "town": "Pimpri-Chinchwad",
-      "title": "Surya Mother and Child Superspeciality Hospital, Pimpri-Chinchwad"
+      "title": "Surya Mother and Child Superspeciality Hospital, Pune"
     },
     {
       "code": "700983",
@@ -631,31 +671,31 @@
       "code": "701041",
       "confidence": "medium",
       "town": "Jaipur",
-      "title": "Santokbha Durlabhji Memorial Hospital, Jaipur"
+      "title": "Santokbha Durlabhji Memorial Hospital Cum Medical Research Institute, Jaipur"
     },
     {
       "code": "701072",
       "confidence": "medium",
       "town": "Sirohi",
-      "title": "District Hospital, Sirohi"
+      "title": "District Hospital, Palace Road Sirohi"
     },
     {
       "code": "701096",
       "confidence": "medium",
       "town": "Chennai",
-      "title": "Mehta Multispecialty Hospital Chetpet, Chennai"
+      "title": "Mehta Multispecialty Hospital, Chennai"
     },
     {
       "code": "701115",
       "confidence": "medium",
       "town": "Tambaram",
-      "title": "Sankara Eye Hospital, Tambaram"
+      "title": "Sankara Eye Hospital, Chennai"
     },
     {
       "code": "701120",
       "confidence": "medium",
       "town": "Coimbatore",
-      "title": "Sankara Eye Hospital (formerly Kanchi Kamakoti), Coimbatore"
+      "title": "Sankara Eye Hospital, Coimbatore"
     },
     {
       "code": "701121",
@@ -690,38 +730,38 @@
     {
       "code": "701210",
       "confidence": "medium",
-      "town": "Hanamkonda",
-      "title": "Rainbow Childrens Hospital, Hanamkonda"
+      "town": "Warangal",
+      "title": "Rainbow Childrens Hospital, Warangal"
     },
     {
       "code": "701226",
       "confidence": "medium",
       "town": "Ghaziabad",
-      "title": "Max Super Specialty Hospital (formerly Pushpanjali), Ghaziabad"
+      "title": "Max Super Specialty Hospital, Ghaziabad"
     },
     {
       "code": "701244",
       "confidence": "medium",
       "town": "Firozabad",
-      "title": "Autonomous State Medical College and S.N.M Hospital, Firozabad"
+      "title": "Autonomous State Medical college Society and S.N.M District Hospital, Firozabad"
     },
     {
       "code": "701254",
       "confidence": "medium",
       "town": "Kolkata",
-      "title": "Manipal Hospitals Dhakuria (formerly AMRI), Kolkata"
+      "title": "Manipal Hospitals (East) India Private Limited, Kolkata"
     },
     {
       "code": "701259",
       "confidence": "medium",
       "town": "Kolkata",
-      "title": "Dr. B C Roy PG Institute of Paediatric Sciences, Kolkata"
+      "title": "Dr. B C Roy Post Graduate Institute, Kolkata"
     },
     {
       "code": "701263",
       "confidence": "medium",
       "town": "Kolkata",
-      "title": "Rabindranath Tagore Intl. Institute of Cardiac Sciences, Kolkata"
+      "title": "Rabindranath Tagore International Institute, Kolkata"
     },
     {
       "code": "701270",
@@ -739,13 +779,13 @@
       "code": "701287",
       "confidence": "medium",
       "town": "Uttarpara",
-      "title": "Uttarpara State General Hospital"
+      "title": "Uttarpara State General Hospital, Hooghly"
     },
     {
       "code": "701293",
       "confidence": "medium",
       "town": "Kandi",
-      "title": "Kandi Sub Divisional Hospital"
+      "title": "Kandi Sub Divisional Hospital, Murshidabad"
     },
     {
       "code": "701319",
@@ -775,19 +815,19 @@
       "code": "701418",
       "confidence": "medium",
       "town": "Kozhippara",
-      "title": "Ahalia Diabetes Hospital, Kozhippara"
+      "title": "Ahalia Diabetes Hospital, Palakkad"
     },
     {
       "code": "701427",
       "confidence": "medium",
       "town": "Kolkata",
-      "title": "Neotia Bhagirathi Woman and Child Care Centre, New Town"
+      "title": "Neotia Bhagirathi Woman and Child Care Centre, Newtown"
     },
     {
       "code": "701452",
       "confidence": "medium",
-      "town": "Hanamkonda",
-      "title": "Laxmi Narasimha Hospital, Hanamkonda"
+      "town": "Warangal",
+      "title": "Laxmi Narasimha Hospital, Warangal"
     },
     {
       "code": "701532",
@@ -811,7 +851,7 @@
       "code": "901705",
       "confidence": "medium",
       "town": "Tambaram",
-      "title": "Dr. Rela Institute and Medical Centre, Tambaram"
+      "title": "Dr. Rela Institute and Medical Centre, Chennai"
     },
     {
       "code": "901726",
@@ -823,7 +863,7 @@
       "code": "901734",
       "confidence": "medium",
       "town": "Palai",
-      "title": "MAR SLEEVA MEDICITY PALAI"
+      "title": "MAR SLEEVA MEDICITY PALAI, Kottayam"
     },
     {
       "code": "901851",
@@ -841,13 +881,13 @@
       "code": "901855",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Parmanand Special Surgery Hospital, Kashmiri Gate, Delhi"
+      "title": "Parmanand Special Surgery Hospital, Ring Road Kashmiri Gate"
     },
     {
       "code": "901858",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Sehgal Neo Hospital, Paschim Vihar, Delhi"
+      "title": "Sehgal Neo Hospital, Paschim Vihar"
     },
     {
       "code": "902673",
@@ -859,7 +899,7 @@
       "code": "902704",
       "confidence": "medium",
       "town": "Eloor",
-      "title": "ST. JOSEPH HOSPITAL Manjummel, Eloor"
+      "title": "ST. JOSEPH HOSPITAL, Ernakulam"
     },
     {
       "code": "902705",
@@ -883,19 +923,19 @@
       "code": "902794",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "JAG PRAVESH CHANDRA HOSPITAL, Shastri Park, Delhi"
+      "title": "JAG PRAVESH CHANDRA HOSPITAL, Shahdara"
     },
     {
       "code": "902850",
       "confidence": "medium",
       "town": "Dhanbad",
-      "title": "Shaheed Nirmal Mahto Medical College (formerly Patliputra Medical College), Dhanbad"
+      "title": "Shaheed Nirmal Mahto Medical College & Hospital, Dhanbad"
     },
     {
       "code": "903280",
       "confidence": "medium",
       "town": "Vijayawada",
-      "title": "Dr. Ramesh Cardiac and Multispeciality Hospital (formerly Citi Cardiac), Vijayawada"
+      "title": "Dr. Ramesh Cardiac and Multispeciality Hospital, Vijayawada"
     },
     {
       "code": "903285",
@@ -925,31 +965,31 @@
       "code": "903320",
       "confidence": "medium",
       "town": "Parbhani",
-      "title": "R P HOSPITAL AND RESEARCH INSTITUTE, Parbhani"
+      "title": "R P HOSPITAL AND RESEARCH INSTITUTE, Tq. And Dist. Parbhani"
     },
     {
       "code": "903338",
       "confidence": "medium",
       "town": "Ramnagar",
-      "title": "LAL BAHADUR SHASTRI HOSPITAL, Ramnagar"
+      "title": "LAL BAHADUR SHASTRI HOSPITAL, Varanasi"
     },
     {
       "code": "903354",
       "confidence": "medium",
       "town": "Kolkata",
-      "title": "Chittaranjan National Cancer Institute Hazra, Kolkata"
+      "title": "Chittaranjan National Cancer Institute, Kolkata"
     },
     {
       "code": "903366",
       "confidence": "medium",
       "town": "Silvassa",
-      "title": "NAMO Medical Education and Research Institute (formerly Shri Vinoba Bhave Institute), Silvassa"
+      "title": "NAMO Medical Education and Research Institute, Silvassa"
     },
     {
       "code": "904198",
       "confidence": "medium",
       "town": "Hyderabad",
-      "title": "ANKURA HOSPITAL FOR WOMEN AND CHILDREN Gudimalkapur, Hyderabad"
+      "title": "ANKURA HOSPITAL FOR WOMEN AND CHILDREN, Hyderabad"
     },
     {
       "code": "904200",
@@ -967,13 +1007,13 @@
       "code": "904214",
       "confidence": "medium",
       "town": "Pawapuri",
-      "title": "BHAGWAN MAHAVIR INSTITUTE OF MEDICAL SCIENCES, Pawapuri"
+      "title": "BHAGWAN MAHAVIR INSTITUTE OF MEDICAL SCIENCES, Nalanda"
     },
     {
       "code": "904254",
       "confidence": "medium",
       "town": "Pimpri-Chinchwad",
-      "title": "H.B.P. PRABHAKAR MALHARRAO KUTE MEMORIAL HOSPITAL, Pimpri-Chinchwad"
+      "title": "H.B.P. PRABHAKAR MALHARRAO KUTE MEMORIAL HOSPITAL, Pune"
     },
     {
       "code": "904267",
@@ -985,19 +1025,19 @@
       "code": "904275",
       "confidence": "medium",
       "town": "Navsari",
-      "title": "GMERS Medical College and Hospital (formerly M G G General Hospital), Navsari"
+      "title": "GMERS Medical College and Hospital, Navsari"
     },
     {
       "code": "904289",
       "confidence": "medium",
       "town": "Chennai",
-      "title": "Mehta Multispeciality Hospitals, Velappanchavadi, Chennai"
+      "title": "Mehta Multispeciality Hospitals India Pvt Ltd, Chennai"
     },
     {
       "code": "904329",
       "confidence": "medium",
       "town": "Delhi",
-      "title": "Shree Aggarsain International Hospital, Rohini, Delhi"
+      "title": "Shree Aggarsain International Hospital, Rohini"
     },
     {
       "code": "904339",
@@ -1009,13 +1049,13 @@
       "code": "904341",
       "confidence": "medium",
       "town": "Hyderabad",
-      "title": "SURAKSHA WOMEN AND CHILDREN HOSPITAL, Kompally, Hyderabad"
+      "title": "SURAKSHA WOMEN AND CHILDREN HOSPITAL, Kompally"
     },
     {
       "code": "904342",
       "confidence": "medium",
       "town": "Ambajogai",
-      "title": "Swami Ramanand Teerth Rural Government Medical College, Ambajogai"
+      "title": "Swami Ramanand Teerth Rural Government And Medical College, Ambajogai"
     },
     {
       "code": "904554",
@@ -1039,13 +1079,13 @@
       "code": "904587",
       "confidence": "medium",
       "town": "Almora",
-      "title": "Soban Singh Jeena Government Institute of Medical Science, Almora"
+      "title": "Soban Singh jeena Government institute, Almora"
     },
     {
       "code": "904593",
       "confidence": "medium",
       "town": "Chittur",
-      "title": "Karuna Medical College, Chittur"
+      "title": "Karuna Medical College, Palakkad"
     },
     {
       "code": "904598",
@@ -1063,55 +1103,55 @@
       "code": "904614",
       "confidence": "medium",
       "town": "Bijnor",
-      "title": "Mahatma Vidur Autonomous State Medical College, Bijnor"
+      "title": "Mahatma Vidur Autonomous State Medical College, Distt Bijnor"
     },
     {
       "code": "904637",
       "confidence": "medium",
       "town": "Balangir",
-      "title": "Bhima Bhoi Medical College & Hospital (formerly GMC), Balangir"
+      "title": "Government Medical College & Hospital, Balangir"
     },
     {
       "code": "905561",
       "confidence": "medium",
       "town": "Siliguri",
-      "title": "Anandaloke multi speciality hospital pvt ltd, Siliguri"
+      "title": "Anandaloke multi speciality hospital pvt ltd, siliguri"
     },
     {
       "code": "905583",
       "confidence": "medium",
       "town": "Mumbai",
-      "title": "Gleneagles Hospitals (formerly Global Hospital), Mumbai"
+      "title": "Gleneagles Hospitals - Super Specialty and Transplant Centre, Mumbai"
     },
     {
       "code": "905588",
       "confidence": "medium",
       "town": "Bengaluru",
-      "title": "Jayadev Memorial Rashtrotthana Hospital, Bengaluru"
+      "title": "Jayadev Memorial Rashtrotthana Hospital and Research Centre, Bengaluru"
     },
     {
       "code": "905593",
       "confidence": "medium",
       "town": "Hyderabad",
-      "title": "DR. AKBAR EYE HOSPITAL, Hyderabad"
+      "title": "M/s. DR. AKBAR EYE HOSPITAL, Hyderabad"
     },
     {
       "code": "905608",
       "confidence": "medium",
       "town": "Bakshi Ka Talab",
-      "title": "RAM SAGAR MISHRA COMBINED HOSPITAL, Bakshi Ka Talab"
+      "title": "RAM SAGAR MISHRA COMBINED HOSPITAL, Lucknow"
     },
     {
       "code": "905654",
       "confidence": "medium",
       "town": "Eloor",
-      "title": "ESIC HOSPITAL, Eloor"
+      "title": "ESIC HOSPITAL, Ernakulam"
     },
     {
       "code": "905678",
       "confidence": "medium",
       "town": "Bahadrabad",
-      "title": "The Hans Foundation Eye Care, Bahadrabad"
+      "title": "The Hans Foundation Eye Care, Haridwar"
     },
     {
       "code": "905679",
@@ -1123,7 +1163,7 @@
       "code": "905698",
       "confidence": "medium",
       "town": "Basti",
-      "title": "Government Medical College, Basti"
+      "title": "Government Medical College, Rampur, Basti"
     }
   ],
   "aligned_same_institute": [],
@@ -1143,24 +1183,10 @@
       ]
     },
     {
-      "title": "dr. ram manohar lohia institute of medical sciences, lucknow",
-      "codes": [
-        "700385",
-        "701238"
-      ]
-    },
-    {
       "title": "institute of child health, kolkata",
       "codes": [
         "700390",
         "701268"
-      ]
-    },
-    {
-      "title": "dr. b c roy pg institute of paediatric sciences, kolkata",
-      "codes": [
-        "700409",
-        "701259"
       ]
     },
     {
@@ -1171,10 +1197,10 @@
       ]
     },
     {
-      "title": "bhagwan mahavir institute of medical sciences, pawapuri",
+      "title": "rajiv gandhi medical college and chhatrapati shivaji maharaj hospital, thane",
       "codes": [
-        "700541",
-        "904214"
+        "700517",
+        "700983"
       ]
     },
     {
@@ -1185,10 +1211,39 @@
       ]
     },
     {
-      "title": "college of medicine and jnm hospital, kalyani",
+      "title": "care hospital, hyderabad",
       "codes": [
-        "701283",
-        "701353"
+        "701165",
+        "701166"
+      ]
+    },
+    {
+      "title": "fernandez hospital, hyderabad",
+      "codes": [
+        "701180",
+        "701435"
+      ]
+    },
+    {
+      "title": "ankura hospital for women and children, hyderabad",
+      "codes": [
+        "701200",
+        "901674",
+        "904198"
+      ]
+    },
+    {
+      "title": "rainbow hospital for women and children, hyderabad",
+      "codes": [
+        "701204",
+        "701217"
+      ]
+    },
+    {
+      "title": "chittaranjan national cancer institute, kolkata",
+      "codes": [
+        "701258",
+        "903354"
       ]
     },
     {
@@ -1199,13 +1254,6 @@
       ]
     },
     {
-      "title": "homi bhabha cancer hospital, varanasi",
-      "codes": [
-        "701508",
-        "701595"
-      ]
-    },
-    {
       "title": "government medical college, gondia",
       "codes": [
         "701705",
@@ -1213,10 +1261,10 @@
       ]
     },
     {
-      "title": "amri hospitals mukundapur, kolkata",
+      "title": "sahyadri super speciality hospital, pune",
       "codes": [
-        "901673",
-        "904193"
+        "901764",
+        "902723"
       ]
     }
   ],
@@ -1226,6 +1274,18 @@
       "first": "Tiruvarur",
       "final": "Thiruvarur",
       "name": "Thiruvarur Govt. Medical College, Thiruvarur"
+    },
+    {
+      "code": "700563",
+      "first": "Hanamkonda",
+      "final": "Warangal",
+      "name": "Rohini Medicare House No. 2-5-742, Subedari, Hanamkonda Warangal - 506"
+    },
+    {
+      "code": "700586",
+      "first": "Srikalahasti",
+      "final": "Srikalahasthi",
+      "name": "Area Hospital Sriikalahasthi, Near RTC busstand Sriikalahasthi Chittoo"
     },
     {
       "code": "700848",
@@ -1250,6 +1310,24 @@
       "first": "Chennai",
       "final": "Tambaram",
       "name": "Sankara Eye Hospital, No.1, 3rd Street, Sri Sankara Nagar, Pammal, Che"
+    },
+    {
+      "code": "701201",
+      "first": "Hanamkonda",
+      "final": "Warangal",
+      "name": "Ekashilaa Hospitals ( Formerly Maxcare Hospital, A Unit of Kakatiyan M"
+    },
+    {
+      "code": "701210",
+      "first": "Hanamkonda",
+      "final": "Warangal",
+      "name": "Rainbow Childrens Hospital and Prashanthi with Birthright by Rainbow ("
+    },
+    {
+      "code": "701211",
+      "first": "Hanamkonda",
+      "final": "Warangal",
+      "name": "Amrutha Childrens Hospital, 5-10-15, Kishenpura, Hanamkonda, Warangal,"
     },
     {
       "code": "701270",
@@ -1286,6 +1364,12 @@
       "first": "New Town",
       "final": "Kolkata",
       "name": "Neotia Bhagirathi Woman and Child Care Centre (Formerly known as Bhagi"
+    },
+    {
+      "code": "701452",
+      "first": "Hanamkonda",
+      "final": "Warangal",
+      "name": "Laxmi Narasimha Hospital, H. No. 2-2-316, Beside Pushpanjali Function "
     },
     {
       "code": "901705",

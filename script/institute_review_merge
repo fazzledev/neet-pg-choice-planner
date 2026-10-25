@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require "json"
 require "set"
+require "did_you_mean"
 require_relative "../lib/town_names"
 include TownNames
 
@@ -35,6 +36,21 @@ def harmonise_title(title, town)
   (group - [town]).reduce(title) { |t, other| t.gsub(/(?<![A-Za-z])#{Regexp.escape(other)}(?![A-Za-z])/i, town) }
 end
 
+def place_of(title) = title.to_s.split(",").last.to_s.strip
+
+def keep_existing_place(title, old_title)
+  new_place = place_of(title)
+  old_place = place_of(old_title)
+  return title unless title.include?(",") && old_title.to_s.include?(",") && TownNames.same_place?(new_place, old_place)
+
+  "#{title.delete_suffix(new_place).rstrip} #{old_place}".sub(/,\s*\z/, ",").sub(/,(?=\S)/, ", ")
+end
+
+def old_title_backed_by_record?(old_title, row, first_verdict)
+  old_place = place_of(old_title)
+  first_verdict["title_ok"] && old_title.to_s.include?(",") && mentions?("#{row["name"]} #{row["address"]}", old_place)
+end
+
 def tidy_title(title)
   title.tr("`", "'").gsub(/\s+,/, ",").gsub(/,(?=\S)/, ", ").squeeze(" ").strip
 end
@@ -45,7 +61,9 @@ final = ledger.map do |code, row|
   town = state == "Delhi" ? "Delhi" : record_spelling(verdict["town"], row["name"], row["address"])
   decision = decisions.fetch(code, {})
   town = decision.fetch("town", town)
-  title = tidy_title(decision.fetch("title") { harmonise_title(verdict["title"], town) })
+  title = tidy_title(decision.fetch("title") do
+    old_title_backed_by_record?(row["title"], row, first.fetch(code)) ? row["title"] : keep_existing_place(harmonise_title(verdict["title"], town), row["title"])
+  end)
   { code:, town:, district: verdict["district"], state:, title:, old_title: row["title"], old_map_city: row["map_city"], confidence: verdict["confidence"] }
 end
 

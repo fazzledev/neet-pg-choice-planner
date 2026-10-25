@@ -10,4 +10,16 @@ class TownNamesTest < ActiveSupport::TestCase
     refute_equal TownNames.key("Panipat"), TownNames.key("Sonipat")
     assert_equal "kolargoldfields", TownNames.key("Kolar Gold Fields")
   end
+
+  test "spellings of one place count as the same place" do
+    assert TownNames.same_place?("Bengaluru", "Bangalore")
+    assert TownNames.same_place?("Ananthapur", "Anantapur")
+    assert TownNames.same_place?("Bokaro", "Bokaro Steel City")
+  end
+
+  test "new towns named after an old one are different places" do
+    refute TownNames.same_place?("Chandigarh", "New Chandigarh")
+    refute TownNames.same_place?("Mumbai", "Navi Mumbai")
+    refute TownNames.same_place?("Raipur", "Nava Raipur")
+  end
 end

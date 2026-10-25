@@ -27,7 +27,9 @@ class VerifiedPlaces
   def locations
     @used_keys = Set.new
     @final.group_by { pin_key(_1) }.each_with_object({}) do |(_, rows), found|
-      label = rows.map { _1["town"] }.tally.max_by { |town, count| [count, town] }.first
+      new_label = rows.map { _1["town"] }.tally.max_by { |town, count| [count, town] }.first
+      existing = rows.map { _1["old_map_city"] }.compact.select { TownNames.same_place?(_1, new_label) }
+      label = existing.any? ? existing.tally.max_by { |town, count| [count, town] }.first : new_label
       district = rows.map { _1["district"] }.tally.max_by(&:last).first
       state = rows.first["state"]
       place = coordinates(label, district, state)

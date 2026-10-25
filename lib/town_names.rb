@@ -9,9 +9,17 @@ module TownNames
     %w[Baharampur Berhampore], %w[Rajamahendravaram Rajahmundry], %w[Bardhaman Burdwan], %w[Medinipur Midnapore],
     %w[Purnia Purnea], %w[Chhapra Chapra], %w[Budaun Badaun], %w[Kancheepuram Kanchipuram], %w[Tiruvallur Thiruvallur],
     %w[Palai Pala], %w[Anantapur Ananthapuram Anantapuramu], %w[Tiruvannamalai Thiruvannamalai], %w[Krishnanagar Krishnagar], %w[Thrissur Trichur], %w[Kollam Quilon], %w[Alappuzha Alleppey],
-    %w[Nashik Nasik], %w[Bhubaneswar Bhubaneshwar],
+    %w[Nashik Nasik], %w[Bhubaneswar Bhubaneshwar], ["North Lakhimpur", "Lakhimpur"],
   ].freeze
 
   def self.group(town) = RENAMES.find { |names| names.any? { _1.casecmp?(town.to_s) } }
   def self.key(town) = (group(town)&.first || town).to_s.downcase.gsub(/[^a-z]/, "")
+
+  def self.same_place?(a, b)
+    x = key(a)
+    y = key(b)
+    return false if x.empty? || y.empty?
+
+    x == y || DidYouMean::Levenshtein.distance(x, y) <= 2 || (x.length > 5 && y.length > 5 && (x.start_with?(y) || y.start_with?(x)))
+  end
 end
