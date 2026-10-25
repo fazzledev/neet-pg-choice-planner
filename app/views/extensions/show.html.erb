@@ -22,15 +22,6 @@
         <% if @firefox_badge %>
           <%= link_to ExtensionPackage::FIREFOX_ADD_ONS_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/firefox-add-ons") do %><%= image_tag "store-badges/firefox-add-ons.svg", alt: "Get the add-on for Firefox", height: 64 %><% end %>
           <span class="ext-badge-meta">v<%= @version %> · updates itself from Firefox Add-ons</span>
-        <% elsif @browser == :firefox %>
-          <div class="store-note" role="note">
-            <%= image_tag "store-badges/firefox-add-ons.svg", alt: "", height: 48 %>
-            <span><strong>Coming to Firefox soon</strong>The Firefox version is almost ready. Its button will appear right here.</span>
-          </div>
-          <div class="ext-alt">
-            <span>Have Chrome, Edge or Brave too?</span>
-            <%= link_to ExtensionPackage::CHROME_WEB_STORE_URL, class: "store-badge", target: "_blank", rel: "noopener", data: click_event("extension-page/chrome-web-store") do %><%= image_tag "store-badges/chrome-web-store.png", alt: "Available in the Chrome Web Store", height: 44 %><% end %>
-          </div>
         <% elsif @browser == :other %>
           <div class="store-note" role="note">
             <span><strong>Needs Chrome, Edge, Brave or Opera</strong>This browser can't run the extension. Open this page in one of them to install it.</span>

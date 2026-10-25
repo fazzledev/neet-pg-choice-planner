@@ -4,7 +4,7 @@ What to enter on addons.mozilla.org (AMO) for the MCC Filler extension. The Chro
 
 ## Status
 
-Submitted on 2026-10-22 as version 1.3.1 and awaiting Mozilla's review. Developer profile "Fazzle Dev" (homepage fazzle.dev, sign-in with two-step authentication). Once Mozilla approves it, set `cattr_accessor :firefox_listed, default: true` in `app/models/extension_package.rb`: `/extension` and the landing page then show the Firefox Add-ons badge and list Firefox as available. In the same change, update the tests that assume it is still false (the "coming soon" cases in `test/integration/extension_download_test.rb` and `test/integration/landing_test.rb`) and the teardown and `ensure` blocks that reset it to `false`.
+Submitted on 2026-10-22 as version 1.3.1 and approved by Mozilla by 2026-10-25; the listing is public at https://addons.mozilla.org/firefox/addon/neet-pg-choice-plan-mcc-filler/ for Firefox on computers (140+) and Android (142+). Developer profile "Fazzle Dev" (homepage fazzle.dev, sign-in with two-step authentication). `/extension` shows Firefox visitors the Firefox Add-ons badge, and both `/extension` and the landing page list Firefox as available.
 
 ## How it works in Firefox
 
