@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+require "json"
+require "net/http"
+require_relative "../lib/town_names"
+
+ROOT = File.expand_path("..", __dir__)
+CACHE = "#{ROOT}/data/institute_review/reverse_cache.json"
+OUT = "#{ROOT}/data/institute_review/pin_check.json"
+USER_AGENT = "neet-pg-choice-planner/1.0 (hey@fazzle.dev)"
+
+def squash(text) = text.to_s.downcase.gsub(/[^a-z]/, "")
+
+final = File.readlines("#{ROOT}/data/institute_review/final.jsonl").map { JSON.parse(_1) }
+locations = JSON.parse(File.read("#{ROOT}/data/institute_locations.json"))
+cache = File.exist?(CACHE) ? JSON.parse(File.read(CACHE)) : {}
+
+pins = final.group_by { locations.fetch(_1["code"]) }.map do |(lat, lng, label), rows|
+  { label:, lat:, lng:, state: rows.first["state"], districts: rows.map { _1["district"] }.uniq, towns: rows.map { _1["town"] }.uniq, codes: rows.map { _1["code"] } }
+end
+
+last = nil
+pins.each_with_index do |pin, i|
+  key = "#{pin[:lat]},#{pin[:lng]}"
+  next if cache.key?(key)
+
+  sleep [0, 1.1 - (Time.now - last)].max if last
+  last = Time.now
+  uri = URI("https://nominatim.openstreetmap.org/reverse")
+  uri.query = URI.encode_www_form(format: "jsonv2", lat: pin[:lat], lon: pin[:lng], zoom: 12, addressdetails: 1, "accept-language": "en")
+  response = Net::HTTP.get_response(uri, "User-Agent" => USER_AGENT)
+  abort "reverse lookup answered #{response.code} at #{i}; rerun to continue" unless response.is_a?(Net::HTTPSuccess)
+  cache[key] = JSON.parse(response.body)
+  File.write(CACHE, JSON.generate(cache)) if (i % 20).zero?
+end
+File.write(CACHE, JSON.generate(cache))
+
+failures = pins.filter_map do |pin|
+  found = cache.fetch("#{pin[:lat]},#{pin[:lng]}")
+  address = found["address"] || {}
+  text = squash([found["display_name"], *address.values].join(" "))
+  wanted = (pin[:towns] + pin[:districts] + [pin[:label]]).flat_map { TownNames.group(_1) || [_1] }.map { squash(_1) }.reject(&:empty?)
+  state_ok = squash(address["state"]).include?(squash(pin[:state])) || squash(pin[:state]).include?(squash(address["state"])) || pin[:state] == "Delhi"
+  next if state_ok && wanted.any? { text.include?(_1) }
+
+  pin.merge(osm_says: found["display_name"], state_ok:)
+end
+
+File.write(OUT, JSON.pretty_generate(failures) + "\n")
+puts "#{pins.size} pins checked, #{failures.size} where OpenStreetMap's address at the pin names neither the town nor the district"

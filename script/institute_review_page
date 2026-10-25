@@ -3,7 +3,8 @@ require "json"
 require "erb"
 
 ROOT = File.expand_path("../data/institute_review", __dir__)
-require_relative "institute_review_renames"
+require_relative "../lib/town_names"
+include TownNames
 
 def read_jsonl(path) = File.readlines(path).map { JSON.parse(_1) }
 def squash(s) = s.to_s.downcase.gsub(/[^a-z]/, "")

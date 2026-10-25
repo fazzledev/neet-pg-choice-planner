@@ -161,7 +161,7 @@ module Mcp
       institute = counselling.institutes.find_by(code: code) or raise Invalid, "No institute has code #{code.inspect}. Find codes with search_choices."
       contact = InstituteContact.find_by(institute_code: institute.code)
       {
-        institute_code: institute.code, name: institute.name, short_name: InstituteName.shorten(institute.name), address: institute.address,
+        institute_code: institute.code, name: institute.name, short_name: InstituteTitle.for(institute.code, institute.name), address: institute.address,
         state: institute.state, state_uncertain: institute.state_doubtful, institute_type: institute.type_name,
         dnb_contact: contact&.details&.merge("researched_on" => contact.researched_on&.iso8601),
         choices: with_positions(choice_rows(institute.choices.order(:sr)))

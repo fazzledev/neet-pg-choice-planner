@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 require "json"
 require "set"
-require_relative "institute_review_renames"
+require_relative "../lib/town_names"
+include TownNames
 
 ROOT = File.expand_path("../data/institute_review", __dir__)
 

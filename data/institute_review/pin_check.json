@@ -1,0 +1,125 @@
+[
+  {
+    "label": "Nagercoil",
+    "lat": 8.175,
+    "lng": 77.4306,
+    "state": "Tamil Nadu",
+    "districts": [
+      "Kanyakumari"
+    ],
+    "towns": [
+      "Nagercoil"
+    ],
+    "codes": [
+      "700356",
+      "701094",
+      "701104",
+      "701129"
+    ],
+    "osm_says": "Suchindram, Agastheeswaram, Kanniyakumari, Tamil Nadu, 629704, India",
+    "state_ok": true
+  },
+  {
+    "label": "Chumoukedima",
+    "lat": 25.8073,
+    "lng": 93.7887,
+    "state": "Nagaland",
+    "districts": [
+      "Chumoukedima"
+    ],
+    "towns": [
+      "Chumoukedima"
+    ],
+    "codes": [
+      "700997"
+    ],
+    "osm_says": "Chumukedima, Chümoukedima, Nagaland, 797103, India",
+    "state_ok": true
+  },
+  {
+    "label": "Dholpur",
+    "lat": 26.6964,
+    "lng": 77.906,
+    "state": "Rajasthan",
+    "districts": [
+      "Dholpur"
+    ],
+    "towns": [
+      "Dholpur"
+    ],
+    "codes": [
+      "701059"
+    ],
+    "osm_says": "Dhaulpur, Dhaulpur Tehsil, Dhaulpur, Rajasthan, 328001, India",
+    "state_ok": true
+  },
+  {
+    "label": "Hooghly",
+    "lat": 22.8992,
+    "lng": 88.3921,
+    "state": "West Bengal",
+    "districts": [
+      "Hooghly"
+    ],
+    "towns": [
+      "Hooghly"
+    ],
+    "codes": [
+      "701270"
+    ],
+    "osm_says": "Halisahar, Greater Kolkata, Barrackpur - I, North 24 Parganas, West Bengal, 743134, India",
+    "state_ok": true
+  },
+  {
+    "label": "Kalyani",
+    "lat": 22.975,
+    "lng": 88.4346,
+    "state": "West Bengal",
+    "districts": [
+      "Nadia"
+    ],
+    "towns": [
+      "Kalyani"
+    ],
+    "codes": [
+      "701283",
+      "701353"
+    ],
+    "osm_says": "Kanchrapara, Greater Kolkata, Barrackpur - I, North 24 Parganas, West Bengal, 743134, India",
+    "state_ok": true
+  },
+  {
+    "label": "Neyyoor",
+    "lat": 8.1948,
+    "lng": 77.2817,
+    "state": "Tamil Nadu",
+    "districts": [
+      "Kanyakumari"
+    ],
+    "towns": [
+      "Neyyoor"
+    ],
+    "codes": [
+      "701602"
+    ],
+    "osm_says": "Kurunthancode, Mukkalampadu, Kalkulam, Kanniyakumari, Tamil Nadu, India",
+    "state_ok": true
+  },
+  {
+    "label": "New Chandigarh",
+    "lat": 30.799,
+    "lng": 76.743,
+    "state": "Punjab",
+    "districts": [
+      "SAS Nagar (Mohali)"
+    ],
+    "towns": [
+      "New Chandigarh"
+    ],
+    "codes": [
+      "904555"
+    ],
+    "osm_says": "Kharar Tahsil, Sahibzada Ajit Singh Nagar, Punjab, India",
+    "state_ok": true
+  }
+]

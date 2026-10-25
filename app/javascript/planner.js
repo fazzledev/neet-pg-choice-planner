@@ -348,13 +348,29 @@ function applyFilters(resetPaging = true) {
 const GROUP_PAGE = 30
 const GROUP_PREVIEW = 3
 
+function infoToggle() {
+  const btn = make("button", { type: "button", className: "info-btn", title: "Official name and address" })
+  btn.setAttribute("aria-expanded", "false")
+  btn.setAttribute("aria-label", "Official name and address")
+  btn.append(iconSvg(config.spriteUrl, "info"))
+  return btn
+}
+
+function instDetails(inst) {
+  const box = make("div", { className: "inst-details" })
+  box.hidden = true
+  box.append(make("span", { className: "inst-official", textContent: inst.name }))
+  if (inst.address && !normalize(inst.name).includes(normalize(inst.address))) box.append(make("span", { className: "inst-address", textContent: inst.address }))
+  return box
+}
+
 function resultItem(c) {
   const li = $("#result-tpl").content.firstElementChild.cloneNode(true)
   li.dataset.id = c.id
-  li.querySelector(".r-inst").textContent = c.inst.short
-  const addr = li.querySelector(".r-addr")
-  addr.textContent = c.inst.short === c.inst.name ? "" : c.inst.name
-  addr.title = c.inst.name
+  li.dataset.details = ""
+  const title = li.querySelector(".r-inst")
+  title.replaceChildren(make("span", { textContent: c.inst.short }), infoToggle())
+  title.after(instDetails(c.inst))
   const meta = li.querySelector(".r-meta")
   meta.replaceChildren(...stateNodes(c.inst), document.createTextNode(` · ${c.quota} · ${TYPE_SHORT[c.inst.typeCode] || c.inst.typeName}`))
   meta.title = c.inst.doubtful ? DOUBTFUL_HINT : c.inst.typeName
@@ -416,13 +432,15 @@ function groupCard(group, mode = state.groupBy) {
   const text = make("div", { className: "g-text" })
   const picked = group.items.filter((c) => state.pickIndex.has(c.id)).length
   const count = `${group.items.length} ${mode === "institute" ? (group.items.length === 1 ? "program" : "programs") : group.items.length === 1 ? "institute" : "institutes"}${picked ? ` · ${picked} in your plan` : ""}`
-  text.append(make("span", { className: "g-title", textContent: group.label, title: mode === "institute" ? first.inst.name : "" }))
   if (mode === "institute") {
+    head.dataset.details = ""
+    const titleRow = make("span", { className: "g-title-row" })
+    titleRow.append(make("span", { className: "g-title", textContent: group.label }), infoToggle())
     const meta = make("span", { className: "g-meta" })
     meta.append(...stateNodes(first.inst), document.createTextNode(` · ${TYPE_SHORT[first.inst.typeCode] || first.inst.typeName} · ${count}`))
-    text.append(meta)
-    if (first.inst.short !== first.inst.name) text.append(make("span", { className: "r-addr", textContent: first.inst.name }))
+    text.append(titleRow, meta, instDetails(first.inst))
   } else {
+    text.append(make("span", { className: "g-title", textContent: group.label }))
     text.append(make("span", { className: "g-meta", textContent: count }))
   }
   head.append(text)
@@ -905,7 +923,8 @@ function renderPicks() {
     li.querySelector(".p-pos").value = i + 1
     li.querySelector(".p-note-preview").textContent = p.note
     li.querySelector(".p-inst").textContent = c.inst.short
-    li.querySelector(".p-addr").textContent = c.inst.short === c.inst.name ? "" : c.inst.name
+    li.querySelector(".p-card").dataset.details = ""
+    li.querySelector(".p-head").after(instDetails(c.inst))
     const meta = li.querySelector(".p-meta")
     meta.replaceChildren(...programNodes(c), ...stateNodes(c.inst), document.createTextNode(` · ${c.quota}`))
     if (c.inst.doubtful) meta.title = DOUBTFUL_HINT
@@ -1709,7 +1728,19 @@ function showTab(name) {
   else if (pane === "catalog" && state.catalogView === "map") catalogMap?.resize()
 }
 
+function toggleDetails(e) {
+  const btn = e.target.closest(".info-btn")
+  if (!btn) return
+  e.stopPropagation()
+  const box = btn.closest("[data-details]")?.querySelector(".inst-details")
+  if (!box) return
+  box.hidden = !box.hidden
+  btn.setAttribute("aria-expanded", String(!box.hidden))
+  if (!box.hidden) track("opened-official-name")
+}
+
 function bind() {
+  document.addEventListener("click", toggleDetails, true)
   let debounce
   $("#q").addEventListener("input", () => {
     track("searched-catalog")
