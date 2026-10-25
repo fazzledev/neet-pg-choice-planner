@@ -11,12 +11,12 @@ Plan your NEET PG counselling choices calmly, then copy them to the MCC portal i
 - **Rank** by dragging or typing a position, gather a college's seats together, and keep a note on every choice.
 - **Works offline.** Your plan saves in the browser as you go. Signing in with an emailed link syncs it across devices, with a history you can restore from.
 - **DNB coordinator contacts** for shortlisted DNB hospitals, next to their seats.
-- **Browser extension** for the MCC choice-filling page (below): Chrome, Edge, Brave and Opera, with Firefox in review.
+- **Browser extension** for the MCC choice-filling page (below): Chrome, Edge, Brave, Opera and Firefox.
 - **ChatGPT and Claude connector**: an MCP server at `/mcp` lets an assistant search choices, read DNB contacts and edit the plan after the student signs in and allows it. Setup steps are at `/connect`.
 
 ## The extension
 
-`extension/` is the MCC Filler browser extension, on the [Chrome Web Store](https://chromewebstore.google.com/detail/dknkamnnjakgmgggbeomoakajbkdennd) and submitted to Firefox Add-ons. `/extension` links to the store and still serves the folder as a zip for installing by hand. On the MCC choice-filling page it shows *In sync* or how many choices differ from your plan, with two buttons:
+`extension/` is the MCC Filler browser extension, on the [Chrome Web Store](https://chromewebstore.google.com/detail/dknkamnnjakgmgggbeomoakajbkdennd) and [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/neet-pg-choice-plan-mcc-filler/). `/extension` links to the right store for the visitor's browser and still serves the folder as a zip for installing by hand. On the MCC choice-filling page it shows *In sync* or how many choices differ from your plan, with two buttons:
 
 - **Plan → MCC** makes the MCC list an exact copy of your plan: adds missing choices, removes ones not in your plan, and arranges them in your order. You check it, then press Save and Continue and enter the OTP.
 - **MCC → Plan** makes your plan a copy of what is saved on MCC, after you confirm in the planner. It can be undone.

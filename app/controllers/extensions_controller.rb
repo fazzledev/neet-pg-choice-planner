@@ -4,7 +4,7 @@ class ExtensionsController < ApplicationController
   def show
     @version = ExtensionPackage.version
     @browser = browser_family(request.user_agent.to_s)
-    @firefox_badge = @browser == :firefox && ExtensionPackage.firefox_listed
+    @firefox_badge = @browser == :firefox
     response.headers["Vary"] = "User-Agent"
   end
 

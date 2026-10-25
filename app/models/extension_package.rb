@@ -5,7 +5,6 @@ class ExtensionPackage
   FOLDER = "choice-planner-filler"
   CHROME_WEB_STORE_URL = "https://chromewebstore.google.com/detail/dknkamnnjakgmgggbeomoakajbkdennd"
   FIREFOX_ADD_ONS_URL = "https://addons.mozilla.org/firefox/addon/neet-pg-choice-plan-mcc-filler/"
-  cattr_accessor :firefox_listed, default: false
 
   def self.files
     SOURCE.glob("**/*").select(&:file?).sort
