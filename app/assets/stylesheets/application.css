@@ -1111,7 +1111,8 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
 .ext-group { display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 16px; }
 .ext-group h3 { margin: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; }
 .ext-group h3 .icon { width: 16px; height: 16px; }
-.ext-group ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; }
+.ext-group ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.ext-group-now ul { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
 .ext-group li { display: flex; align-items: center; gap: 10px; }
 .ext-group li img { flex: none; width: 28px; height: 28px; }
 .ext-group li span { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); }
