@@ -14,12 +14,17 @@ class TownNamesTest < ActiveSupport::TestCase
   test "spellings of one place count as the same place" do
     assert TownNames.same_place?("Bengaluru", "Bangalore")
     assert TownNames.same_place?("Ananthapur", "Anantapur")
-    assert TownNames.same_place?("Bokaro", "Bokaro Steel City")
+    assert TownNames.same_place?("Rajauri", "Rajouri")
+    assert TownNames.same_place?("Mahesana", "Mehsana")
+    assert TownNames.same_place?("Chamrajnagar", "Chamarajanagar")
   end
 
-  test "new towns named after an old one are different places" do
-    refute TownNames.same_place?("Chandigarh", "New Chandigarh")
+  test "different towns with similar names are different places" do
     refute TownNames.same_place?("Mumbai", "Navi Mumbai")
-    refute TownNames.same_place?("Raipur", "Nava Raipur")
+    refute TownNames.same_place?("Bangalore", "Bangalore Rural")
+    refute TownNames.same_place?("Solapur", "Kolhapur")
+    refute TownNames.same_place?("Panipat", "Sonipat")
+    refute TownNames.same_place?("Tiruvarur", "Tiruvallur")
+    refute TownNames.same_place?("Bengaluru", "Mangalore")
   end
 end

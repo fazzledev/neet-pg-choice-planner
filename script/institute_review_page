@@ -4,7 +4,6 @@ require "erb"
 
 ROOT = File.expand_path("../data/institute_review", __dir__)
 require "set"
-require "did_you_mean"
 require_relative "../lib/town_names"
 
 def read_jsonl(path) = File.readlines(path).map { JSON.parse(_1) }
@@ -26,7 +25,7 @@ rows = final.map do |f|
                end
   {
     code: f["code"], name: ledger[f["code"]]["name"], state: f["state"], district: f["district"],
-    title_was: f["old_title"], title: f["title"], pin_was: was, pin:, pin_change:,
+    title: ledger[f["code"]]["title"], pin_was: was, pin:, pin_change:,
     confidence: f["confidence"], evidence: second.dig(f["code"], "evidence").to_s
   }
 end
@@ -36,7 +35,6 @@ summary = {
   pins: labels.size,
   moved: rows.count { _1[:pin_change] == "move" },
   relabelled: rows.count { _1[:pin_change] == "relabel" },
-  titles: rows.count { _1[:title] != _1[:title_was] },
   uncertain: rows.count { _1[:confidence] != "high" }
 }
 

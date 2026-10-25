@@ -6,13 +6,6 @@
     ],
     "source": "Wikipedia, Ahmednagar city; the lookup returned a point 17 km west"
   },
-  "Anakapalli|Anakapalli|Andhra Pradesh": {
-    "at": [
-      17.6913,
-      83.0039
-    ],
-    "source": "Wikipedia, Anakapalli; the lookup returned a point near Srikakulam"
-  },
   "Ananthapur|Anantapur|Andhra Pradesh": {
     "at": [
       14.6819,
@@ -27,40 +20,26 @@
     ],
     "source": "Wikipedia, Bathalapalle"
   },
+  "Bhojpur|Bhojpur|Bihar": {
+    "at": [
+      25.5667,
+      84.6667
+    ],
+    "source": "Wikipedia, Arrah (Bhojpur district headquarters, where Sadar Hospital is); the lookup returned Dumraon in Buxar"
+  },
+  "Chandigarh|SAS Nagar (Mohali)|Punjab": {
+    "at": [
+      30.799,
+      76.743
+    ],
+    "source": "Wikipedia, Mullanpur Garibdass (New Chandigarh); the lookup returned a point 6 km toward Chandigarh"
+  },
   "Chikkaballapur|Chikkaballapur|Karnataka": {
     "at": [
       13.4355,
       77.7315
     ],
     "source": "Wikipedia, Chikkaballapur; the lookup returned a point 30 km away"
-  },
-  "Irba|Ranchi|Jharkhand": {
-    "at": [
-      23.4574,
-      85.4424
-    ],
-    "source": "Wikipedia, Irba"
-  },
-  "Kalamasseri|Ernakulam|Kerala": {
-    "at": [
-      10.051,
-      76.315
-    ],
-    "source": "Wikipedia, Kalamassery"
-  },
-  "Mastichak|Saran|Bihar": {
-    "at": [
-      25.8688,
-      85.0362
-    ],
-    "source": "Wikipedia, Akhand Jyoti Eye Hospital"
-  },
-  "Mota Fofalia|Vadodara|Gujarat": {
-    "at": [
-      21.9112,
-      73.3397
-    ],
-    "source": "approximate: Sinor, the taluka town about 7 km away; the village is not on OpenStreetMap"
   },
   "Nagercoil|Kanyakumari|Tamil Nadu": {
     "at": [
@@ -75,12 +54,5 @@
       77.321
     ],
     "source": "Wikipedia, Nanded; the lookup returned a point near Wardha"
-  },
-  "New Chandigarh|SAS Nagar (Mohali)|Punjab": {
-    "at": [
-      30.799,
-      76.743
-    ],
-    "source": "Wikipedia, Mullanpur Garibdass (New Chandigarh); the lookup returned a point 6 km toward Chandigarh"
   }
 }

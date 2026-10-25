@@ -14,7 +14,7 @@ class VerifiedPlacesTest < ActiveSupport::TestCase
 
   def hit(lat, lng, state) = { "lat" => lat.to_s, "lon" => lng.to_s, "place_rank" => 16, "address" => { "state" => state } }
 
-  def row(code, town, district, state, title = "Hospital, #{town}") = { "code" => code, "town" => town, "district" => district, "state" => state, "title" => title }
+  def row(code, town, district, state) = { "code" => code, "town" => town, "district" => district, "state" => state }
 
   def places(final, answers: {}, overrides: {})
     Offline.new(final:, answers:, overrides:, cache_path: Pathname(Dir.mktmpdir).join("cache.json"))
@@ -24,6 +24,12 @@ class VerifiedPlacesTest < ActiveSupport::TestCase
     final = [row("1", "Bangalore", "Bengaluru Urban", "Karnataka"), row("2", "Bangalore", "Bengaluru Urban", "Karnataka"), row("3", "Bengaluru", "Bengaluru Urban", "Karnataka")]
     found = places(final, answers: { "Bangalore" => [hit(12.97, 77.59, "Karnataka")] }).locations
     assert_equal [[12.97, 77.59, "Bangalore"]], found.values.uniq
+  end
+
+  test "a town spelled two ways in one state gets one pin" do
+    final = [row("1", "Tiruvalla", "Pathanamthitta", "Kerala"), row("2", "Thiruvalla", "Pathanamthitta", "Kerala"), row("3", "Tiruvalla", "Pathanamthitta", "Kerala")]
+    found = places(final, answers: { "Tiruvalla" => [hit(9.38, 76.57, "Kerala")] }).locations
+    assert_equal [[9.38, 76.57, "Tiruvalla"]], found.values.uniq
   end
 
   test "all of Delhi is one pin" do
@@ -44,9 +50,5 @@ class VerifiedPlacesTest < ActiveSupport::TestCase
     subject = places(final, answers: { "Srinagar" => [hit(34.08, 74.8, "Jammu and Kashmir")] })
     assert_nil subject.locations["1"]
     assert_equal "not found", subject.flags.first[:problem]
-  end
-
-  test "titles come straight from the review" do
-    assert_equal({ "1" => "KIMS Saveera Hospital, Anantapur" }, places([row("1", "Anantapur", "Anantapur", "Andhra Pradesh", "KIMS Saveera Hospital, Anantapur")]).titles)
   end
 end

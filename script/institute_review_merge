@@ -1,104 +1,45 @@
 #!/usr/bin/env ruby
 require "json"
-require "set"
-require "did_you_mean"
 require_relative "../lib/town_names"
-include TownNames
 
 ROOT = File.expand_path("../data/institute_review", __dir__)
 
-
 def read_jsonl(path) = File.readlines(path).map { JSON.parse(_1) }
-def mentions?(text, word) = text.match?(/(?<![A-Za-z])#{Regexp.escape(word)}(?![A-Za-z])/i)
-def name_key(name) = name.downcase.gsub(/[^a-z0-9]+/, " ").squeeze(" ").strip
+def mentions?(text, word) = !word.to_s.strip.empty? && text.match?(/(?<![A-Za-z])#{Regexp.escape(word.strip)}(?![A-Za-z])/i)
+def rename_group(town) = TownNames.group(town)
 
 ledger = read_jsonl("#{ROOT}/ledger.jsonl").to_h { [_1["code"], _1] }
-first = Dir["#{ROOT}/results/*.jsonl"].flat_map { read_jsonl(_1) }.to_h { [_1["code"], _1] }
 decisions = JSON.parse(File.read("#{ROOT}/decisions.json"))
 second = Dir["#{ROOT}/second_pass/{results,results_rest}/*.jsonl"].flat_map { read_jsonl(_1) }.to_h { [_1["code"], _1] }
 
 missing = ledger.keys - second.keys
 abort "second pass missing #{missing.size} codes: #{missing.first(10).join(', ')}" if missing.any?
 
-def rename_group(town) = RENAMES.find { |names| names.any? { _1.casecmp?(town) } }
-
-def record_spelling(town, name, address)
+def record_spelling(town, record)
   group = rename_group(town) or return town
-  [name, address].each do |text|
-    present = group.select { mentions?(text.to_s, _1) }
-    return present.first if present.one?
-  end
-  town
-end
-
-def harmonise_title(title, town)
-  group = rename_group(town) or return title
-  (group - [town]).reduce(title) { |t, other| t.gsub(/(?<![A-Za-z])#{Regexp.escape(other)}(?![A-Za-z])/i, town) }
-end
-
-def place_of(title) = title.to_s.split(",").last.to_s.strip
-
-def keep_existing_place(title, old_title)
-  new_place = place_of(title)
-  old_place = place_of(old_title)
-  return title unless title.include?(",") && old_title.to_s.include?(",") && TownNames.same_place?(new_place, old_place)
-
-  "#{title.delete_suffix(new_place).rstrip} #{old_place}".sub(/,\s*\z/, ",").sub(/,(?=\S)/, ", ")
-end
-
-def old_title_backed_by_record?(old_title, row, first_verdict)
-  old_place = place_of(old_title)
-  first_verdict["title_ok"] && old_title.to_s.include?(",") && mentions?("#{row["name"]} #{row["address"]}", old_place)
-end
-
-def tidy_title(title)
-  title.tr("`", "'").gsub(/\s+,/, ",").gsub(/,(?=\S)/, ", ").squeeze(" ").strip
+  present = group.select { mentions?(record, _1) }
+  present.one? ? present.first : town
 end
 
 final = ledger.map do |code, row|
   verdict = second.fetch(code)
   state = verdict["state"]
-  town = state == "Delhi" ? "Delhi" : record_spelling(verdict["town"], row["name"], row["address"])
-  decision = decisions.fetch(code, {})
-  town = decision.fetch("town", town)
-  title = tidy_title(decision.fetch("title") do
-    old_title_backed_by_record?(row["title"], row, first.fetch(code)) ? row["title"] : keep_existing_place(harmonise_title(verdict["title"], town), row["title"])
-  end)
-  { code:, town:, district: verdict["district"], state:, title:, old_title: row["title"], old_map_city: row["map_city"], confidence: verdict["confidence"] }
-end
-
-by_code = final.to_h { [_1[:code], _1] }
-same_institute = ledger.values.group_by { [name_key(_1["name"]), by_code[_1["code"]][:town]] }.values.select { _1.size > 1 }
-aligned = []
-same_institute.each do |rows|
-  titles = rows.map { by_code[_1["code"]][:title] }
-  next if titles.uniq.one?
-
-  chosen = titles.tally.max_by { |title, count| [count, -title.length] }.first
-  rows.each { by_code[_1["code"]][:title] = chosen }
-  aligned << { codes: rows.map { _1["code"] }, titles: titles.uniq, chosen: }
-end
-
-duplicate_titles = final.group_by { _1[:title].downcase }.select { |_, rows| rows.size > 1 }
-  .reject { |_, rows| rows.map { name_key(ledger[_1[:code]]["name"]) }.uniq.one? }
-  .map { |title, rows| { title:, codes: rows.map { _1[:code] } } }
-
-town_changes = final.filter_map do |f|
-  was = first.fetch(f[:code])["town"]
-  same = was.casecmp?(f[:town]) || RENAMES.any? { |g| g.any? { _1.casecmp?(was) } && g.any? { _1.casecmp?(f[:town]) } } || f[:state] == "Delhi"
-  { code: f[:code], first: was, final: f[:town], name: ledger[f[:code]]["name"][0, 70] } unless same
+  record = "#{row["name"]} #{row["address"]}"
+  current = row["map_city"]
+  town = if state == "Delhi" then "Delhi"
+         elsif mentions?(record, current) || TownNames.same_place?(current, verdict["town"]) then current
+         else decisions.dig(code, "town") || record_spelling(verdict["town"], record)
+         end
+  { code:, town:, district: verdict["district"], state:, old_map_city: current, kept: town == current, confidence: verdict["confidence"] }
 end
 
 File.write("#{ROOT}/final.jsonl", final.map { _1.to_json }.join("\n") + "\n")
+moved = final.reject { _1[:kept] || _1[:state] == "Delhi" }
 report = {
   institutes: final.size,
-  towns: final.map { [_1[:state], _1[:town]] }.uniq.size,
-  titles_changed: final.count { _1[:title] != _1[:old_title] },
-  long_titles: final.select { _1[:title].length > 65 }.map { { code: _1[:code], length: _1[:title].length, title: _1[:title] } },
-  not_high_confidence: final.reject { _1[:confidence] == "high" }.map { { code: _1[:code], confidence: _1[:confidence], town: _1[:town], title: _1[:title] } },
-  aligned_same_institute: aligned,
-  duplicate_titles:,
-  town_changes_between_passes: town_changes
+  pins_kept: final.count { _1[:kept] },
+  pins_moved: moved.size,
+  moved_not_high_confidence: moved.reject { _1[:confidence] == "high" }.map { _1.slice(:code, :old_map_city, :town, :confidence) }
 }
 File.write("#{ROOT}/merge_report.json", JSON.pretty_generate(report) + "\n")
 puts report.transform_values { _1.is_a?(Array) ? _1.size : _1 }.to_json

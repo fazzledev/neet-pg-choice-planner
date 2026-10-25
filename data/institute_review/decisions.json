@@ -1,47 +1,10 @@
 {
-  "700481": {
-    "town": "Secunderabad",
-    "why": "MCC record names Secunderabad; kept as the record's town"
-  },
-  "700759": {
-    "title": "Government Medical College and Associated Hospital, Anantnag",
-    "why": "different site (Janglat Mandi) from 904588 (Dailgam); keep MCC's distinguishing words"
-  },
-  "700760": {
-    "title": "Associated Hospital Government Medical College, Kathua",
-    "why": "MCC lists the associated hospital separately from 904634"
-  },
-  "700761": {
-    "title": "Associated Hospital Government Medical College, Baramulla",
-    "why": "MCC lists the associated hospital separately from 904589"
-  },
-  "903285": {
-    "town": "Biharsharif",
-    "why": "MCC record spelling"
-  },
   "904216": {
     "town": "Vasai",
     "why": "MCC record says Vasai (West)"
   },
-  "904546": {
-    "title": "Sri Sri Holistic Hospital, Kukatpally, Hyderabad",
-    "why": "locality alone names no city"
-  },
-  "701258": {
-    "title": "Chittaranjan National Cancer Institute, Kolkata",
-    "why": "entry covers both CNCI campuses; 903354 is the Hazra campus"
-  },
   "700586": {
     "town": "Srikalahasthi",
-    "title": "Area Hospital Sriikalahasthi",
-    "why": "keep the existing title, spelled as MCC spells it; pin label from the MCC address"
-  },
-  "701452": {
-    "town": "Warangal",
-    "why": "existing title and pin say Warangal, as do the other Hanamkonda-district hospitals titled Warangal"
-  },
-  "700848": {
-    "town": "Kozhippara",
-    "why": "same Ahalia campus as 701319 and 701418; title keeps MCC's Palakkad"
+    "why": "MCC address spelling"
   }
 }

@@ -1,34 +1,51 @@
 [
   {
-    "label": "Nagercoil",
-    "lat": 8.175,
-    "lng": 77.4306,
+    "label": "Kanyakumari",
+    "lat": 8.3973,
+    "lng": 77.3977,
     "state": "Tamil Nadu",
     "districts": [
       "Kanyakumari"
     ],
     "towns": [
-      "Nagercoil"
+      "Kanyakumari"
     ],
     "codes": [
       "700356",
       "701094",
       "701104",
-      "701129"
+      "701602"
     ],
-    "osm_says": "Suchindram, Agastheeswaram, Kanniyakumari, Tamil Nadu, 629704, India",
+    "osm_says": "Thiruvattar, Kalkulam, Kanniyakumari, Tamil Nadu, India",
     "state_ok": true
   },
   {
-    "label": "Chumoukedima",
-    "lat": 25.8073,
-    "lng": 93.7887,
+    "label": "Tiruvarur",
+    "lat": 10.7746,
+    "lng": 79.628,
+    "state": "Tamil Nadu",
+    "districts": [
+      "Tiruvarur"
+    ],
+    "towns": [
+      "Tiruvarur"
+    ],
+    "codes": [
+      "700530"
+    ],
+    "osm_says": "Thiruvarur, Tamil Nadu, 610001, India",
+    "state_ok": true
+  },
+  {
+    "label": "Dimapur",
+    "lat": 25.8842,
+    "lng": 93.7698,
     "state": "Nagaland",
     "districts": [
       "Chumoukedima"
     ],
     "towns": [
-      "Chumoukedima"
+      "Dimapur"
     ],
     "codes": [
       "700997"
@@ -54,6 +71,45 @@
     "state_ok": true
   },
   {
+    "label": "Nagercoil",
+    "lat": 8.175,
+    "lng": 77.4306,
+    "state": "Tamil Nadu",
+    "districts": [
+      "Kanyakumari"
+    ],
+    "towns": [
+      "Nagercoil"
+    ],
+    "codes": [
+      "701129"
+    ],
+    "osm_says": "Suchindram, Agastheeswaram, Kanniyakumari, Tamil Nadu, 629704, India",
+    "state_ok": true
+  },
+  {
+    "label": "Gachibowli",
+    "lat": 17.4517,
+    "lng": 78.3659,
+    "state": "Telangana",
+    "districts": [
+      "Rangareddy",
+      "Ranga Reddy"
+    ],
+    "towns": [
+      "Gachibowli"
+    ],
+    "codes": [
+      "701179",
+      "701212",
+      "701215",
+      "904299",
+      "905591"
+    ],
+    "osm_says": "Greater Hyderabad Municipal Corporation West Zone, Hyderabad, Kukatpally mandal, Medchal–Malkajgiri, Telangana, India",
+    "state_ok": true
+  },
+  {
     "label": "Hooghly",
     "lat": 22.8992,
     "lng": 88.3921,
@@ -65,7 +121,9 @@
       "Hooghly"
     ],
     "codes": [
-      "701270"
+      "701270",
+      "701287",
+      "701297"
     ],
     "osm_says": "Halisahar, Greater Kolkata, Barrackpur - I, North 24 Parganas, West Bengal, 743134, India",
     "state_ok": true
@@ -82,31 +140,30 @@
       "Kalyani"
     ],
     "codes": [
-      "701283",
       "701353"
     ],
     "osm_says": "Kanchrapara, Greater Kolkata, Barrackpur - I, North 24 Parganas, West Bengal, 743134, India",
     "state_ok": true
   },
   {
-    "label": "Neyyoor",
-    "lat": 8.1948,
-    "lng": 77.2817,
-    "state": "Tamil Nadu",
+    "label": "Kodagu",
+    "lat": 12.2519,
+    "lng": 75.7412,
+    "state": "Karnataka",
     "districts": [
-      "Kanyakumari"
+      "Kodagu"
     ],
     "towns": [
-      "Neyyoor"
+      "Kodagu"
     ],
     "codes": [
-      "701602"
+      "701511"
     ],
-    "osm_says": "Kurunthancode, Mukkalampadu, Kalkulam, Kanniyakumari, Tamil Nadu, India",
+    "osm_says": "Virajpet taluk, Coorg, Karnataka, India",
     "state_ok": true
   },
   {
-    "label": "New Chandigarh",
+    "label": "Chandigarh",
     "lat": 30.799,
     "lng": 76.743,
     "state": "Punjab",
@@ -114,7 +171,7 @@
       "SAS Nagar (Mohali)"
     ],
     "towns": [
-      "New Chandigarh"
+      "Chandigarh"
     ],
     "codes": [
       "904555"

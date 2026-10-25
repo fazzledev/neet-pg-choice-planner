@@ -66,13 +66,12 @@ tr:last-child td { border-bottom: 0; }
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:8px">
     <h1>Institute location review</h1>
-    <p class="lede">Every one of the <%= summary[:institutes] %> MCC institutes was checked twice, from its official name, address and pincode, with web lookups where those didn't settle it. Below is what changes in the planner: the city pin on the map and the card title. Existing card titles and pin names stay whenever MCC's own record backs them; only wrong places change. All of Delhi is one pin. Nothing here is live yet.</p>
+    <p class="lede">Every one of the <%= summary[:institutes] %> MCC institutes was checked twice, from its official name, address and pincode, with web lookups where those didn't settle it. Card titles don't change. A map pin moves only when its current place isn't in MCC's own record for the institute; every other pin keeps its name. All of Delhi is one pin. Nothing here is live yet.</p>
   </header>
 
   <div class="tabs" role="group" aria-label="Show">
     <button class="tab" type="button" data-filter="move" aria-pressed="true"><b><%= summary[:moved] %></b><span>Pins that move to another place</span></button>
     <button class="tab" type="button" data-filter="relabel" aria-pressed="false"><b><%= summary[:relabelled] %></b><span>Pins renamed, same place</span></button>
-    <button class="tab" type="button" data-filter="title" aria-pressed="false"><b><%= summary[:titles] %></b><span>Card titles changed</span></button>
     <button class="tab" type="button" data-filter="unsure" aria-pressed="false"><b><%= summary[:uncertain] %></b><span>Reviewer not fully sure</span></button>
     <button class="tab" type="button" data-filter="all" aria-pressed="false"><b><%= summary[:institutes] %></b><span>All institutes</span></button>
   </div>
@@ -85,7 +84,7 @@ tr:last-child td { border-bottom: 0; }
 
   <div class="table-box">
     <table>
-      <thead><tr><th>Institute</th><th>Card title</th><th>Map pin</th><th>Confidence</th><th>Evidence</th></tr></thead>
+      <thead><tr><th>Institute</th><th>Card title (unchanged)</th><th>Map pin</th><th>Confidence</th><th>Evidence</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
@@ -101,7 +100,6 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<
 const matches = {
   move: (r) => r.pin_change === "move",
   relabel: (r) => r.pin_change === "relabel",
-  title: (r) => r.title !== r.title_was,
   unsure: (r) => r.confidence !== "high",
   all: () => true,
 };
@@ -113,7 +111,7 @@ function render() {
   const list = ROWS.filter(matches[filter]).filter((r) => !q || [r.code, r.name, r.title, r.pin, r.pin_was, r.state, r.district].join(" ").toLowerCase().includes(q));
   const html = list.slice(0, shown).map((r) => `<tr>
     <td><span class="code">${esc(r.code)}</span><span class="official">${esc(r.name)}</span></td>
-    <td>${pair(r.title_was, r.title, r.title !== r.title_was)}</td>
+    <td><span class="same">${esc(r.title)}</span></td>
     <td>${pair(r.pin_was, r.pin, r.pin_change !== "same")}${r.pin_change !== "same" ? ` <span class="chip ${r.pin_change}">${r.pin_change === "move" ? "moves" : "renamed"}</span>` : ""}<span class="place">${esc(r.district)}, ${esc(r.state)}</span></td>
     <td>${r.confidence === "high" ? '<span class="same">High</span>' : `<span class="chip ${esc(r.confidence)}">${r.confidence === "medium" ? "Medium" : "Low"}</span>`}</td>
     <td class="evidence">${esc(r.evidence)}</td>
