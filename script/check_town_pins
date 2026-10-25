@@ -14,7 +14,8 @@ final = File.readlines("#{ROOT}/data/institute_review/final.jsonl").map { JSON.p
 locations = JSON.parse(File.read("#{ROOT}/data/institute_locations.json"))
 cache = File.exist?(CACHE) ? JSON.parse(File.read(CACHE)) : {}
 
-pins = final.group_by { locations.fetch(_1["code"]) }.map do |(lat, lng, label), rows|
+placed = final.select { locations[_1["code"]] }
+pins = placed.group_by { locations.fetch(_1["code"]) }.map do |(lat, lng, label), rows|
   { label:, lat:, lng:, state: rows.first["state"], districts: rows.map { _1["district"] }.uniq, towns: rows.map { _1["town"] }.uniq, codes: rows.map { _1["code"] } }
 end
 
@@ -30,7 +31,7 @@ pins.each_with_index do |pin, i|
   response = Net::HTTP.get_response(uri, "User-Agent" => USER_AGENT)
   abort "reverse lookup answered #{response.code} at #{i}; rerun to continue" unless response.is_a?(Net::HTTPSuccess)
   cache[key] = JSON.parse(response.body)
-  File.write(CACHE, JSON.generate(cache)) if (i % 20).zero?
+  File.write(CACHE, JSON.generate(cache))
 end
 File.write(CACHE, JSON.generate(cache))
 
@@ -46,4 +47,4 @@ failures = pins.filter_map do |pin|
 end
 
 File.write(OUT, JSON.pretty_generate(failures) + "\n")
-puts "#{pins.size} pins checked, #{failures.size} where OpenStreetMap's address at the pin names neither the town nor the district"
+puts "#{final.size - placed.size} institutes have no pin. #{pins.size} pins checked, #{failures.size} where OpenStreetMap's address at the pin names neither the town nor the district"

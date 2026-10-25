@@ -1238,6 +1238,7 @@ body.ext-body { display: block; height: auto; min-height: 100%; }
   #catalog-view { display: none; }
   .segmented-small button { padding: 0 9px; }
   .seg-label { display: none; }
+  .info-btn { width: 40px; height: 40px; min-height: 40px; margin: -9px -4px; }
 }
 
 .ai-apps { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }

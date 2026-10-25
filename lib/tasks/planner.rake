@@ -22,8 +22,9 @@ namespace :planner do
       overrides: JSON.parse(Rails.root.join("data/town_overrides.json").read)
     )
     locations = places.locations
-    InstituteLocation::PATH.write(InstituteLocation.dump(locations))
-    InstituteTitle::PATH.write(InstituteLocation.dump(places.titles))
+    InstituteLocation::PATH.write(CodeMap.dump(locations))
+    InstituteTitle::PATH.write(CodeMap.dump(places.titles))
+    places.unused_overrides.each { puts "warning: override #{_1} matched no town; check data/town_overrides.json" }
     review.join("place_flags.json").write(JSON.pretty_generate(places.flags) + "\n")
     puts "#{locations.values.compact.size} of #{locations.size} institutes pinned to #{locations.values.compact.map(&:last).uniq.size} towns; #{places.flags.size} pins flagged"
   end

@@ -22,7 +22,10 @@ class VerifiedPlaces
     @flags = []
   end
 
+  def unused_overrides = @overrides.keys - @used_keys.to_a
+
   def locations
+    @used_keys = Set.new
     @final.group_by { pin_key(_1) }.each_with_object({}) do |(_, rows), found|
       label = rows.map { _1["town"] }.tally.max_by { |town, count| [count, town] }.first
       district = rows.map { _1["district"] }.tally.max_by(&:last).first
@@ -43,6 +46,7 @@ class VerifiedPlaces
 
   def coordinates(label, district, state)
     key = [label, district, state].join("|")
+    @used_keys << key
     return @overrides[key] if @overrides.key?(key)
     return @cache[key] if @cache.key?(key)
 

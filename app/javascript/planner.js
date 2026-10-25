@@ -117,6 +117,7 @@ const state = {
   catalogView: "list",
   locations: null,
   mapPoint: null,
+  openDetails: new Set(),
   mapPoints: new Map(),
   refitMap: false,
   mapSubject: "plan",
@@ -348,17 +349,25 @@ function applyFilters(resetPaging = true) {
 const GROUP_PAGE = 30
 const GROUP_PREVIEW = 3
 
-function infoToggle() {
-  const btn = make("button", { type: "button", className: "info-btn", title: "Official name and address" })
-  btn.setAttribute("aria-expanded", "false")
-  btn.setAttribute("aria-label", "Official name and address")
-  btn.append(iconSvg(config.spriteUrl, "info"))
+function paintInfoToggle(btn, inst) {
+  const open = state.openDetails.has(inst.code)
+  btn.dataset.code = inst.code
+  btn.setAttribute("aria-expanded", String(open))
+  btn.setAttribute("aria-label", `Official name and address of ${inst.short}`)
+  btn.title = "Official name and address"
   return btn
+}
+
+function infoToggle(inst) {
+  const btn = make("button", { type: "button", className: "info-btn" })
+  btn.append(iconSvg(config.spriteUrl, "info"))
+  return paintInfoToggle(btn, inst)
 }
 
 function instDetails(inst) {
   const box = make("div", { className: "inst-details" })
-  box.hidden = true
+  box.dataset.code = inst.code
+  box.hidden = !state.openDetails.has(inst.code)
   box.append(make("span", { className: "inst-official", textContent: inst.name }))
   if (inst.address && !normalize(inst.name).includes(normalize(inst.address))) box.append(make("span", { className: "inst-address", textContent: inst.address }))
   return box
@@ -369,7 +378,7 @@ function resultItem(c) {
   li.dataset.id = c.id
   li.dataset.details = ""
   const title = li.querySelector(".r-inst")
-  title.replaceChildren(make("span", { textContent: c.inst.short }), infoToggle())
+  title.replaceChildren(make("span", { textContent: c.inst.short }), infoToggle(c.inst))
   title.after(instDetails(c.inst))
   const meta = li.querySelector(".r-meta")
   meta.replaceChildren(...stateNodes(c.inst), document.createTextNode(` · ${c.quota} · ${TYPE_SHORT[c.inst.typeCode] || c.inst.typeName}`))
@@ -435,7 +444,7 @@ function groupCard(group, mode = state.groupBy) {
   if (mode === "institute") {
     head.dataset.details = ""
     const titleRow = make("span", { className: "g-title-row" })
-    titleRow.append(make("span", { className: "g-title", textContent: group.label }), infoToggle())
+    titleRow.append(make("span", { className: "g-title", textContent: group.label }), infoToggle(first.inst))
     const meta = make("span", { className: "g-meta" })
     meta.append(...stateNodes(first.inst), document.createTextNode(` · ${TYPE_SHORT[first.inst.typeCode] || first.inst.typeName} · ${count}`))
     text.append(titleRow, meta, instDetails(first.inst))
@@ -924,6 +933,7 @@ function renderPicks() {
     li.querySelector(".p-note-preview").textContent = p.note
     li.querySelector(".p-inst").textContent = c.inst.short
     li.querySelector(".p-card").dataset.details = ""
+    paintInfoToggle(li.querySelector(".info-btn"), c.inst)
     li.querySelector(".p-head").after(instDetails(c.inst))
     const meta = li.querySelector(".p-meta")
     meta.replaceChildren(...programNodes(c), ...stateNodes(c.inst), document.createTextNode(` · ${c.quota}`))
@@ -1730,13 +1740,14 @@ function showTab(name) {
 
 function toggleDetails(e) {
   const btn = e.target.closest(".info-btn")
-  if (!btn) return
+  if (!btn?.dataset.code) return
   e.stopPropagation()
-  const box = btn.closest("[data-details]")?.querySelector(".inst-details")
-  if (!box) return
-  box.hidden = !box.hidden
-  btn.setAttribute("aria-expanded", String(!box.hidden))
-  if (!box.hidden) track("opened-official-name")
+  const code = btn.dataset.code
+  const open = !state.openDetails.has(code)
+  open ? state.openDetails.add(code) : state.openDetails.delete(code)
+  for (const box of document.querySelectorAll(`.inst-details[data-code="${CSS.escape(code)}"]`)) box.hidden = !open
+  for (const other of document.querySelectorAll(`.info-btn[data-code="${CSS.escape(code)}"]`)) other.setAttribute("aria-expanded", String(open))
+  if (open) track("opened-official-name")
 }
 
 function bind() {
